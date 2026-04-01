@@ -1,0 +1,148 @@
+{
+  "categories": [
+    {
+      "id": "science-education",
+      "name": "Science Education Toys",
+      "description": "Educational toys that make science fun and accessible",
+      "subcategories": [
+        {
+          "id": "green-science",
+          "name": "Green Science",
+          "description": "Eco-friendly science experiments and renewable energy projects"
+        },
+        {
+          "id": "kidzrobotix",
+          "name": "KidzRobotix",
+          "description": "Build and program robots for hands-on learning"
+        },
+        {
+          "id": "kidzlabs",
+          "name": "KidzLabs",
+          "description": "Laboratory-style experiments for young scientists"
+        },
+        {
+          "id": "techcraft",
+          "name": "Techcraft",
+          "description": "Technology and engineering projects"
+        },
+        {
+          "id": "glowing-imaginations",
+          "name": "Glowing Imaginations",
+          "description": "Light-up science projects and experiments"
+        },
+        {
+          "id": "crystal-growing",
+          "name": "Crystal Growing",
+          "description": "Grow beautiful crystals with science"
+        },
+        {
+          "id": "science-in-action",
+          "name": "Science In Action",
+          "description": "Active science experiments and demonstrations"
+        },
+        {
+          "id": "steam-powered-kids",
+          "name": "STEAM Powered Kids",
+          "description": "Science, Technology, Engineering, Arts, and Math projects"
+        }
+      ]
+    },
+    {
+      "id": "fun-toys",
+      "name": "Fun Toys",
+      "description": "Entertaining toys that spark creativity and imagination",
+      "subcategories": [
+        {
+          "id": "magic-goo",
+          "name": "Magic Goo",
+          "description": "Slime and goo experiments for sensory play"
+        }
+      ]
+    },
+    {
+      "id": "creative-crafts",
+      "name": "Creative Crafts Toys",
+      "description": "Arts and crafts projects for creative expression",
+      "subcategories": [
+        {
+          "id": "thinking-kits",
+          "name": "Thinking Kits",
+          "description": "Problem-solving and critical thinking activities"
+        },
+        {
+          "id": "kidzmaker",
+          "name": "KidzMaker",
+          "description": "DIY maker projects for young creators"
+        },
+        {
+          "id": "creative-crafts",
+          "name": "Creative Crafts",
+          "description": "Traditional arts and crafts projects"
+        },
+        {
+          "id": "mould-paint",
+          "name": "Mould & Paint",
+          "description": "Create and paint your own figures and models"
+        },
+        {
+          "id": "unicorn-crystal-growing",
+          "name": "Unicorn Crystal Growing",
+          "description": "Magical crystal growing with unicorn themes"
+        }
+      ]
+    },
+    {
+      "id": "coding-education",
+      "name": "Coding Education Toys",
+      "description": "Learn programming and logic through play",
+      "subcategories": [
+        {
+          "id": "code-a-maze",
+          "name": "Code A Maze",
+          "description": "Programming logic through maze-solving challenges"
+        },
+        {
+          "id": "logiblocs",
+          "name": "Logiblocs",
+          "description": "Electronic building blocks for logic circuits"
+        }
+      ]
+    },
+    {
+      "id": "disney-steam",
+      "name": "Disney STEAM Toys",
+      "description": "Disney-themed science and engineering projects",
+      "subcategories": [
+        {
+          "id": "disney-steam-toys",
+          "name": "Disney STEAM Toys",
+          "description": "All Disney-themed STEAM projects"
+        }
+      ]
+    },
+    {
+      "id": "marvel-steam",
+      "name": "Marvel STEAM Toys",
+      "description": "Marvel-themed science and engineering projects",
+      "subcategories": [
+        {
+          "id": "marvel-steam-toys",
+          "name": "Marvel STEAM Toys",
+          "description": "All Marvel-themed STEAM projects"
+        }
+      ]
+    },
+    {
+      "id": "retail-demo",
+      "name": "Retail Demo Display",
+      "description": "Display units and demonstration materials for retailers",
+      "subcategories": [
+        {
+          "id": "retail-demo-displays",
+          "name": "Retail Demo Displays",
+          "description": "Professional display units for retail environments"
+        }
+      ]
+    }
+  ]
+}

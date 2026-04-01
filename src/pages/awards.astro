@@ -1,0 +1,55 @@
+---
+import Layout from '../components/layout/Layout.astro';
+
+// Load awards data
+const awards = await fetch(new URL('/data/awards.json', import.meta.env.SITE || 'http://localhost:4321'))
+  .then(res => res.json())
+  .catch(() => []);
+
+// Group awards by category
+const awardsByCategory = awards.reduce((acc, award) => {
+  const category = award.category || 'Other';
+  if (!acc[category]) acc[category] = [];
+  acc[category].push(award);
+  return acc;
+}, {});
+
+// Sort awards within each category by sequence
+Object.keys(awardsByCategory).forEach(category => {
+  awardsByCategory[category].sort((a, b) => a.sequence - b.sequence);
+});
+
+const featuredAwards = awards.filter(award => award.featured).sort((a, b) => a.sequence - b.sequence);
+---
+
+<Layout title="Awards | 4M Industrial Development Limited">
+  <div class="container-custom py-8">
+    <!-- Header -->
+    <div class="text-center space-y-4 mb-12">
+      <h1 class="text-3xl md:text-4xl font-bold text-fun">Awards</h1>
+      <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
+        Recognition for Excellence and Innovation - Commitment and collaboration have helped us win more than 70 local and international awards since 2003.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {awards.sort((a, b) => a.sequence - b.sequence).map((award) => (
+          <div class="bg-card rounded-lg border shadow-sm hover:shadow-md transition-shadow p-4 text-center">
+            <div class="mb-3 flex justify-center">
+              <img 
+                src={award.icon} 
+                alt={award.name}
+                class="h-16 w-auto object-contain"
+                loading="lazy"
+              />
+            </div>
+            <h5 class="text-sm font-semibold mb-2">{award.name}</h5>
+            <p class="text-xs text-muted-foreground mb-2">{award.organization}</p>
+            <div class="text-center">
+              <span class="text-xs font-medium text-primary">{award.year}</span>
+            </div>
+          </div>
+        ))}
+    </div>
+  </div>
+</Layout>

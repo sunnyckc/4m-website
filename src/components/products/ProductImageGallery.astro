@@ -1,0 +1,260 @@
+---
+interface Props {
+  mainImage: string;
+  galleryImages: string[];
+  productName: string;
+}
+
+const { mainImage, galleryImages, productName } = Astro.props;
+
+// Combine main image with gallery images for the full gallery
+const allImages = [mainImage, ...galleryImages];
+---
+
+<div class="product-image-gallery">
+  <!-- Main Image Display -->
+  <div class="main-image-container mb-4">
+    <img 
+      id="main-product-image"
+      src={mainImage} 
+      alt={productName}
+      class="w-full h-96 object-cover rounded-lg shadow-lg transition-all duration-300"
+    />
+  </div>
+
+  <!-- Thumbnail Gallery -->
+  {allImages.length > 1 && (
+    <div class="thumbnail-gallery">
+      <div class="flex space-x-2 overflow-x-auto pb-2">
+        {allImages.map((image, index) => (
+          <button
+            type="button"
+            class={`thumbnail-btn flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-all duration-200 ${
+              index === 0 ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'
+            }`}
+            data-image={image}
+            data-index={index}
+          >
+            <img 
+              src={image} 
+              alt={`${productName} view ${index + 1}`}
+              class="w-full h-full object-cover"
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Image Counter -->
+  {allImages.length > 1 && (
+    <div class="image-counter mt-2 text-sm text-gray-600 text-center">
+      <span id="current-image">1</span> / <span id="total-images">{allImages.length}</span>
+    </div>
+  )}
+
+  <!-- Zoom Modal (Hidden by default) -->
+  <div id="zoom-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
+    <div class="relative max-w-4xl max-h-full">
+      <button 
+        id="close-zoom"
+        class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 z-10"
+        type="button"
+      >
+        ✕
+      </button>
+      <img 
+        id="zoomed-image"
+        src=""
+        alt=""
+        class="max-w-full max-h-full object-contain"
+      />
+      <!-- Navigation arrows for modal -->
+      {allImages.length > 1 && (
+        <>
+          <button 
+            id="prev-image"
+            class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-2xl hover:text-gray-300"
+            type="button"
+          >
+            ‹
+          </button>
+          <button 
+            id="next-image"
+            class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-2xl hover:text-gray-300"
+            type="button"
+          >
+            ›
+          </button>
+        </>
+      )}
+    </div>
+  </div>
+</div>
+
+<script>
+  // Gallery functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const mainImage = document.getElementById('main-product-image') as HTMLImageElement;
+    const thumbnailBtns = document.querySelectorAll('.thumbnail-btn') as NodeListOf<HTMLButtonElement>;
+    const currentImageSpan = document.getElementById('current-image');
+    const zoomModal = document.getElementById('zoom-modal');
+    const zoomedImage = document.getElementById('zoomed-image') as HTMLImageElement;
+    const closeZoom = document.getElementById('close-zoom');
+    const prevBtn = document.getElementById('prev-image');
+    const nextBtn = document.getElementById('next-image');
+    
+    let currentIndex = 0;
+    const images = Array.from(thumbnailBtns).map(btn => btn.dataset.image!);
+
+    // Thumbnail click handler
+    thumbnailBtns.forEach((btn, index) => {
+      btn.addEventListener('click', () => {
+        const newImage = btn.dataset.image!;
+        mainImage.src = newImage;
+        currentIndex = index;
+        
+        // Update active thumbnail
+        thumbnailBtns.forEach(b => {
+          b.classList.remove('border-blue-500', 'ring-2', 'ring-blue-200');
+          b.classList.add('border-gray-200');
+        });
+        btn.classList.remove('border-gray-200');
+        btn.classList.add('border-blue-500', 'ring-2', 'ring-blue-200');
+        
+        // Update counter
+        if (currentImageSpan) {
+          currentImageSpan.textContent = (index + 1).toString();
+        }
+      });
+    });
+
+    // Main image click to zoom
+    mainImage.addEventListener('click', () => {
+      if (zoomModal && zoomedImage) {
+        zoomedImage.src = mainImage.src;
+        zoomedImage.alt = mainImage.alt;
+        zoomModal.classList.remove('hidden');
+        zoomModal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+
+    // Close zoom modal
+    if (closeZoom) {
+      closeZoom.addEventListener('click', () => {
+        if (zoomModal) {
+          zoomModal.classList.add('hidden');
+          zoomModal.classList.remove('flex');
+          document.body.style.overflow = 'auto';
+        }
+      });
+    }
+
+    // Click outside to close
+    if (zoomModal) {
+      zoomModal.addEventListener('click', (e) => {
+        if (e.target === zoomModal) {
+          zoomModal.classList.add('hidden');
+          zoomModal.classList.remove('flex');
+          document.body.style.overflow = 'auto';
+        }
+      });
+    }
+
+    // Navigation in zoom modal
+    if (prevBtn && nextBtn) {
+      prevBtn.addEventListener('click', () => {
+        currentIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+        updateZoomedImage();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        currentIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+        updateZoomedImage();
+      });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (zoomModal && !zoomModal.classList.contains('hidden')) {
+        if (e.key === 'Escape') {
+          zoomModal.classList.add('hidden');
+          zoomModal.classList.remove('flex');
+          document.body.style.overflow = 'auto';
+        } else if (e.key === 'ArrowLeft') {
+          currentIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+          updateZoomedImage();
+        } else if (e.key === 'ArrowRight') {
+          currentIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+          updateZoomedImage();
+        }
+      }
+    });
+
+    function updateZoomedImage() {
+      if (zoomedImage) {
+        zoomedImage.src = images[currentIndex];
+      }
+      // Also update main image and thumbnails
+      mainImage.src = images[currentIndex];
+      
+      // Update thumbnail selection
+      thumbnailBtns.forEach((btn, index) => {
+        btn.classList.remove('border-blue-500', 'ring-2', 'ring-blue-200');
+        btn.classList.add('border-gray-200');
+        if (index === currentIndex) {
+          btn.classList.remove('border-gray-200');
+          btn.classList.add('border-blue-500', 'ring-2', 'ring-blue-200');
+        }
+      });
+      
+      // Update counter
+      if (currentImageSpan) {
+        currentImageSpan.textContent = (currentIndex + 1).toString();
+      }
+    }
+  });
+</script>
+
+<style>
+  .thumbnail-btn {
+    cursor: pointer;
+  }
+  
+  .thumbnail-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  #main-product-image {
+    cursor: zoom-in;
+  }
+  
+  #zoom-modal img {
+    cursor: zoom-out;
+  }
+  
+  /* Smooth scrolling for thumbnail gallery */
+  .thumbnail-gallery {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
+  }
+  
+  .thumbnail-gallery::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .thumbnail-gallery::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 3px;
+  }
+  
+  .thumbnail-gallery::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+  }
+  
+  .thumbnail-gallery::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+</style>

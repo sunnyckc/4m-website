@@ -1,0 +1,741 @@
+---
+import Layout from '../../components/layout/Layout.astro';
+import Card from '../../components/ui/card.astro';
+import Button from '../../components/ui/button.astro';
+import Badge from '../../components/ui/badge.astro';
+import Input from '../../components/ui/input.astro';
+// Removed formatPrice import as pricing is no longer displayed
+import fs from 'fs';
+import path from 'path';
+
+// Load JSON data directly using fs
+const productsPath = path.join(process.cwd(), 'public/data/products.json');
+const categoriesPath = path.join(process.cwd(), 'public/data/product-categories.json');
+
+const products = JSON.parse(fs.readFileSync(productsPath, 'utf-8'));
+const categoriesData = JSON.parse(fs.readFileSync(categoriesPath, 'utf-8'));
+
+console.log('Products loaded:', products.length);
+console.log('First product:', products[0]?.name);
+---
+
+<Layout title="Products - My Store" description="Browse our complete collection of premium products">
+  <div class="container-custom py-8">
+    <!-- Header -->
+    <div class="text-center space-y-4 mb-12">
+      <h1 class="text-3xl md:text-4xl font-bold text-fun">Our Products</h1>
+      <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
+        Discover our complete collection of carefully curated educational toys and STEAM learning kits designed to inspire creativity and imagination.
+      </p>
+    </div>
+
+    <!-- Mobile Filter Toggle (Mobile Only) -->
+    <div class="lg:hidden mb-6">
+      <button 
+        id="mobileFilterToggle"
+        class="w-full flex items-center justify-between p-3 bg-gray-50 rounded-lg border"
+        onclick="toggleMobileFilters()"
+      >
+        <span class="font-medium">Filters & Search</span>
+        <svg id="filterToggleIcon" class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Main Content Layout -->
+    <div class="flex flex-col lg:flex-row gap-8">
+      <!-- Sidebar Filters (Desktop) / Collapsible Section (Mobile) -->
+      <aside id="filterSidebar" class="hidden lg:block lg:w-64 lg:flex-shrink-0">
+        <div class="bg-white border rounded-lg p-6 space-y-6 sticky top-4">
+          <!-- Search -->
+          <div>
+            <label class="block text-sm font-medium mb-2">Search Products</label>
+            <Input 
+              type="text" 
+              placeholder="Name or code (e.g., 00-03267)" 
+              id="searchInput"
+              x-data
+              x-on:input="filterProducts()"
+            />
+          </div>
+
+          <!-- Categories -->
+          <div>
+            <label class="block text-sm font-medium mb-3">Categories</label>
+            <div class="space-y-2">
+              <button 
+                class="category-item w-full text-left px-3 py-2 hover:bg-gray-100 transition-colors text-sm font-medium"
+                data-category=""
+                onclick="selectCategory('', '')"
+              >
+                All Products
+              </button>
+              <button 
+                class="category-item w-full text-left px-3 py-2 hover:bg-gray-100 transition-colors text-sm font-medium flex items-center"
+                data-category="hot-products"
+                onclick="selectCategory('hot-products', '')"
+              >
+                <span>Hot Products</span>
+                <svg class="w-4 h-4 ml-2 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
+                </svg>
+              </button>
+              {categoriesData.categories.map(category => (
+                <div class="category-group">
+                  <button 
+                    class="category-item w-full text-left px-3 py-2 hover:bg-gray-100 transition-colors text-sm font-medium flex items-center justify-between"
+                    data-category={category.id}
+                    onclick={`selectCategory('${category.id}', '')`}
+                  >
+                    <span>{category.name}</span>
+                    {category.subcategories.length > 0 && (
+                      <svg class="w-4 h-4 category-arrow transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                      </svg>
+                    )}
+                  </button>
+                  <div class="subcategory-list ml-4 space-y-1 hidden" data-parent={category.id}>
+                    {category.subcategories.map(subcategory => (
+                      <button 
+                        class="subcategory-item w-full text-left px-3 py-1 hover:bg-gray-50 transition-colors text-xs font-normal text-gray-500"
+                        data-category={category.id}
+                        data-subcategory={subcategory.id}
+                        onclick={`selectCategory('${category.id}', '${subcategory.id}')`}
+                      >
+                        {subcategory.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+
+          <!-- Sort Options -->
+          <div>
+            <label class="block text-sm font-medium mb-2">Sort By</label>
+            <select 
+              id="sortFilter"
+              class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              x-data
+              x-on:change="sortProducts()"
+            >
+              <option value="">Default</option>
+              <option value="name-asc">Name A-Z</option>
+              <option value="name-desc">Name Z-A</option>
+              <option value="code-asc">Product Code</option>
+            </select>
+          </div>
+
+          <!-- Clear Filters -->
+          <button 
+            class="w-full px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+            onclick="clearFilters()"
+          >
+            Clear All Filters
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="flex-1 min-w-0">
+        <!-- Results Header -->
+        <div class="flex items-center justify-between mb-6">
+          <div id="resultsCount" class="text-sm text-muted-foreground">
+            Showing all products
+          </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {products.map((product) => (
+        <a href={`/products/${product.id}`} class="block">
+          <Card class="product-card overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" 
+                data-name={product.name.toLowerCase()}
+                data-code={product.product_code?.toLowerCase() || ''}
+                data-category={product.category}
+                data-subcategory={product.subcategory}
+                data-tags={product.tags.join(' ').toLowerCase()}
+                data-description={product.description.toLowerCase()}
+                data-price={product.price}
+                data-hot-item={product.hot_item}>
+            <div class="aspect-square bg-muted relative overflow-hidden">
+              <img 
+                src={product.images.main} 
+                alt={product.name}
+                class="w-full h-full object-cover transition-transform duration-300 ease-in-out product-image"
+                loading="lazy"
+              />
+              {product.hot_item && (
+                <div class="absolute top-2 right-2">
+                  <Badge variant="destructive" class="bg-orange-500 hover:bg-orange-600 text-xs">
+                    Hot
+                  </Badge>
+                </div>
+              )}
+            </div>
+            <div class="p-4 space-y-3">
+              <div class="space-y-2">
+                <h3 class="font-semibold text-lg leading-tight">{product.name}</h3>
+                {product.product_code && (
+                  <p class="text-xs text-muted-foreground font-mono">{product.product_code}</p>
+                )}
+                <p class="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
+              </div>
+            </div>
+          </Card>
+        </a>
+      ))}
+    </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-12">
+          <p class="text-lg text-muted-foreground">No products found matching your criteria.</p>
+          <Button class="mt-4" onclick="clearFilters()">Clear Filters</Button>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="hidden mt-8 flex items-center justify-center space-x-2">
+          <button 
+            id="prevPage" 
+            class="px-3 py-2 text-sm border rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            onclick="changePage(-1)"
+            disabled
+          >
+            Previous
+          </button>
+          
+          <div id="pageNumbers" class="flex space-x-1">
+            <!-- Page numbers will be generated by JavaScript -->
+          </div>
+          
+          <button 
+            id="nextPage" 
+            class="px-3 py-2 text-sm border rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            onclick="changePage(1)"
+          >
+            Next
+          </button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{categoriesData}}>
+    // Store category data for JavaScript access
+    const categoryData = categoriesData;
+
+    let currentCategory = '';
+    let currentSubcategory = '';
+    let currentPage = 1;
+    let itemsPerPage = 9;
+    let filteredProducts = [];
+
+    function filterProducts() {
+      const searchInput = document.getElementById('searchInput');
+      const productCards = Array.from(document.querySelectorAll('.product-card'));
+      const noResults = document.getElementById('noResults');
+      const resultsCount = document.getElementById('resultsCount');
+      
+      if (!searchInput || !noResults || !resultsCount) return;
+      
+      const searchTerm = searchInput.value.toLowerCase();
+      
+      // Filter and collect matching products
+      filteredProducts = [];
+
+      productCards.forEach(function(card) {
+        const name = card.getAttribute('data-name') || '';
+        const code = card.getAttribute('data-code') || '';
+        const category = card.getAttribute('data-category') || '';
+        const subcategory = card.getAttribute('data-subcategory') || '';
+        const tags = card.getAttribute('data-tags') || '';
+        const description = card.getAttribute('data-description') || '';
+        const isHotItem = card.getAttribute('data-hot-item') === 'true';
+
+        // Search filter (name, code, description, tags)
+        const matchesSearch = !searchTerm || 
+          name.includes(searchTerm) || 
+          code.includes(searchTerm) ||
+          description.includes(searchTerm) ||
+          tags.includes(searchTerm);
+
+        // Category filter - handle special "hot-products" category
+        let matchesCategory;
+        if (!currentCategory) {
+          matchesCategory = true; // Show all products
+        } else if (currentCategory === 'hot-products') {
+          matchesCategory = isHotItem; // Only show hot items
+        } else {
+          matchesCategory = category === currentCategory; // Regular category filter
+        }
+
+        // Subcategory filter
+        const matchesSubcategory = !currentSubcategory || subcategory === currentSubcategory;
+
+        if (matchesSearch && matchesCategory && matchesSubcategory) {
+          filteredProducts.push({
+            element: card,
+            isHot: isHotItem,
+            name: name,
+            code: code
+          });
+        }
+      });
+
+      // Sort filtered products: Hot items first, then by name
+      filteredProducts.sort((a, b) => {
+        // Hot items first
+        if (a.isHot && !b.isHot) return -1;
+        if (!a.isHot && b.isHot) return 1;
+        
+        // Then sort by name
+        return a.name.localeCompare(b.name);
+      });
+
+      // Reset to first page when filtering
+      currentPage = 1;
+      
+      // Display results with pagination
+      displayPaginatedResults();
+    }
+
+    function displayPaginatedResults() {
+      const noResults = document.getElementById('noResults');
+      const resultsCount = document.getElementById('resultsCount');
+      const pagination = document.getElementById('pagination');
+      const totalResults = filteredProducts.length;
+      
+      // Hide all products first
+      document.querySelectorAll('.product-card').forEach(card => {
+        card.style.display = 'none';
+      });
+
+      if (totalResults === 0) {
+        noResults.classList.remove('hidden');
+        pagination.classList.add('hidden');
+        resultsCount.textContent = 'No products found';
+        return;
+      }
+
+      noResults.classList.add('hidden');
+
+      // Calculate pagination
+      const totalPages = Math.ceil(totalResults / itemsPerPage);
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = Math.min(startIndex + itemsPerPage, totalResults);
+
+      // Show products for current page
+      for (let i = startIndex; i < endIndex; i++) {
+        filteredProducts[i].element.style.display = 'block';
+      }
+
+      // Update results count
+      if (totalPages > 1) {
+        resultsCount.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalResults} products (Page ${currentPage} of ${totalPages})`;
+        pagination.classList.remove('hidden');
+        updatePaginationControls(totalPages);
+      } else {
+        resultsCount.textContent = `Showing ${totalResults} product${totalResults === 1 ? '' : 's'}`;
+        pagination.classList.add('hidden');
+      }
+    }
+
+    function updatePaginationControls(totalPages) {
+      const prevButton = document.getElementById('prevPage');
+      const nextButton = document.getElementById('nextPage');
+      const pageNumbers = document.getElementById('pageNumbers');
+
+      // Update prev/next buttons
+      prevButton.disabled = currentPage === 1;
+      nextButton.disabled = currentPage === totalPages;
+
+      // Generate page numbers
+      let paginationHTML = '';
+      const maxVisiblePages = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+      let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+      // Adjust start page if we're near the end
+      if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+
+      // First page and ellipsis
+      if (startPage > 1) {
+        paginationHTML += `<button class="px-3 py-2 text-sm border rounded-md hover:bg-gray-50" onclick="goToPage(1)">1</button>`;
+        if (startPage > 2) {
+          paginationHTML += `<span class="px-2 py-2 text-sm">...</span>`;
+        }
+      }
+
+      // Page numbers
+      for (let i = startPage; i <= endPage; i++) {
+        const isActive = i === currentPage;
+        paginationHTML += `<button class="px-3 py-2 text-sm border rounded-md ${isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-gray-50'}" onclick="goToPage(${i})">${i}</button>`;
+      }
+
+      // Last page and ellipsis
+      if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+          paginationHTML += `<span class="px-2 py-2 text-sm">...</span>`;
+        }
+        paginationHTML += `<button class="px-3 py-2 text-sm border rounded-md hover:bg-gray-50" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+      }
+
+      pageNumbers.innerHTML = paginationHTML;
+    }
+
+    function changePage(direction) {
+      const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+      const newPage = currentPage + direction;
+      
+      if (newPage >= 1 && newPage <= totalPages) {
+        currentPage = newPage;
+        displayPaginatedResults();
+        
+        // Scroll to top of products grid
+        document.getElementById('productsGrid').scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }
+    }
+
+    function goToPage(pageNumber) {
+      const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+      
+      if (pageNumber >= 1 && pageNumber <= totalPages) {
+        currentPage = pageNumber;
+        displayPaginatedResults();
+        
+        // Scroll to top of products grid
+        document.getElementById('productsGrid').scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }
+    }
+
+    function selectCategory(categoryId, subcategoryId = '') {
+      // Special handling for "All Products" and "Hot Products" - they should highlight and filter
+      if (categoryId === '' || categoryId === 'hot-products') {
+        currentCategory = categoryId;
+        currentSubcategory = '';
+
+        // Clear all category highlights (main categories should never be highlighted)
+        document.querySelectorAll('.category-item').forEach(item => {
+          const itemCategory = item.getAttribute('data-category');
+          // Only highlight "All Products" (empty) and "Hot Products"
+          if (itemCategory === categoryId && (categoryId === '' || categoryId === 'hot-products')) {
+            item.classList.add('bg-primary/20', 'text-primary');
+            item.classList.remove('hover:bg-gray-100');
+          } else {
+            item.classList.remove('bg-primary/20', 'text-primary');
+            item.classList.add('hover:bg-gray-100');
+          }
+        });
+
+        // Clear all subcategory highlights
+        document.querySelectorAll('.subcategory-item').forEach(item => {
+          item.classList.remove('bg-primary/20', 'text-primary');
+          item.classList.add('hover:bg-gray-50', 'text-gray-500');
+        });
+
+        // Collapse all subcategory lists
+        document.querySelectorAll('.subcategory-list').forEach(list => {
+          list.classList.add('hidden');
+          const parentCategory = list.getAttribute('data-parent');
+          const arrow = document.querySelector(`[data-category="${parentCategory}"] .category-arrow`);
+          if (arrow) arrow.classList.remove('rotate-90');
+        });
+
+        filterProducts();
+        return;
+      }
+
+      // If clicking on a main category (no subcategory), just expand/collapse - NO highlighting
+      if (!subcategoryId) {
+        // Clear all highlights first
+        document.querySelectorAll('.category-item').forEach(item => {
+          item.classList.remove('bg-primary/20', 'text-primary');
+          item.classList.add('hover:bg-gray-100');
+        });
+
+        // Show/hide subcategory lists and rotate arrows
+        document.querySelectorAll('.subcategory-list').forEach(list => {
+          const parentCategory = list.getAttribute('data-parent');
+          const arrow = document.querySelector(`[data-category="${parentCategory}"] .category-arrow`);
+          
+          if (parentCategory === categoryId) {
+            // Toggle the subcategory list
+            const isHidden = list.classList.contains('hidden');
+            if (isHidden) {
+              list.classList.remove('hidden');
+              if (arrow) arrow.classList.add('rotate-90');
+            } else {
+              list.classList.add('hidden');
+              if (arrow) arrow.classList.remove('rotate-90');
+            }
+          } else {
+            list.classList.add('hidden');
+            if (arrow) arrow.classList.remove('rotate-90');
+          }
+        });
+        return; // Don't filter, just expand/collapse
+      }
+
+      // If subcategory is selected, then apply filtering
+      currentCategory = categoryId;
+      currentSubcategory = subcategoryId;
+
+      // Clear ALL category highlights (main categories should never be highlighted when subcategory is selected)
+      document.querySelectorAll('.category-item').forEach(item => {
+        item.classList.remove('bg-primary/20', 'text-primary');
+        item.classList.add('hover:bg-gray-100');
+      });
+
+      // Update subcategory item styles - only highlight the selected subcategory
+      document.querySelectorAll('.subcategory-item').forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
+        const itemSubcategory = item.getAttribute('data-subcategory');
+        if (itemCategory === categoryId && itemSubcategory === subcategoryId) {
+          item.classList.add('bg-primary/20', 'text-primary');
+          item.classList.remove('hover:bg-gray-50', 'text-gray-500');
+        } else {
+          item.classList.remove('bg-primary/20', 'text-primary');
+          item.classList.add('hover:bg-gray-50', 'text-gray-500');
+        }
+      });
+
+      // Show/hide subcategory lists and rotate arrows
+      document.querySelectorAll('.subcategory-list').forEach(list => {
+        const parentCategory = list.getAttribute('data-parent');
+        const arrow = document.querySelector(`[data-category="${parentCategory}"] .category-arrow`);
+        
+        if (parentCategory === categoryId) {
+          list.classList.remove('hidden');
+          if (arrow) arrow.classList.add('rotate-90');
+        } else {
+          list.classList.add('hidden');
+          if (arrow) arrow.classList.remove('rotate-90');
+        }
+      });
+
+      // Filter products when subcategory is selected
+      filterProducts();
+    }
+
+    function toggleMobileFilters() {
+      const sidebar = document.getElementById('filterSidebar');
+      const toggleIcon = document.getElementById('filterToggleIcon');
+      
+      if (sidebar.classList.contains('hidden')) {
+        sidebar.classList.remove('hidden');
+        sidebar.classList.add('block');
+        toggleIcon.classList.add('rotate-180');
+      } else {
+        sidebar.classList.add('hidden');
+        sidebar.classList.remove('block');
+        toggleIcon.classList.remove('rotate-180');
+      }
+    }
+
+    function sortProducts() {
+      const sortFilter = document.getElementById('sortFilter');
+      
+      if (!sortFilter) return;
+      
+      const sortValue = sortFilter.value;
+      
+      if (filteredProducts.length === 0) return;
+
+      // Sort the filtered products array
+      filteredProducts.sort((a, b) => {
+        // Always prioritize hot items first, regardless of sort option
+        if (a.isHot && !b.isHot) return -1;
+        if (!a.isHot && b.isHot) return 1;
+        
+        // Then apply the selected sort
+        switch (sortValue) {
+          case 'name-asc':
+            return a.name.localeCompare(b.name);
+          case 'name-desc':
+            return b.name.localeCompare(a.name);
+          case 'code-asc':
+            return a.code.localeCompare(b.code);
+          default:
+            // Default sort: hot items first, then by name
+            return a.name.localeCompare(b.name);
+        }
+      });
+
+      // Reset to first page and redisplay
+      currentPage = 1;
+      displayPaginatedResults();
+    }
+
+    function clearFilters() {
+      const searchInput = document.getElementById('searchInput');
+      const sortFilter = document.getElementById('sortFilter');
+      
+      if (searchInput) searchInput.value = '';
+      if (sortFilter) sortFilter.value = '';
+      
+      currentPage = 1;
+      selectCategory('', '');
+    }
+
+    // Make functions globally available
+    window.filterProducts = filterProducts;
+    window.selectCategory = selectCategory;
+    window.toggleMobileFilters = toggleMobileFilters;
+    window.sortProducts = sortProducts;
+    window.clearFilters = clearFilters;
+    window.changePage = changePage;
+    window.goToPage = goToPage;
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      selectCategory('', '');
+    });
+  </script>
+</Layout>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Sidebar Styles */
+  #filterSidebar {
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+
+  .category-item, .subcategory-item {
+    transition: all 0.2s ease;
+  }
+
+  .category-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .rotate-90 {
+    transform: rotate(90deg);
+  }
+
+  .rotate-180 {
+    transform: rotate(180deg);
+  }
+
+  /* Product Cards */
+  .product-card {
+    transition: all 0.3s ease;
+  }
+
+  .product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Product Image Zoom Effect */
+  .product-image {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .product-card:hover .product-image {
+    transform: scale(1.1);
+  }
+
+  /* Mobile Filter Toggle */
+  @media (max-width: 1023px) {
+    #filterSidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: white;
+      border-radius: 0;
+      max-height: 80vh;
+      margin: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    #filterSidebar.hidden {
+      display: none !important;
+    }
+
+    #filterSidebar.block {
+      display: block !important;
+    }
+  }
+
+  /* Responsive Grid Adjustments */
+  @media (min-width: 768px) {
+    #productsGrid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Loading state for product cards */
+  .product-card[style*="display: none"] {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  /* Search input focus state */
+  #searchInput:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Custom scrollbar for sidebar */
+  #filterSidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #filterSidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  #filterSidebar::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+  }
+
+  #filterSidebar::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+  }
+
+  /* Smooth transitions for mobile overlay */
+  #filterSidebar {
+    transition: all 0.3s ease;
+  }
+
+  /* Pagination Styles */
+  #pagination button {
+    transition: all 0.2s ease;
+  }
+
+  #pagination button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  #pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  #pagination .bg-primary {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+</style>

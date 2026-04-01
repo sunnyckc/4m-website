@@ -1,0 +1,32 @@
+[
+  {
+    "id": "slide-1",
+    "image": "/images/hero/hero-1.svg",
+    "title": "SLIDE 1: Premium Products",
+    "subtitle": "First Slide - Purple Gradient",
+    "description": "This is the FIRST slide with a purple gradient background. You should see this slide transition automatically every 5 seconds, or use the arrow buttons to navigate manually.",
+    "ctaText": "Shop Now",
+    "ctaLink": "/products",
+    "ctaVariant": "default"
+  },
+  {
+    "id": "slide-2",
+    "image": "/images/hero/hero-2.svg",
+    "title": "SLIDE 2: Innovation Hub",
+    "subtitle": "Second Slide - Pink Gradient",
+    "description": "This is the SECOND slide with a pink gradient background. Notice how the content changes and the indicators at the bottom show which slide is active.",
+    "ctaText": "Learn More",
+    "ctaLink": "/about",
+    "ctaVariant": "outline"
+  },
+  {
+    "id": "slide-3",
+    "image": "/images/hero/hero-3.svg",
+    "title": "SLIDE 3: Award Winner",
+    "subtitle": "Third Slide - Blue Gradient",
+    "description": "This is the THIRD slide with a blue gradient background. The slideshow will loop back to slide 1 after this. Try hovering to pause autoplay!",
+    "ctaText": "View Awards",
+    "ctaLink": "/awards",
+    "ctaVariant": "default"
+  }
+]

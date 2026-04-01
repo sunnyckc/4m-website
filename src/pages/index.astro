@@ -1,17 +1,260 @@
 ---
+import Layout from '../components/layout/Layout.astro';
+import Button from '../components/ui/button.astro';
+import Card from '../components/ui/card.astro';
+import Badge from '../components/ui/badge.astro';
+import HeroSlideshow from '../components/ui/hero-slideshow.astro';
+import SimpleHero from '../components/ui/simple-hero.astro';
+import ImageCollage from '../components/ui/image-collage.astro';
+import { getHotProducts, getFeaturedAwards, getFeaturedNews, getHeroSlides, getSteamCollageData } from '../data/helpers';
+import { formatDate } from '../lib/utils';
 
+const hotProducts = await getHotProducts();
+const featuredAwards = await getFeaturedAwards();
+const featuredNews = await getFeaturedNews();
+
+// Official 4M hero slides with actual banner images
+const heroSlides = [
+  {
+    id: "slide-1",
+    image: "/images/hero/4m-banner-1.png",
+    title: "Educational Toys for Young Minds",
+    subtitle: "Inspiring Learning Through Play",
+    description: "Discover our comprehensive range of STEAM educational toys designed to develop critical thinking, creativity, and problem-solving skills in children.",
+    ctaText: "Explore Products",
+    ctaLink: "/products",
+    ctaVariant: "default"
+  },
+  {
+    id: "slide-2", 
+    image: "/images/hero/4m-banner-2.png",
+    title: "STEAM Learning Made Fun",
+    subtitle: "Science • Technology • Engineering • Arts • Mathematics",
+    description: "Our award-winning educational toys integrate essential STEAM concepts into engaging, hands-on learning experiences for children of all ages.",
+    ctaText: "Learn More",
+    ctaLink: "/about",
+    ctaVariant: "outline"
+  }
+];
+
+// Direct STEAM collage data with 4M images
+const steamCollageData = {
+  "mainItem": {
+    "id": "main-steam",
+    "title": "STEAM Education Hub",
+    "image": "/images/steam/hero-main.jpg",
+    "textColor": "text-white",
+    "href": "/steam"
+  },
+  "smallItems": [
+    {
+      "id": "science",
+      "title": "Science",
+      "image": "/images/steam/hero-a.jpg",
+      "textColor": "text-white",
+      "href": "/steam/science"
+    },
+    {
+      "id": "technology",
+      "title": "Technology", 
+      "image": "/images/steam/hero-b.jpg",
+      "textColor": "text-white",
+      "href": "/steam/technology"
+    },
+    {
+      "id": "engineering",
+      "title": "Engineering",
+      "image": "/images/steam/hero-c.jpg",
+      "textColor": "text-white",
+      "href": "/steam/engineering"
+    },
+    {
+      "id": "arts",
+      "title": "Arts",
+      "image": "/images/steam/hero-d.jpg",
+      "textColor": "text-white",
+      "href": "/steam/arts"
+    },
+    {
+      "id": "mathematics",
+      "title": "Mathematics",
+      "image": "/images/steam/hero-e.jpg",
+      "textColor": "text-white",
+      "href": "/steam/mathematics"
+    }
+  ]
+};
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="4M Industrial Development Limited - STEAM Educational Toys" description="4M Industrial Development Limited - Award-winning educational toys and STEAM learning products. Inspiring creativity, critical thinking, and innovation in children through hands-on educational play experiences.">
+  <!-- Hero Slideshow Section -->
+  <section class="mb-8">
+    <!-- Full slideshow with auto-height -->
+    <HeroSlideshow 
+      slides={heroSlides}
+      autoplay={true}
+      autoplayInterval={5000}
+      showIndicators={true}
+      showArrows={false}
+    />
+  </section>
+
+  <!-- Steam Education Section -->
+  <section class="py-8 lg:py-12">
+    <div class="container-custom">
+      <div class="text-center space-y-4 mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-fun">STEAM</h2>
+        <p class="text-lg text-muted-foreground max-w-3xl mx-auto text-comic">
+          Essential elements of healthy mental development are integrated into our product designs and throughout our production process. It is these fundamental STEAM principles that foster creativity, critical thinking, and innovation in young learners.
+        </p>
+      </div>
+
+      <ImageCollage 
+        mainItem={steamCollageData.mainItem}
+        smallItems={steamCollageData.smallItems}
+        class="w-full"
+      />
+    </div>
+  </section>
+
+  <!-- Hot Products Section -->
+  {hotProducts.length > 0 && (
+    <section class="py-16 lg:py-24 bg-muted/30">
+      <div class="container-custom">
+        <div class="text-center space-y-4 mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-fun">Hot Products</h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
+            Discover our most popular educational toys and STEAM learning kits, loved by children and recommended by educators worldwide.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {hotProducts.slice(0, 3).map((product) => (
+            <Card class="overflow-hidden hover:shadow-lg transition-shadow card-playful">
+              <div class="aspect-square bg-muted relative">
+                <img 
+                  src={product.images.main} 
+                  alt={product.name}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+                <!-- Hot Badge -->
+                <div class="absolute top-2 right-2">
+                  <Badge variant="destructive" class="bg-orange-500 hover:bg-orange-600 text-xs font-comic-neue">
+                    Hot
+                  </Badge>
+                </div>
+              </div>
+              <div class="p-6 space-y-4">
+                <div class="space-y-2">
+                  <Badge variant="secondary" class="font-comic-neue">{product.category.replace('-', ' ')}</Badge>
+                  <h3 class="text-xl font-semibold font-fredoka">{product.name}</h3>
+                  <p class="text-muted-foreground font-comic-neue">{product.description}</p>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-muted-foreground capitalize font-comic-neue">
+                    {product.subcategory.replace('-', ' ')}
+                  </span>
+                  <Button href={`/products/${product.id}`} variant="outline" class="font-fredoka btn-bouncy">
+                    View Details
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        <div class="text-center mt-12">
+          <Button href="/products" size="lg" class="font-fredoka btn-bouncy">
+            View All Products
+          </Button>
+        </div>
+      </div>
+    </section>
+  )}
+
+
+  <!-- Awards Section -->
+  {featuredAwards.length > 0 && (
+    <section class="py-16 lg:py-24 bg-muted/50">
+      <div class="container-custom">
+        <div class="text-center space-y-4 mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold">Award-Winning Excellence</h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Our commitment to quality and innovation has been recognized by industry leaders.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {featuredAwards.map((award) => (
+            <Card class="text-center p-8 hover:shadow-lg transition-shadow">
+              <div class="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                <img src={award.icon} alt={award.name} class="w-8 h-8" />
+              </div>
+              <h3 class="text-xl font-semibold mb-2">{award.name}</h3>
+              <p class="text-muted-foreground mb-4">{award.description}</p>
+              <div class="text-sm text-muted-foreground">
+                <div>{award.organization}</div>
+                <div>{award.year}</div>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        <div class="text-center">
+          <Button href="/awards" variant="outline">
+            View All Awards
+          </Button>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Latest News -->
+  {featuredNews.length > 0 && (
+    <section class="py-16 lg:py-24">
+      <div class="container-custom">
+        <div class="text-center space-y-4 mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold">Latest News</h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Stay updated with our latest announcements, product launches, and company news.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {featuredNews.map((post) => (
+            <Card class="overflow-hidden hover:shadow-lg transition-shadow">
+              <div class="aspect-video bg-muted">
+                <img 
+                  src={post.image} 
+                  alt={post.title}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div class="p-6 space-y-4">
+                <div class="space-y-2">
+                  <Badge variant="outline">{post.category}</Badge>
+                  <h3 class="text-xl font-semibold">{post.title}</h3>
+                  <p class="text-muted-foreground">{post.excerpt}</p>
+                </div>
+                <div class="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>{formatDate(post.date)}</span>
+                  <Button href={`/news/${post.id}`} variant="ghost" size="sm">
+                    Read More →
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        <div class="text-center">
+          <Button href="/news" variant="outline">
+            View All News
+          </Button>
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>

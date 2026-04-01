@@ -1,0 +1,46 @@
+{
+  "mainItem": {
+    "id": "main-steam",
+    "title": "STEAM Education Hub",
+    "image": "/images/steam/hero-main.jpg",
+    "textColor": "text-white",
+    "href": "/steam"
+  },
+  "smallItems": [
+    {
+      "id": "science",
+      "title": "Science",
+      "image": "/images/steam/hero-a.jpg",
+      "textColor": "text-white",
+      "href": "/steam/science"
+    },
+    {
+      "id": "technology",
+      "title": "Technology", 
+      "image": "/images/steam/hero-b.jpg",
+      "textColor": "text-white",
+      "href": "/steam/technology"
+    },
+    {
+      "id": "engineering",
+      "title": "Engineering",
+      "image": "/images/steam/hero-c.jpg",
+      "textColor": "text-white",
+      "href": "/steam/engineering"
+    },
+    {
+      "id": "arts",
+      "title": "Arts",
+      "image": "/images/steam/hero-d.jpg",
+      "textColor": "text-white",
+      "href": "/steam/arts"
+    },
+    {
+      "id": "mathematics",
+      "title": "Mathematics",
+      "image": "/images/steam/hero-e.jpg",
+      "textColor": "text-white",
+      "href": "/steam/mathematics"
+    }
+  ]
+}

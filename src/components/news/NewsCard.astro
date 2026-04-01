@@ -1,0 +1,94 @@
+---
+import type { NewsArticle } from '../../data/news.ts';
+
+export interface Props {
+  article: NewsArticle;
+  featured?: boolean;
+  size?: 'small' | 'medium' | 'large';
+}
+
+const { article, featured = false, size = 'medium' } = Astro.props;
+
+const sizeClasses = {
+  small: {
+    container: '',
+    image: 'h-40',
+    title: 'text-lg md:text-xl',
+    excerpt: 'text-sm',
+    padding: 'p-4'
+  },
+  medium: {
+    container: '',
+    image: 'h-48',
+    title: 'text-xl md:text-2xl',
+    excerpt: 'text-base',
+    padding: 'p-6 md:p-8'
+  },
+  large: {
+    container: 'md:grid md:grid-cols-2 md:gap-8',
+    image: 'h-64 md:h-full',
+    title: 'text-2xl md:text-3xl',
+    excerpt: 'text-lg mb-6',
+    padding: 'p-6 md:p-8 md:flex md:flex-col md:justify-center'
+  }
+};
+
+const classes = sizeClasses[size];
+---
+
+<article class={`group ${featured ? 'featured-article' : ''}`}>
+  <div class={`news-card ${classes.container}`}>
+    <!-- Image -->
+    <div class={`relative overflow-hidden ${size === 'large' ? 'md:order-1' : ''}`}>
+      <img 
+        src={article.image || '/images/news/default-news.jpg'} 
+        alt={article.title}
+        class={`news-image ${classes.image}`}
+        loading={featured ? 'eager' : 'lazy'}
+      />
+      <div class="absolute top-4 left-4">
+        <span class="news-category-badge bg-blue-600 text-white">
+          {article.category}
+        </span>
+      </div>
+      {article.featured && (
+        <div class="absolute top-4 right-4">
+          <span class="news-featured-badge">
+            Featured
+          </span>
+        </div>
+      )}
+    </div>
+
+    <!-- Content -->
+    <div class={`${classes.padding} ${size === 'large' ? 'md:order-2' : ''}`}>
+      <div class="flex items-center gap-4 mb-4">
+        <time class="text-blue-600 font-semibold text-sm">
+          {article.date}
+        </time>
+      </div>
+      
+      <h2 class={`font-bold text-gray-900 mb-4 font-fredoka group-hover:text-blue-600 transition-colors ${classes.title}`}>
+        <a href={`/news/${article.id}`} class="hover:underline">
+          {article.title}
+        </a>
+      </h2>
+      
+      <p class={`text-gray-600 leading-relaxed font-comic-neue mb-4 ${classes.excerpt}`}>
+        {article.excerpt}
+      </p>
+      
+      <div class="flex items-center justify-between">
+        <a 
+          href={`/news/${article.id}`}
+          class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold transition-colors group/link"
+        >
+          Read More
+          <svg class="w-4 h-4 transform transition-transform group-hover/link:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</article>

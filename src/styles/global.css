@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Educational toy company color scheme - inspired by 4M */
+    --background: 0 0% 100%; /* Clean white background */
+    --foreground: 215 15% 40%; /* Softer dark gray */
+    --card: 0 0% 100%;
+    --card-foreground: 215 15% 40%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 15% 40%;
+    --primary: 195 100% 47%; /* Custom blue #00aeef */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 45 100% 60%; /* Vibrant yellow/orange */
+    --secondary-foreground: 215 15% 40%;
+    --muted: 210 20% 95%; /* Very light blue-gray */
+    --muted-foreground: 215 15% 50%;
+    --accent: 150 60% 50%; /* Educational green */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 75% 60%; /* Clear red */
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 20% 90%;
+    --input: 210 20% 95%;
+    --ring: 210 100% 50%;
+    --radius: 0.75rem; /* Moderately rounded */
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Fredoka', 'Comic Neue', cursive, system-ui, sans-serif;
+  }
+  
+  /* Fun headings with different fonts */
+  h1, h2, h3 {
+    font-family: 'Fredoka', cursive;
+    font-weight: 600;
+  }
+  
+  h4, h5, h6 {
+    font-family: 'Kalam', cursive;
+    font-weight: 500;
+  }
+  
+  /* Playful body text */
+  p, span, div {
+    font-family: 'Comic Neue', cursive;
+  }
+  
+  /* Button text should be fun too */
+  button, .btn {
+    font-family: 'Fredoka', cursive;
+    font-weight: 500;
+  }
+}
+
+/* Custom utility classes */
+@layer utilities {
+  .container-custom {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent;
+  }
+  
+  /* Fun kid-friendly utilities */
+  .text-playful {
+    font-family: 'Kalam', cursive;
+    font-weight: 400;
+  }
+  
+  .text-fun {
+    font-family: 'Fredoka', cursive;
+    font-weight: 500;
+  }
+  
+  .text-comic {
+    font-family: 'Comic Neue', cursive;
+  }
+  
+  .btn-bouncy {
+    @apply transition-transform duration-200 hover:scale-105 active:scale-95;
+  }
+  
+  .card-playful {
+    @apply rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  .bg-rainbow {
+    background: linear-gradient(45deg, 
+      hsl(var(--primary)), 
+      hsl(var(--accent)), 
+      hsl(var(--secondary)), 
+      hsl(290 85% 70%), 
+      hsl(200 85% 70%)
+    );
+  }
+  
+  /* News specific styles */
+  .news-card {
+    @apply bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2;
+  }
+  
+  .news-image {
+    @apply w-full object-cover transition-transform duration-300 group-hover:scale-105;
+  }
+  
+  .news-category-badge {
+    @apply inline-block px-3 py-1 text-sm font-semibold rounded-full;
+  }
+  
+  .news-featured-badge {
+    @apply inline-block px-3 py-1 bg-yellow-500 text-white text-sm font-semibold rounded-full;
+  }
+  
+  /* Font family utilities */
+  .font-fredoka {
+    font-family: 'Fredoka', cursive;
+  }
+  
+  .font-comic-neue {
+    font-family: 'Comic Neue', cursive;
+  }
+  
+  .font-kalam {
+    font-family: 'Kalam', cursive;
+  }
+}
