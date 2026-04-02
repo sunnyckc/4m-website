@@ -174,7 +174,7 @@ export function getBase(): string {
 
 function resolveMediaUrl(product: Product, m: ProductMedia): string {
   if (m.media_source === 'file') {
-    return `/images/products/${product.folder_name}/${m.media_destination}`;
+    return `${getBase()}/images/products/${product.folder_name}/${m.media_destination}`;
   }
   return m.media_destination;
 }
@@ -205,7 +205,7 @@ export function getProductVisibleMedia(product: Product): ProductMedia[] {
 
 export function resolveMediaPath(product: Product, media: ProductMedia): string {
   if (media.media_source === 'file') {
-    return `/images/products/${product.folder_name}/${media.media_destination}`;
+    return `${getBase()}/images/products/${product.folder_name}/${media.media_destination}`;
   }
   return media.media_destination;
 }
