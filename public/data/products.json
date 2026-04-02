@@ -1,277 +1,504 @@
 [
   {
-    "id": "windmill-generator",
-    "product_code": "00-03267",
-    "name": "Windmill Generator",
-    "description": "Build this amazing wind generator and learn about renewable energy. Watch the LED glow as it is powered by free energy from the wind. No batteries required!",
-    "price": 24.99,
-    "category": "science-education",
-    "subcategory": "green-science",
-    "tags": ["renewable energy", "wind power", "electricity", "STEM", "environment", "LED", "generator"],
-    "images": {
-      "main": "/images/products/windmill-generator/main.jpg",
-      "gallery": [
-        "/images/products/windmill-generator/gallery-1.jpg",
-        "/images/products/windmill-generator/gallery-2.jpg",
-        "/images/products/windmill-generator/gallery-3.jpg"
-      ]
-    },
-    "specifications": {
-      "item_size": "16.7cm x 21.5cm x 5.8cm",
-      "barcode": "4893156032676",
-      "packaging": "6/Inner 48/Master 9.2Kg 4.57Cuft",
-      "age_range": "8+ years",
-      "power_source": "Wind energy",
-      "includes": ["Windmill parts", "LED light", "Assembly instructions", "Educational booklet"]
-    },
-    "awards": [
+    "item_code": "00-03267",
+    "item_name": "Windmill Generator",
+    "item_description": "Build this amazing wind generator and learn about renewable energy. Watch the LED glow as it is powered by free energy from the wind. No batteries required!",
+    "folder_name": "windmill-generator",
+    "category_main": "science-education",
+    "category_sub": "green-science",
+    "tag_visible": ["renewable energy", "wind power", "electricity", "STEM", "environment", "LED", "generator"],
+    "tag_hidden": ["green-science", "energy", "eco"],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "main.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 2,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-1.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 3,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-2.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 4,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-3.jpg"
+      }
+    ],
+    "specifications": [
+      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
+      { "field": "barcode", "display_name": "Barcode", "value": "4893156032676" },
+      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 9.2Kg 4.57Cuft" },
+      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
+      { "field": "power_source", "display_name": "Power Source", "value": "Wind energy" },
+      { "field": "includes", "display_name": "Includes", "value": "Windmill parts, LED light, Assembly instructions, Educational booklet" }
+    ],
+    "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
       "2015 Red Dot Award",
       "2022 STEM.org Accredited™",
       "2021 Best Elementary Homeschool Curriculum & Resource Award",
       "2009 Dr. Toy Best Green Product"
     ],
-    "featured": true,
     "hot_item": true,
-    "created_at": "2026-01-15"
+    "multi_language": [
+      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
+      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
+      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
+      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+    ],
+    "related_product": []
   },
   {
-    "id": "potato-clock",
-    "product_code": "00-03275",
-    "name": "Potato Clock",
-    "description": "What! No Batteries? Be a scientist as you discover how to power this digital clock using potatoes. Experiment to find out what other substances will power the clock - you'll be amazed!",
-    "price": 19.99,
-    "category": "science-education",
-    "subcategory": "green-science",
-    "tags": ["electrochemistry", "organic energy", "digital clock", "science experiment", "potatoes", "battery-free"],
-    "images": {
-      "main": "/images/products/potato-clock/main.jpg",
-      "gallery": [
-        "/images/products/potato-clock/gallery-1.jpg",
-        "/images/products/potato-clock/gallery-2.jpg"
-      ]
-    },
-    "specifications": {
-      "item_size": "16.7cm x 21.5cm x 5.8cm",
-      "barcode": "4893156032751",
-      "packaging": "6/Inner 48/Master 9.3Kg 4.57Cuft",
-      "age_range": "8+ years",
-      "power_source": "Potato electrodes",
-      "includes": ["Digital clock module", "Copper and zinc electrodes", "Wires", "Instructions"]
-    },
-    "awards": [
+    "item_code": "00-03275",
+    "item_name": "Potato Clock",
+    "item_description": "What! No Batteries? Be a scientist as you discover how to power this digital clock using potatoes. Experiment to find out what other substances will power the clock - you'll be amazed!",
+    "folder_name": "potato-clock",
+    "category_main": "science-education",
+    "category_sub": "green-science",
+    "tag_visible": ["electrochemistry", "organic energy", "digital clock", "science experiment", "potatoes", "battery-free"],
+    "tag_hidden": ["green-science", "energy", "chemistry"],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "main.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 2,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-1.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 3,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-2.jpg"
+      }
+    ],
+    "specifications": [
+      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
+      { "field": "barcode", "display_name": "Barcode", "value": "4893156032751" },
+      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 9.3Kg 4.57Cuft" },
+      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
+      { "field": "power_source", "display_name": "Power Source", "value": "Potato electrodes" },
+      { "field": "includes", "display_name": "Includes", "value": "Digital clock module, Copper and zinc electrodes, Wires, Instructions" }
+    ],
+    "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
       "2015 Red Dot Award",
       "2022 STEM.org Accredited™",
       "2021 STEM.org Authenticated™"
     ],
-    "featured": false,
     "hot_item": false,
-    "created_at": "2026-01-20"
+    "multi_language": [
+      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
+      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
+      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
+      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+    ],
+    "related_product": []
   },
   {
-    "id": "weather-station",
-    "product_code": "00-03279",
-    "name": "Weather Station",
-    "description": "Observe and record the weather with your own multi-functional weather station. Also experiment with the greenhouse effect and create a terrarium in a bottle.",
-    "price": 34.99,
-    "category": "science-education",
-    "subcategory": "green-science",
-    "tags": ["meteorology", "weather tracking", "greenhouse effect", "terrarium", "data collection", "outdoor science"],
-    "images": {
-      "main": "/images/products/weather-station/main.jpg",
-      "gallery": [
-        "/images/products/weather-station/gallery-1.jpg",
-        "/images/products/weather-station/gallery-2.jpg",
-        "/images/products/weather-station/gallery-3.jpg"
-      ]
-    },
-    "specifications": {
-      "item_size": "16.7cm x 21.5cm x 5.8cm",
-      "barcode": "4893156032799",
-      "packaging": "6/Inner 48/Master 9.3Kg 4.57Cuft",
-      "age_range": "8+ years",
-      "measurements": "Temperature, Humidity, Wind direction, Rainfall",
-      "includes": ["Weather instruments", "Terrarium bottle", "Data recording sheets", "Assembly guide"]
-    },
-    "awards": [
+    "item_code": "00-03279",
+    "item_name": "Weather Station",
+    "item_description": "Observe and record the weather with your own multi-functional weather station. Also experiment with the greenhouse effect and create a terrarium in a bottle.",
+    "folder_name": "weather-station",
+    "category_main": "science-education",
+    "category_sub": "green-science",
+    "tag_visible": ["meteorology", "weather tracking", "greenhouse effect", "terrarium", "data collection", "outdoor science"],
+    "tag_hidden": ["green-science", "weather", "nature"],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "main.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 2,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-1.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 3,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-2.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 4,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-3.jpg"
+      }
+    ],
+    "specifications": [
+      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
+      { "field": "barcode", "display_name": "Barcode", "value": "4893156032799" },
+      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 9.3Kg 4.57Cuft" },
+      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
+      { "field": "measurements", "display_name": "Measurements", "value": "Temperature, Humidity, Wind direction, Rainfall" },
+      { "field": "includes", "display_name": "Includes", "value": "Weather instruments, Terrarium bottle, Data recording sheets, Assembly guide" }
+    ],
+    "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
       "2015 Red Dot Award",
       "2022 STEM.org Accredited™",
       "2021 Best Elementary Homeschool Curriculum & Resource Award"
     ],
-    "featured": true,
     "hot_item": true,
-    "created_at": "2026-02-01"
+    "multi_language": [
+      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
+      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
+      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
+      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+    ],
+    "related_product": []
   },
   {
-    "id": "salt-powered-robot",
-    "product_code": "00-03353",
-    "name": "Salt-Powered Robot",
-    "description": "Put this robot mini vehicle together, then add salty water to the specially designed battery cartridges and off it goes! It's amazing!",
-    "price": 22.99,
-    "category": "science-education",
-    "subcategory": "green-science",
-    "tags": ["robotics", "salt water power", "conductivity", "engineering", "battery cartridges", "mini vehicle"],
-    "images": {
-      "main": "/images/products/salt-robot/main.jpg",
-      "gallery": [
-        "/images/products/salt-robot/gallery-1.jpg",
-        "/images/products/salt-robot/gallery-2.jpg"
-      ]
-    },
-    "specifications": {
-      "item_size": "16.7cm x 21.5cm x 5.8cm",
-      "barcode": "4893156033536",
-      "packaging": "6/Inner 48/Master 8Kg 4.57Cuft",
-      "age_range": "8+ years",
-      "power_source": "Salt water solution",
-      "includes": ["Robot chassis", "Motor", "Battery cartridges", "Assembly instructions"]
-    },
-    "awards": [
+    "item_code": "00-03353",
+    "item_name": "Salt-Powered Robot",
+    "item_description": "Put this robot mini vehicle together, then add salty water to the specially designed battery cartridges and off it goes! It's amazing!",
+    "folder_name": "salt-robot",
+    "category_main": "science-education",
+    "category_sub": "green-science",
+    "tag_visible": ["robotics", "salt water power", "conductivity", "engineering", "battery cartridges", "mini vehicle"],
+    "tag_hidden": ["green-science", "robotics", "energy"],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "main.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 2,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-1.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 3,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-2.jpg"
+      }
+    ],
+    "specifications": [
+      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
+      { "field": "barcode", "display_name": "Barcode", "value": "4893156033536" },
+      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 8Kg 4.57Cuft" },
+      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
+      { "field": "power_source", "display_name": "Power Source", "value": "Salt water solution" },
+      { "field": "includes", "display_name": "Includes", "value": "Robot chassis, Motor, Battery cartridges, Assembly instructions" }
+    ],
+    "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
       "2022 STEM.org Accredited™",
       "2020 Upstart Magazine Kids Choice Toy Awards",
       "2013 Dr. Toy Best Green Product"
     ],
-    "featured": false,
     "hot_item": false,
-    "created_at": "2026-02-05"
+    "multi_language": [
+      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
+      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
+      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
+      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+    ],
+    "related_product": []
   },
   {
-    "id": "clean-water-science",
-    "product_code": "00-03281",
-    "name": "Clean Water Science",
-    "description": "Build your own water filtration and desalination plant at your table top; disinfect water with solar power and more. It's cool water science experimental kit.",
-    "price": 28.99,
-    "category": "science-education",
-    "subcategory": "green-science",
-    "tags": ["water filtration", "desalination", "solar power", "water science", "environmental", "purification"],
-    "images": {
-      "main": "/images/products/clean-water/main.jpg",
-      "gallery": [
-        "/images/products/clean-water/gallery-1.jpg",
-        "/images/products/clean-water/gallery-2.jpg",
-        "/images/products/clean-water/gallery-3.jpg"
-      ]
-    },
-    "specifications": {
-      "item_size": "16.7cm x 21.5cm x 5.8cm",
-      "barcode": "4893156032812",
-      "packaging": "6/Inner 24/Master 9.9Kg 2.34Cuft",
-      "age_range": "8+ years",
-      "power_source": "Solar energy",
-      "includes": ["Filtration components", "Desalination kit", "Solar disinfection materials", "Test tubes", "Instruction manual"]
-    },
-    "awards": [
+    "item_code": "00-03281",
+    "item_name": "Clean Water Science",
+    "item_description": "Build your own water filtration and desalination plant at your table top; disinfect water with solar power and more. It's cool water science experimental kit.",
+    "folder_name": "clean-water",
+    "category_main": "science-education",
+    "category_sub": "green-science",
+    "tag_visible": ["water filtration", "desalination", "solar power", "water science", "environmental", "purification"],
+    "tag_hidden": ["green-science", "water", "environment"],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "main.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 2,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-1.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 3,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-2.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 4,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-3.jpg"
+      }
+    ],
+    "specifications": [
+      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
+      { "field": "barcode", "display_name": "Barcode", "value": "4893156032812" },
+      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 24/Master 9.9Kg 2.34Cuft" },
+      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
+      { "field": "power_source", "display_name": "Power Source", "value": "Solar energy" },
+      { "field": "includes", "display_name": "Includes", "value": "Filtration components, Desalination kit, Solar disinfection materials, Test tubes, Instruction manual" }
+    ],
+    "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
       "2015 Red Dot Award",
       "2022 STEM.org Accredited™",
       "2009 Parents' Choice Award"
     ],
-    "featured": true,
     "hot_item": false,
-    "created_at": "2026-02-10"
+    "multi_language": [
+      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
+      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
+      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
+      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+    ],
+    "related_product": []
   },
   {
-    "id": "aqua-robot",
-    "product_code": "00-03415",
-    "name": "Aqua Robot",
-    "description": "Watch this Aqua Robot swim along when sunlight shines on its solar cells. Aqua Robot can be powered by battery when there is no sunlight.",
-    "price": 26.99,
-    "category": "science-education",
-    "subcategory": "green-science",
-    "tags": ["solar power", "robotics", "swimming robot", "renewable energy", "water play", "dual power"],
-    "images": {
-      "main": "/images/products/aqua-robot/main.jpg",
-      "gallery": [
-        "/images/products/aqua-robot/gallery-1.jpg",
-        "/images/products/aqua-robot/gallery-2.jpg",
-        "/images/products/aqua-robot/gallery-3.jpg"
-      ]
-    },
-    "specifications": {
-      "item_size": "20.6cm x 27.6cm x 6.1cm",
-      "barcode": "4893156034151",
-      "packaging": "6/Inner 24/Master 8.7Kg 3.67Cuft",
-      "age_range": "8+ years",
-      "power_source": "Solar cells with battery backup",
-      "includes": ["Robot body", "Solar panel", "Motor", "Battery compartment", "Assembly instructions"]
-    },
-    "awards": [
+    "item_code": "00-03415",
+    "item_name": "Aqua Robot",
+    "item_description": "Watch this Aqua Robot swim along when sunlight shines on its solar cells. Aqua Robot can be powered by battery when there is no sunlight.",
+    "folder_name": "aqua-robot",
+    "category_main": "science-education",
+    "category_sub": "green-science",
+    "tag_visible": ["solar power", "robotics", "swimming robot", "renewable energy", "water play", "dual power"],
+    "tag_hidden": ["green-science", "robotics", "solar"],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "main.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 2,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-1.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 3,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-2.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 4,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-3.jpg"
+      }
+    ],
+    "specifications": [
+      { "field": "item_size", "display_name": "Size", "value": "20.6cm x 27.6cm x 6.1cm" },
+      { "field": "barcode", "display_name": "Barcode", "value": "4893156034151" },
+      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 24/Master 8.7Kg 3.67Cuft" },
+      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
+      { "field": "power_source", "display_name": "Power Source", "value": "Solar cells with battery backup" },
+      { "field": "includes", "display_name": "Includes", "value": "Robot body, Solar panel, Motor, Battery compartment, Assembly instructions" }
+    ],
+    "award_text": [
       "2022 STEM.org Accredited™",
       "2021 Best Elementary Homeschool Curriculum & Resource Award",
       "2021 STEM.org Authenticated™"
     ],
-    "featured": false,
     "hot_item": true,
-    "created_at": "2026-02-15"
+    "multi_language": [
+      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
+      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
+      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
+      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+    ],
+    "related_product": []
   },
   {
-    "id": "green-rocket",
-    "product_code": "00-03298",
-    "name": "Green Rocket",
-    "description": "Build and launch your own eco-friendly rocket powered by baking soda and vinegar. Learn about chemical reactions and aerodynamics while having fun!",
-    "price": 21.99,
-    "category": "science-education",
-    "subcategory": "green-science",
-    "tags": ["rocket", "chemical reactions", "aerodynamics", "eco-friendly", "launch", "baking soda", "vinegar"],
-    "images": {
-      "main": "/images/products/green-rocket/main.jpg",
-      "gallery": [
-        "/images/products/green-rocket/gallery-1.jpg",
-        "/images/products/green-rocket/gallery-2.jpg"
-      ]
-    },
-    "specifications": {
-      "item_size": "16.7cm x 21.5cm x 5.8cm",
-      "barcode": "4893156032980",
-      "packaging": "6/Inner 48/Master 8.5Kg 4.57Cuft",
-      "age_range": "8+ years",
-      "power_source": "Chemical reaction (baking soda + vinegar)",
-      "includes": ["Rocket body", "Launch pad", "Measuring tools", "Safety instructions", "Science guide"]
-    },
-    "awards": [
+    "item_code": "00-03298",
+    "item_name": "Green Rocket",
+    "item_description": "Build and launch your own eco-friendly rocket powered by baking soda and vinegar. Learn about chemical reactions and aerodynamics while having fun!",
+    "folder_name": "green-rocket",
+    "category_main": "science-education",
+    "category_sub": "green-science",
+    "tag_visible": ["rocket", "chemical reactions", "aerodynamics", "eco-friendly", "launch", "baking soda", "vinegar"],
+    "tag_hidden": ["green-science", "chemistry", "physics"],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "main.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 2,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-1.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 3,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-2.jpg"
+      }
+    ],
+    "specifications": [
+      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
+      { "field": "barcode", "display_name": "Barcode", "value": "4893156032980" },
+      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 8.5Kg 4.57Cuft" },
+      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
+      { "field": "power_source", "display_name": "Power Source", "value": "Chemical reaction (baking soda + vinegar)" },
+      { "field": "includes", "display_name": "Includes", "value": "Rocket body, Launch pad, Measuring tools, Safety instructions, Science guide" }
+    ],
+    "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
       "2022 STEM.org Accredited™",
       "2021 STEM.org Authenticated™"
     ],
-    "featured": false,
     "hot_item": false,
-    "created_at": "2026-02-20"
+    "multi_language": [
+      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
+      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
+      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
+      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+    ],
+    "related_product": []
   },
   {
-    "id": "grow-a-maze",
-    "product_code": "00-03352",
-    "name": "Grow-A-Maze",
-    "description": "Create your own living maze with fast-growing plants! Watch as your green maze grows and learn about plant biology, photosynthesis, and growth patterns.",
-    "price": 18.99,
-    "category": "science-education",
-    "subcategory": "green-science",
-    "tags": ["plants", "biology", "photosynthesis", "maze", "growing", "gardening", "nature"],
-    "images": {
-      "main": "/images/products/grow-maze/main.jpg",
-      "gallery": [
-        "/images/products/grow-maze/gallery-1.jpg",
-        "/images/products/grow-maze/gallery-2.jpg",
-        "/images/products/grow-maze/gallery-3.jpg"
-      ]
-    },
-    "specifications": {
-      "item_size": "16.7cm x 21.5cm x 5.8cm",
-      "barcode": "4893156033529",
-      "packaging": "6/Inner 48/Master 7.8Kg 4.57Cuft",
-      "age_range": "6+ years",
-      "growing_time": "7-14 days",
-      "includes": ["Maze template", "Fast-growing seeds", "Growing medium", "Watering tools", "Plant care guide"]
-    },
-    "awards": [
+    "item_code": "00-03352",
+    "item_name": "Grow-A-Maze",
+    "item_description": "Create your own living maze with fast-growing plants! Watch as your green maze grows and learn about plant biology, photosynthesis, and growth patterns.",
+    "folder_name": "grow-maze",
+    "category_main": "science-education",
+    "category_sub": "green-science",
+    "tag_visible": ["plants", "biology", "photosynthesis", "maze", "growing", "gardening", "nature"],
+    "tag_hidden": ["green-science", "biology", "nature"],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "main.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 2,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-1.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 3,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-2.jpg"
+      },
+      {
+        "type": "image",
+        "sequence": 4,
+        "thumbnail": false,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "gallery-3.jpg"
+      }
+    ],
+    "specifications": [
+      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
+      { "field": "barcode", "display_name": "Barcode", "value": "4893156033529" },
+      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 7.8Kg 4.57Cuft" },
+      { "field": "age_range", "display_name": "Age Range", "value": "6+ years" },
+      { "field": "growing_time", "display_name": "Growing Time", "value": "7-14 days" },
+      { "field": "includes", "display_name": "Includes", "value": "Maze template, Fast-growing seeds, Growing medium, Watering tools, Plant care guide" }
+    ],
+    "award_text": [
       "2022 STEM.org Accredited™",
       "2021 Best Elementary Homeschool Curriculum & Resource Award",
       "2021 STEM.org Authenticated™"
     ],
-    "featured": true,
     "hot_item": true,
-    "created_at": "2026-02-25"
+    "multi_language": [
+      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
+      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
+      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
+      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+    ],
+    "related_product": []
   }
 ]

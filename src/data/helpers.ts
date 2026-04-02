@@ -1,33 +1,50 @@
 // Data loading helpers
 
+export interface ProductMedia {
+  type: 'video' | 'image' | 'award';
+  sequence: number;
+  thumbnail: boolean;
+  hidden: boolean;
+  media_source: 'file' | 'url' | 'vimeo' | 'wistia';
+  media_destination: string;
+}
+
+export interface ProductSpecification {
+  field: string;
+  display_name: string;
+  value: string;
+}
+
+export interface MultiLanguage {
+  language: string;
+  media_source: 'file' | 'url' | 'vimeo' | 'wistia';
+  media_destination: string;
+}
+
 export interface Product {
-  id: string;
-  product_code: string; // 4M-style product codes like "00-03267"
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  subcategory: string;
-  tags: string[];
-  images: {
-    main: string;
-    gallery: string[];
-  };
-  specifications: Record<string, string | string[] | undefined>;
-  awards?: string[]; // Product awards and certifications
-  featured: boolean;
-  hot_item: boolean; // Mark products as hot/trending items
-  created_at: string;
+  item_code: string;
+  item_name: string;
+  item_description: string;
+  folder_name: string;
+  category_main: string;
+  category_sub: string;
+  tag_visible: string[];
+  tag_hidden: string[];
+  media: ProductMedia[];
+  specifications: ProductSpecification[];
+  award_text: string[];
+  hot_item: boolean;
+  multi_language: MultiLanguage[];
+  related_product: string[];
 }
 
 export interface Award {
-  id: string;
   name: string;
-  description: string;
-  icon: string;
-  year: number;
-  organization: string;
-  sequence: number;
+  program: string;
+  institution: string;
+  year: string;
+  media_source: 'file' | 'url' | 'vimeo' | 'wistia';
+  media_destination: string;
   featured: boolean;
 }
 
@@ -84,6 +101,15 @@ export interface ProductCategoriesData {
   categories: ProductCategory[];
 }
 
+export interface CatalogButton {
+  label: string;
+  url: string;
+}
+
+export interface SiteLinks {
+  catalog_buttons: CatalogButton[];
+}
+
 export interface ContactInfo {
   company: {
     name: string;
@@ -137,11 +163,48 @@ export interface ContactInfo {
   };
 }
 
+function resolveMediaUrl(product: Product, m: ProductMedia): string {
+  if (m.media_source === 'file') {
+    return `/images/products/${product.folder_name}/${m.media_destination}`;
+  }
+  return m.media_destination;
+}
+
+export function getProductThumbnail(product: Product): string {
+  const thumbs = product.media.filter(m => m.type === 'image' && !m.hidden && m.thumbnail);
+
+  if (thumbs.length === 1) {
+    return resolveMediaUrl(product, thumbs[0]);
+  }
+
+  if (thumbs.length > 1) {
+    const pick = thumbs[Math.floor(Math.random() * thumbs.length)];
+    return resolveMediaUrl(product, pick);
+  }
+
+  const firstImage = product.media
+    .filter(m => m.type === 'image' && !m.hidden)
+    .sort((a, b) => a.sequence - b.sequence)[0];
+  return firstImage ? resolveMediaUrl(product, firstImage) : '';
+}
+
+export function getProductVisibleMedia(product: Product): ProductMedia[] {
+  return product.media
+    .filter(m => !m.hidden)
+    .sort((a, b) => a.sequence - b.sequence);
+}
+
+export function resolveMediaPath(product: Product, media: ProductMedia): string {
+  if (media.media_source === 'file') {
+    return `/images/products/${product.folder_name}/${media.media_destination}`;
+  }
+  return media.media_destination;
+}
+
 export async function getProducts(): Promise<Product[]> {
   try {
-    // Import the JSON data directly for Astro SSR
     const productsModule = await import('../../public/data/products.json');
-    return productsModule.default || [];
+    return (productsModule.default || []) as Product[];
   } catch (error) {
     console.error('Error loading products:', error);
     return [];
@@ -150,17 +213,12 @@ export async function getProducts(): Promise<Product[]> {
 
 export async function getProductById(id: string): Promise<Product | null> {
   const products = await getProducts();
-  return products.find(product => product.id === id) || null;
+  return products.find(product => product.folder_name === id) || null;
 }
 
 export async function getProductsByCategory(category: string): Promise<Product[]> {
   const products = await getProducts();
-  return products.filter(product => product.category.toLowerCase() === category.toLowerCase());
-}
-
-export async function getFeaturedProducts(): Promise<Product[]> {
-  const products = await getProducts();
-  return products.filter(product => product.featured);
+  return products.filter(product => product.category_main.toLowerCase() === category.toLowerCase());
 }
 
 export async function getHotProducts(): Promise<Product[]> {
@@ -171,8 +229,12 @@ export async function getHotProducts(): Promise<Product[]> {
 export async function getAwards(): Promise<Award[]> {
   try {
     const awardsModule = await import('../../public/data/awards.json');
-    const awards = awardsModule.default || [];
-    return awards.sort((a: Award, b: Award) => a.sequence - b.sequence);
+    const awards = (awardsModule.default || []) as Award[];
+    return awards.sort((a, b) => {
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      return parseInt(b.year) - parseInt(a.year);
+    });
   } catch (error) {
     console.error('Error loading awards:', error);
     return [];
@@ -208,16 +270,16 @@ export async function getFeaturedNews(): Promise<NewsPost[]> {
 }
 
 export function getUniqueCategories(products: Product[]): string[] {
-  const categories = products.map(product => product.category);
+  const categories = products.map(product => product.category_main);
   return [...new Set(categories)].sort();
 }
 
 export function getUniqueSubcategories(products: Product[], category?: string): string[] {
   let filteredProducts = products;
   if (category) {
-    filteredProducts = products.filter(product => product.category === category);
+    filteredProducts = products.filter(product => product.category_main === category);
   }
-  const subcategories = filteredProducts.map(product => product.subcategory);
+  const subcategories = filteredProducts.map(product => product.category_sub);
   return [...new Set(subcategories)].sort();
 }
 
@@ -282,11 +344,23 @@ export function searchProducts(products: Product[], searchTerm: string): Product
   
   const term = searchTerm.toLowerCase();
   return products.filter(product => 
-    product.name.toLowerCase().includes(term) ||
-    product.product_code.toLowerCase().includes(term) ||
-    product.description.toLowerCase().includes(term) ||
-    product.tags.some(tag => tag.toLowerCase().includes(term))
+    product.item_name.toLowerCase().includes(term) ||
+    product.item_code.toLowerCase().includes(term) ||
+    product.tag_visible.some(tag => tag.toLowerCase().includes(term)) ||
+    product.tag_hidden.some(tag => tag.toLowerCase().includes(term)) ||
+    product.category_main.toLowerCase().includes(term) ||
+    product.category_sub.toLowerCase().includes(term)
   );
+}
+
+export async function getSiteLinks(): Promise<SiteLinks> {
+  try {
+    const module = await import('../../public/data/site-links.json');
+    return module.default || { catalog_buttons: [] };
+  } catch (error) {
+    console.error('Error loading site links:', error);
+    return { catalog_buttons: [] };
+  }
 }
 
 export async function getContactInfo(): Promise<ContactInfo> {

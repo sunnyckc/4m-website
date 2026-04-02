@@ -3,12 +3,11 @@ import Layout from '../../components/layout/Layout.astro';
 import Card from '../../components/ui/card.astro';
 import Button from '../../components/ui/button.astro';
 import Badge from '../../components/ui/badge.astro';
-import { getProducts, getCategoryById, getProductsByCategory } from '../../data/helpers';
-// Removed formatPrice import as pricing is no longer displayed
+import { getProducts, getCategoryById, getProductsByCategory, getProductThumbnail } from '../../data/helpers';
 
 export async function getStaticPaths() {
   const products = await getProducts();
-  const categories = [...new Set(products.map(p => p.category))];
+  const categories = [...new Set(products.map(p => p.category_main))];
   
   return categories.map(category => ({
     params: { category },
@@ -54,7 +53,7 @@ if (!categoryData) {
         <h2 class="text-xl font-semibold mb-4">Browse by Subcategory</h2>
         <div class="flex flex-wrap gap-3">
           {categoryData.subcategories.map(subcategory => {
-            const subcategoryProducts = products.filter(p => p.subcategory === subcategory.id);
+            const subcategoryProducts = products.filter(p => p.category_sub === subcategory.id);
             return (
               <a 
                 href={`/products?category=${category}&subcategory=${subcategory.id}`}
@@ -74,32 +73,31 @@ if (!categoryData) {
     <!-- Products Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {products.map((product) => (
-        <a href={`/products/${product.id}`} class="block">
+        <a href={`/products/${product.folder_name}`} class="block">
           <Card class="product-card overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer">
             <div class="aspect-square bg-muted relative overflow-hidden">
               <img 
-                src={product.images.main} 
-                alt={product.name}
+                src={getProductThumbnail(product)} 
+                alt={product.item_name}
                 class="w-full h-full object-cover transition-transform duration-300 ease-in-out product-image"
                 loading="lazy"
               />
-              <!-- Hot item badge moved to bottom section next to category -->
             </div>
             <div class="p-4 space-y-3">
               <div class="space-y-2">
                 <div class="flex items-center gap-2">
-                  <Badge variant="secondary" class="text-xs">{product.subcategory}</Badge>
+                  <Badge variant="secondary" class="text-xs">{product.category_sub}</Badge>
                   {product.hot_item && (
                     <Badge variant="destructive" class="bg-orange-500 hover:bg-orange-600 text-xs">
                       Hot
                     </Badge>
                   )}
                 </div>
-                <h3 class="font-semibold text-lg leading-tight">{product.name}</h3>
-                {product.product_code && (
-                  <p class="text-xs text-muted-foreground font-mono">{product.product_code}</p>
+                <h3 class="font-semibold text-lg leading-tight">{product.item_name}</h3>
+                {product.item_code && (
+                  <p class="text-xs text-muted-foreground font-mono">{product.item_code}</p>
                 )}
-                <p class="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
+                <p class="text-sm text-muted-foreground line-clamp-2">{product.item_description}</p>
               </div>
             </div>
           </Card>

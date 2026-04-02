@@ -4,14 +4,14 @@ import ProductImageGallery from '../../components/products/ProductImageGallery.a
 import RelatedProducts from '../../components/products/RelatedProducts.astro';
 import ManualDownloads from '../../components/products/ManualDownloads.astro';
 import Badge from '../../components/ui/badge.astro';
-import { getProducts } from '../../data/helpers';
+import { getProducts, getProductThumbnail } from '../../data/helpers';
 import type { Product } from '../../data/helpers';
 
 export async function getStaticPaths() {
   const products = await getProducts();
   
   return products.map((product: Product) => ({
-    params: { id: product.id },
+    params: { id: product.folder_name },
     props: { product }
   }));
 }
@@ -22,22 +22,30 @@ interface Props {
 
 const { product }: Props = Astro.props;
 
-// Get related products (same category, different product)
 const allProducts = await getProducts();
-const relatedProducts = allProducts
-  .filter((p: Product) => p.category === product.category && p.id !== product.id)
-  .slice(0, 4);
+const isSelf = (p: Product) => p.item_code === product.item_code;
 
-// Mock manual downloads (in real implementation, this would come from your data)
-const manualDownloads = [
-  { language: 'English', url: `/manuals/${product.product_code}/english.pdf` },
-  { language: 'French', url: `/manuals/${product.product_code}/french.pdf` },
-  { language: 'German', url: `/manuals/${product.product_code}/german.pdf` },
-  { language: 'Spanish', url: `/manuals/${product.product_code}/spanish.pdf` },
-];
+// 1. Start with explicitly defined related products
+const explicit = (product.related_product || [])
+  .map(code => allProducts.find(p => p.item_code === code))
+  .filter((p): p is Product => p !== undefined && !isSelf(p));
+
+const usedCodes = new Set(explicit.map(p => p.item_code));
+usedCodes.add(product.item_code);
+
+// 2. Fill from same sub-category
+const sameSub = allProducts.filter(p => !usedCodes.has(p.item_code) && p.category_sub === product.category_sub);
+sameSub.forEach(p => usedCodes.add(p.item_code));
+
+// 3. Fill from same main category
+const sameMain = allProducts.filter(p => !usedCodes.has(p.item_code) && p.category_main === product.category_main);
+
+const relatedProducts = [...explicit, ...sameSub, ...sameMain].slice(0, 4);
+
+const thumbnail = getProductThumbnail(product);
 ---
 
-<Layout title={`${product.name} - 4M`} description={product.description}>
+<Layout title={`${product.item_name} - 4M`} description={product.item_description}>
   <div class="container-custom py-8">
     <!-- Breadcrumb Navigation -->
     <nav class="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
@@ -45,7 +53,7 @@ const manualDownloads = [
       <span>/</span>
       <a href="/products" class="hover:text-primary transition-colors">Products</a>
       <span>/</span>
-      <span class="text-foreground font-medium">{product.name}</span>
+      <span class="text-foreground font-medium">{product.item_name}</span>
     </nav>
 
     <!-- Product Header -->
@@ -53,9 +61,9 @@ const manualDownloads = [
       <!-- Product Images -->
       <div class="space-y-4">
         <ProductImageGallery 
-          mainImage={product.images.main}
-          galleryImages={product.images.gallery}
-          productName={product.name}
+          media={product.media}
+          folderName={product.folder_name}
+          productName={product.item_name}
         />
       </div>
 
@@ -63,12 +71,12 @@ const manualDownloads = [
       <div class="space-y-6">
         <!-- Product Code -->
         <div class="text-sm text-muted-foreground font-comic-neue">
-          {product.product_code}
+          {product.item_code}
         </div>
 
         <!-- Product Title -->
         <h1 class="text-3xl md:text-4xl font-bold text-foreground font-fredoka">
-          {product.name}
+          {product.item_name}
         </h1>
 
         <!-- Badges -->
@@ -81,58 +89,82 @@ const manualDownloads = [
 
         <!-- Description -->
         <div class="text-foreground leading-relaxed font-comic-neue">
-          {product.description}
+          {product.item_description}
         </div>
+
+        <!-- Specifications -->
+        {product.specifications.length > 0 && (
+          <div class="space-y-3">
+            <h3 class="font-semibold text-foreground font-fredoka">Specifications</h3>
+            <div class="grid grid-cols-1 gap-y-0 text-sm font-comic-neue">
+              {product.specifications.map(spec => (
+                <div class="flex justify-between py-1 border-b border-border">
+                  <span class="font-medium text-muted-foreground">{spec.display_name}</span>
+                  <span class="text-foreground text-right">{spec.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- Awards -->
+        {product.award_text.length > 0 && (
+          <div class="space-y-3">
+            <h3 class="font-semibold text-foreground font-fredoka">Awards</h3>
+            <ul class="space-y-1.5 text-sm font-comic-neue">
+              {product.award_text.map((award: string) => (
+                <li class="text-muted-foreground">{award}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <!-- Tags -->
-        <div class="space-y-2">
-          <h3 class="font-semibold text-foreground font-fredoka">Tags:</h3>
-          <div class="flex flex-wrap gap-2">
-            {product.tags.map((tag: string) => (
-              <span class="px-3 py-1 bg-muted text-muted-foreground text-sm rounded-full font-comic-neue">
-                {tag}
-              </span>
-            ))}
+        {product.tag_visible.length > 0 && (
+          <div class="space-y-2">
+            <h3 class="font-semibold text-foreground font-fredoka">Tags:</h3>
+            <div class="flex flex-wrap gap-2">
+              {product.tag_visible.map((tag: string) => (
+                <span class="px-3 py-1 bg-muted text-muted-foreground text-sm rounded-full font-comic-neue">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        <!-- Quick Specifications -->
-        <div class="bg-muted p-4 rounded-2xl space-y-2 card-playful">
-          <h3 class="font-semibold text-foreground font-fredoka">Quick Info:</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm font-comic-neue">
-            <div><span class="font-medium">Age Range:</span> {product.specifications.age_range}</div>
-            <div><span class="font-medium">Item Size:</span> {product.specifications.item_size}</div>
-            <div><span class="font-medium">Barcode:</span> {product.specifications.barcode}</div>
-            <div><span class="font-medium">Packaging:</span> {product.specifications.packaging}</div>
+        <!-- Actions: Share + Manual Download -->
+        <div class="flex items-center justify-between pt-4 border-t border-border flex-wrap gap-y-3">
+          <!-- Share (left) -->
+          <div class="flex items-center space-x-3">
+            <span class="text-sm font-medium text-muted-foreground font-comic-neue">Share:</span>
+            <div class="flex space-x-2">
+              <a href={`https://x.com/intent/tweet?text=${encodeURIComponent(`Check out this amazing toy: ${product.item_name}`)}&url=${encodeURIComponent(`${Astro.url.origin}/products/${product.folder_name}`)}`} target="_blank" rel="noopener noreferrer" class="text-gray-900 hover:text-gray-700 transition-colors btn-bouncy" title="Share on X">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+              <a href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(`${Astro.url.origin}/products/${product.folder_name}`)}&media=${encodeURIComponent(thumbnail)}&description=${encodeURIComponent(`${product.item_name} - ${product.item_description}`)}`} target="_blank" rel="noopener noreferrer" class="text-red-600 hover:text-red-500 transition-colors btn-bouncy" title="Share on Pinterest">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.888-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.357-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z"/></svg>
+              </a>
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${Astro.url.origin}/products/${product.folder_name}`)}`} target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-500 transition-colors btn-bouncy" title="Share on Facebook">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="text-pink-600 hover:text-pink-500 transition-colors btn-bouncy" title="Follow us on Instagram">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C8.396 0 7.989.013 6.77.072 5.56.132 4.728.333 3.999.63a6.09 6.09 0 0 0-2.188 1.425A6.093 6.093 0 0 0 .386 4.243c-.297.729-.498 1.561-.558 2.771C-.072 8.235-.059 8.642-.059 12.017c0 3.375-.013 3.782.072 5.001.06 1.21.261 2.042.558 2.771.297.729.686 1.365 1.425 2.104a6.093 6.093 0 0 0 2.188 1.425c.729.297 1.561.498 2.771.558 1.219.059 1.626.072 5.001.072 3.375 0 3.782-.013 5.001-.072 1.21-.06 2.042-.261 2.771-.558a6.09 6.09 0 0 0 2.188-1.425 6.093 6.093 0 0 0 1.425-2.104c.297-.729.498-1.561.558-2.771.059-1.219.072-1.626.072-5.001 0-3.375-.013-3.782-.072-5.001-.06-1.21-.261-2.042-.558-2.771a6.09 6.09 0 0 0-1.425-2.188A6.093 6.093 0 0 0 19.832.63C19.103.333 18.271.132 17.061.072 15.842.013 15.435 0 12.017 0zm0 2.17c3.304 0 3.694.016 4.99.071 1.204.055 1.858.249 2.292.415.576.224.987.492 1.417.923.431.43.699.84.923 1.417.166.434.36 1.088.415 2.292.055 1.296.07 1.686.07 4.99s-.015 3.694-.07 4.99c-.055 1.204-.249 1.858-.415 2.292-.224.576-.492.987-.923 1.417-.43.431-.84.699-1.417.923-.434.166-1.088.36-2.292.415-1.296.055-1.686.07-4.99.07s-3.694-.015-4.99-.07c-1.204-.055-1.858-.249-2.292-.415a3.691 3.691 0 0 1-1.417-.923 3.691 3.691 0 0 1-.923-1.417c-.166-.434-.36-1.088-.415-2.292-.055-1.296-.07-1.686-.07-4.99s.015-3.694.07-4.99c.055-1.204.249-1.858.415-2.292.224-.576.492-.987.923-1.417.43-.431.84-.699 1.417-.923.434-.166 1.088-.36 2.292-.415 1.296-.055 1.686-.07 4.99-.07z"/><path d="M12.017 15.33a3.312 3.312 0 1 1 0-6.624 3.312 3.312 0 0 1 0 6.624zM12.017 7.729a4.288 4.288 0 1 0 0 8.576 4.288 4.288 0 0 0 0-8.576z"/><circle cx="18.406" cy="5.594" r="1.009"/></svg>
+              </a>
+              <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" class="text-black hover:text-gray-700 transition-colors btn-bouncy" title="Follow us on TikTok">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+              </a>
+            </div>
           </div>
-        </div>
 
-        <!-- Social Sharing -->
-        <div class="flex items-center space-x-4 pt-4 border-t border-border">
-          <span class="text-sm font-medium text-muted-foreground font-comic-neue">Share:</span>
-          <div class="flex space-x-2">
-            <a href="#" class="text-primary hover:text-primary/80 transition-colors btn-bouncy">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-              </svg>
-            </a>
-            <a href="#" class="text-primary hover:text-primary/80 transition-colors btn-bouncy">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
-              </svg>
-            </a>
-            <a href="#" class="text-destructive hover:text-destructive/80 transition-colors btn-bouncy">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.219-5.175 1.219-5.175s-.219-.438-.219-1.085c0-1.016.589-1.775 1.323-1.775.623 0 .924.466.924 1.025 0 .624-.397 1.557-.603 2.421-.171.725.363 1.315 1.077 1.315 1.295 0 2.291-1.364 2.291-3.337 0-1.745-1.254-2.965-3.046-2.965-2.074 0-3.292 1.553-3.292 3.159 0 .625.241 1.296.542 1.659.059.072.068.135.05.209-.055.227-.177.719-.201.82-.031.129-.101.158-.233.095-1.177-.549-1.913-2.273-1.913-3.658 0-2.98 2.164-5.715 6.242-5.715 3.276 0 5.825 2.334 5.825 5.453 0 3.254-2.052 5.87-4.898 5.87-.955 0-1.856-.497-2.164-1.09l-.588 2.241c-.213.828-.789 1.865-1.175 2.497C9.23 23.847 10.583 24 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z"/>
-              </svg>
-            </a>
-          </div>
+          <!-- Manual Download (right) -->
+          <ManualDownloads 
+            multiLanguage={product.multi_language} 
+            itemCode={product.item_code}
+          />
         </div>
       </div>
     </div>
-
-    <!-- Manual Downloads -->
-    <ManualDownloads downloads={manualDownloads} />
 
     <!-- Related Products -->
     <RelatedProducts products={relatedProducts} />

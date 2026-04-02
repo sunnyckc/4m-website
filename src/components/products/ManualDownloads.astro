@@ -1,210 +1,65 @@
 ---
-import { getContactInfo } from '../../data/helpers.ts';
-
-interface Download {
-  language: string;
-  url: string;
-}
+import type { MultiLanguage } from '../../data/helpers';
 
 interface Props {
-  downloads: Download[];
+  multiLanguage: MultiLanguage[];
+  itemCode: string;
 }
 
-const { downloads } = Astro.props;
-const contactInfo = await getContactInfo();
+const { multiLanguage, itemCode } = Astro.props;
 
-// Language flag mapping for visual enhancement
-const languageFlags: { [key: string]: string } = {
-  'English': '🇺🇸',
-  'French': '🇫🇷',
-  'German': '🇩🇪',
-  'Spanish': '🇪🇸',
-  'Italian': '🇮🇹',
-  'Japanese': '🇯🇵',
-  'Danish': '🇩🇰',
-  'Portuguese': '🇵🇹',
-  'Dutch': '🇳🇱',
-  'Chinese': '🇨🇳',
-  'Korean': '🇰🇷'
-};
-
-// Helper function to get file size (mock data - in real implementation, you'd fetch this)
-function getFileSize(_url: string): string {
-  // Mock file sizes - in production, you'd determine this from actual files
-  const sizes = ['1.2 MB', '1.1 MB', '1.3 MB', '1.0 MB', '1.4 MB'];
-  return sizes[Math.floor(Math.random() * sizes.length)];
+function resolveUrl(item: MultiLanguage): string {
+  if (item.media_source === 'file') {
+    return `/manuals/${itemCode}/${item.media_destination}`;
+  }
+  return item.media_destination;
 }
+
+const downloadOptions = multiLanguage.map(item => ({
+  language: item.language,
+  url: resolveUrl(item),
+}));
 ---
 
-{downloads && downloads.length > 0 && (
-  <section class="manual-downloads py-8 border-t border-border">
-    <div class="bg-card rounded-2xl shadow-sm border border-border overflow-hidden card-playful">
-        <!-- Header -->
-        <div class="bg-muted px-6 py-4 border-b border-border">
-          <h2 class="text-xl font-bold text-foreground flex items-center font-fredoka">
-            <svg class="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-            </svg>
-            Manual Downloads
-          </h2>
-          <p class="text-sm text-muted-foreground mt-1 font-comic-neue">
-            Download instruction manuals in your preferred language
-          </p>
-        </div>
-
-        <!-- Downloads Grid -->
-        <div class="p-6">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {downloads.map((download) => (
-              <a 
-                href={download.url}
-                download
-                class="download-card group flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 cursor-pointer"
-              >
-                <div class="flex items-center space-x-3 flex-1">
-                  <!-- Flag Icon -->
-                  <div class="flex-shrink-0 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-lg">
-                    {languageFlags[download.language] || '📄'}
-                  </div>
-                  
-                  <!-- Language Info -->
-                  <div class="flex-1 min-w-0">
-                    <div class="font-medium text-gray-900 group-hover:text-blue-700 transition-colors">
-                      {download.language}
-                    </div>
-                    <div class="text-xs text-gray-500">
-                      PDF • {getFileSize(download.url)}
-                    </div>
-                  </div>
-                  
-                  <!-- Download Icon -->
-                  <div class="flex-shrink-0">
-                    <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-          
-          <!-- Additional Information -->
-          <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <div class="flex items-start space-x-3">
-              <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              <div class="text-sm text-blue-800">
-                <p class="font-medium mb-1">Download Information:</p>
-                <ul class="space-y-1 text-blue-700">
-                  <li>• All manuals are in PDF format and require a PDF reader</li>
-                  <li>• Manuals include step-by-step assembly instructions with illustrations</li>
-                  <li>• Educational content and safety guidelines are included</li>
-                  <li>• {contactInfo.support.technicalSupport.note}</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-  </section>
+{downloadOptions.length > 0 && (
+  <div class="flex items-center space-x-2">
+    <span class="text-sm font-medium text-muted-foreground font-comic-neue whitespace-nowrap">Manual:</span>
+    <select
+      id="manual-language-select"
+      class="text-sm rounded-md border border-input bg-background px-2 py-1 font-comic-neue focus:outline-none focus:ring-1 focus:ring-ring"
+    >
+      {downloadOptions.map((opt) => (
+        <option value={opt.url}>{opt.language}</option>
+      ))}
+    </select>
+    <button
+      id="manual-download-btn"
+      type="button"
+      class="text-primary hover:text-primary/80 transition-colors"
+      title="Download manual"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+      </svg>
+    </button>
+  </div>
 )}
 
-<style>
-  .download-card {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .download-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-    transition: left 0.5s ease;
-  }
-  
-  .download-card:hover::before {
-    left: 100%;
-  }
-  
-  .download-card:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 640px) {
-    .grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .download-card {
-      padding: 0.75rem;
-    }
-  }
-  
-  /* Loading state for downloads */
-  .download-card:active {
-    transform: scale(0.98);
-    transition: transform 0.1s ease;
-  }
-</style>
-
 <script>
-  // Add download tracking and feedback
   document.addEventListener('DOMContentLoaded', function() {
-    const downloadCards = document.querySelectorAll('.download-card');
-    
-    downloadCards.forEach(card => {
-      card.addEventListener('click', function(this: HTMLElement) {
-        // Add visual feedback
-        const originalText = this.querySelector('.font-medium')?.textContent;
-        const textElement = this.querySelector('.font-medium');
-        
-        if (textElement && originalText) {
-          textElement.textContent = 'Downloading...';
-          
-          // Reset text after a short delay
-          setTimeout(() => {
-            textElement.textContent = originalText;
-          }, 2000);
-        }
-        
-        // Track download (you can replace this with your analytics code)
-        const language = this.querySelector('.font-medium')?.textContent;
-        console.log(`Manual downloaded: ${language}`);
-        
-        // Optional: Show toast notification
-        showDownloadToast(language || 'Manual');
-      });
+    const select = document.getElementById('manual-language-select') as HTMLSelectElement | null;
+    const btn = document.getElementById('manual-download-btn');
+    if (!select || !btn) return;
+
+    btn.addEventListener('click', function() {
+      const url = select.value;
+      if (!url) return;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     });
   });
-  
-  function showDownloadToast(language: string) {
-    // Create a simple toast notification
-    const toast = document.createElement('div');
-    toast.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 transform translate-y-full opacity-0';
-    toast.textContent = `${language} manual download started`;
-    
-    document.body.appendChild(toast);
-    
-    // Animate in
-    setTimeout(() => {
-      toast.classList.remove('translate-y-full', 'opacity-0');
-    }, 100);
-    
-    // Remove after 3 seconds
-    setTimeout(() => {
-      toast.classList.add('translate-y-full', 'opacity-0');
-      setTimeout(() => {
-        document.body.removeChild(toast);
-      }, 300);
-    }, 3000);
-  }
 </script>

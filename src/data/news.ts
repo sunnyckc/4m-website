@@ -1,3 +1,6 @@
+// Import news data directly
+import newsData from './news-data.json';
+
 // News data helper functions
 export interface NewsArticle {
   id: string;
@@ -13,8 +16,7 @@ export interface NewsArticle {
 // Load news data
 export async function getAllNews(): Promise<NewsArticle[]> {
   try {
-    const response = await fetch(new URL('/data/news.json', import.meta.env.SITE || 'http://localhost:4324'));
-    const news: NewsArticle[] = await response.json();
+    const news: NewsArticle[] = newsData as NewsArticle[];
     return news.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   } catch (error) {
     console.error('Error loading news data:', error);

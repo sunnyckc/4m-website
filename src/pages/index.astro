@@ -6,12 +6,13 @@ import Badge from '../components/ui/badge.astro';
 import HeroSlideshow from '../components/ui/hero-slideshow.astro';
 import SimpleHero from '../components/ui/simple-hero.astro';
 import ImageCollage from '../components/ui/image-collage.astro';
-import { getHotProducts, getFeaturedAwards, getFeaturedNews, getHeroSlides, getSteamCollageData } from '../data/helpers';
+import { getHotProducts, getFeaturedAwards, getFeaturedNews, getHeroSlides, getSteamCollageData, getProductThumbnail, getSiteLinks } from '../data/helpers';
 import { formatDate } from '../lib/utils';
 
 const hotProducts = await getHotProducts();
 const featuredAwards = await getFeaturedAwards();
 const featuredNews = await getFeaturedNews();
+const siteLinks = await getSiteLinks();
 
 // Official 4M hero slides with actual banner images
 const heroSlides = [
@@ -133,8 +134,8 @@ const steamCollageData = {
             <Card class="overflow-hidden hover:shadow-lg transition-shadow card-playful">
               <div class="aspect-square bg-muted relative">
                 <img 
-                  src={product.images.main} 
-                  alt={product.name}
+                  src={getProductThumbnail(product)} 
+                  alt={product.item_name}
                   class="w-full h-full object-cover"
                   loading="lazy"
                 />
@@ -147,15 +148,15 @@ const steamCollageData = {
               </div>
               <div class="p-6 space-y-4">
                 <div class="space-y-2">
-                  <Badge variant="secondary" class="font-comic-neue">{product.category.replace('-', ' ')}</Badge>
-                  <h3 class="text-xl font-semibold font-fredoka">{product.name}</h3>
-                  <p class="text-muted-foreground font-comic-neue">{product.description}</p>
+                  <Badge variant="secondary" class="font-comic-neue">{product.category_main.replace('-', ' ')}</Badge>
+                  <h3 class="text-xl font-semibold font-fredoka">{product.item_name}</h3>
+                  <p class="text-muted-foreground font-comic-neue">{product.item_description}</p>
                 </div>
                 <div class="flex items-center justify-between">
                   <span class="text-xs text-muted-foreground capitalize font-comic-neue">
-                    {product.subcategory.replace('-', ' ')}
+                    {product.category_sub.replace('-', ' ')}
                   </span>
-                  <Button href={`/products/${product.id}`} variant="outline" class="font-fredoka btn-bouncy">
+                  <Button href={`/products/${product.folder_name}`} variant="outline" class="font-fredoka btn-bouncy">
                     View Details
                   </Button>
                 </div>
@@ -164,10 +165,15 @@ const steamCollageData = {
           ))}
         </div>
 
-        <div class="text-center mt-12">
+        <div class="flex justify-center items-center gap-4 mt-12 flex-wrap">
           <Button href="/products" size="lg" class="font-fredoka btn-bouncy">
             View All Products
           </Button>
+          {siteLinks.catalog_buttons.map((btn) => (
+            <Button href={btn.url} size="lg" variant="outline" class="font-fredoka btn-bouncy" target="_blank" rel="noopener noreferrer">
+              {btn.label}
+            </Button>
+          ))}
         </div>
       </div>
     </section>
@@ -179,8 +185,8 @@ const steamCollageData = {
     <section class="py-16 lg:py-24 bg-muted/50">
       <div class="container-custom">
         <div class="text-center space-y-4 mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold">Award-Winning Excellence</h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <h2 class="text-3xl md:text-4xl font-bold text-fun">Award-Winning Excellence</h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
             Our commitment to quality and innovation has been recognized by industry leaders.
           </p>
         </div>
@@ -188,13 +194,15 @@ const steamCollageData = {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {featuredAwards.map((award) => (
             <Card class="text-center p-8 hover:shadow-lg transition-shadow">
-              <div class="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-                <img src={award.icon} alt={award.name} class="w-8 h-8" />
-              </div>
+              {award.media_source === 'file' && award.media_destination && (
+                <div class="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                  <img src={`/images/awards/${award.media_destination}`} alt={award.name} class="w-8 h-8" />
+                </div>
+              )}
               <h3 class="text-xl font-semibold mb-2">{award.name}</h3>
-              <p class="text-muted-foreground mb-4">{award.description}</p>
+              <p class="text-muted-foreground mb-4">{award.program}</p>
               <div class="text-sm text-muted-foreground">
-                <div>{award.organization}</div>
+                <div>{award.institution}</div>
                 <div>{award.year}</div>
               </div>
             </Card>
@@ -215,8 +223,8 @@ const steamCollageData = {
     <section class="py-16 lg:py-24">
       <div class="container-custom">
         <div class="text-center space-y-4 mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold">Latest News</h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <h2 class="text-3xl md:text-4xl font-bold text-fun">Latest News</h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
             Stay updated with our latest announcements, product launches, and company news.
           </p>
         </div>

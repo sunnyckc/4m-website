@@ -1,25 +1,8 @@
 ---
 import Layout from '../components/layout/Layout.astro';
+import { getAwards } from '../data/helpers';
 
-// Load awards data
-const awards = await fetch(new URL('/data/awards.json', import.meta.env.SITE || 'http://localhost:4321'))
-  .then(res => res.json())
-  .catch(() => []);
-
-// Group awards by category
-const awardsByCategory = awards.reduce((acc, award) => {
-  const category = award.category || 'Other';
-  if (!acc[category]) acc[category] = [];
-  acc[category].push(award);
-  return acc;
-}, {});
-
-// Sort awards within each category by sequence
-Object.keys(awardsByCategory).forEach(category => {
-  awardsByCategory[category].sort((a, b) => a.sequence - b.sequence);
-});
-
-const featuredAwards = awards.filter(award => award.featured).sort((a, b) => a.sequence - b.sequence);
+const awards = await getAwards();
 ---
 
 <Layout title="Awards | 4M Industrial Development Limited">
@@ -33,18 +16,21 @@ const featuredAwards = awards.filter(award => award.featured).sort((a, b) => a.s
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {awards.sort((a, b) => a.sequence - b.sequence).map((award) => (
+        {awards.map((award) => (
           <div class="bg-card rounded-lg border shadow-sm hover:shadow-md transition-shadow p-4 text-center">
-            <div class="mb-3 flex justify-center">
-              <img 
-                src={award.icon} 
-                alt={award.name}
-                class="h-16 w-auto object-contain"
-                loading="lazy"
-              />
-            </div>
+            {award.media_source === 'file' && award.media_destination && (
+              <div class="mb-3 flex justify-center">
+                <img 
+                  src={`/images/awards/${award.media_destination}`} 
+                  alt={award.name}
+                  class="h-16 w-auto object-contain"
+                  loading="lazy"
+                />
+              </div>
+            )}
             <h5 class="text-sm font-semibold mb-2">{award.name}</h5>
-            <p class="text-xs text-muted-foreground mb-2">{award.organization}</p>
+            <p class="text-xs text-muted-foreground mb-1">{award.program}</p>
+            <p class="text-xs text-muted-foreground mb-2">{award.institution}</p>
             <div class="text-center">
               <span class="text-xs font-medium text-primary">{award.year}</span>
             </div>

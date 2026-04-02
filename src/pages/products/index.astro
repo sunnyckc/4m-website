@@ -4,19 +4,16 @@ import Card from '../../components/ui/card.astro';
 import Button from '../../components/ui/button.astro';
 import Badge from '../../components/ui/badge.astro';
 import Input from '../../components/ui/input.astro';
-// Removed formatPrice import as pricing is no longer displayed
 import fs from 'fs';
 import path from 'path';
+import { getProductThumbnail } from '../../data/helpers';
+import type { Product } from '../../data/helpers';
 
-// Load JSON data directly using fs
 const productsPath = path.join(process.cwd(), 'public/data/products.json');
 const categoriesPath = path.join(process.cwd(), 'public/data/product-categories.json');
 
-const products = JSON.parse(fs.readFileSync(productsPath, 'utf-8'));
+const products: Product[] = JSON.parse(fs.readFileSync(productsPath, 'utf-8'));
 const categoriesData = JSON.parse(fs.readFileSync(categoriesPath, 'utf-8'));
-
-console.log('Products loaded:', products.length);
-console.log('First product:', products[0]?.name);
 ---
 
 <Layout title="Products - My Store" description="Browse our complete collection of premium products">
@@ -151,20 +148,19 @@ console.log('First product:', products[0]?.name);
         <!-- Products Grid -->
         <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {products.map((product) => (
-        <a href={`/products/${product.id}`} class="block">
+        <a href={`/products/${product.folder_name}`} class="block">
           <Card class="product-card overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" 
-                data-name={product.name.toLowerCase()}
-                data-code={product.product_code?.toLowerCase() || ''}
-                data-category={product.category}
-                data-subcategory={product.subcategory}
-                data-tags={product.tags.join(' ').toLowerCase()}
-                data-description={product.description.toLowerCase()}
-                data-price={product.price}
-                data-hot-item={product.hot_item}>
+                data-name={product.item_name.toLowerCase()}
+                data-code={product.item_code?.toLowerCase() || ''}
+                data-category={product.category_main}
+                data-subcategory={product.category_sub}
+                data-tags={[...product.tag_visible, ...product.tag_hidden].join(' ').toLowerCase()}
+                data-description={product.item_description.toLowerCase()}
+                data-hot-item={String(product.hot_item)}>
             <div class="aspect-square bg-muted relative overflow-hidden">
               <img 
-                src={product.images.main} 
-                alt={product.name}
+                src={getProductThumbnail(product)} 
+                alt={product.item_name}
                 class="w-full h-full object-cover transition-transform duration-300 ease-in-out product-image"
                 loading="lazy"
               />
@@ -178,11 +174,11 @@ console.log('First product:', products[0]?.name);
             </div>
             <div class="p-4 space-y-3">
               <div class="space-y-2">
-                <h3 class="font-semibold text-lg leading-tight">{product.name}</h3>
-                {product.product_code && (
-                  <p class="text-xs text-muted-foreground font-mono">{product.product_code}</p>
+                <h3 class="font-semibold text-lg leading-tight">{product.item_name}</h3>
+                {product.item_code && (
+                  <p class="text-xs text-muted-foreground font-mono">{product.item_code}</p>
                 )}
-                <p class="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
+                <p class="text-sm text-muted-foreground line-clamp-2">{product.item_description}</p>
               </div>
             </div>
           </Card>
@@ -255,12 +251,13 @@ console.log('First product:', products[0]?.name);
         const description = card.getAttribute('data-description') || '';
         const isHotItem = card.getAttribute('data-hot-item') === 'true';
 
-        // Search filter (name, code, description, tags)
+        // Search filter (name, code, tags, category, subcategory)
         const matchesSearch = !searchTerm || 
           name.includes(searchTerm) || 
           code.includes(searchTerm) ||
-          description.includes(searchTerm) ||
-          tags.includes(searchTerm);
+          tags.includes(searchTerm) ||
+          category.toLowerCase().includes(searchTerm) ||
+          subcategory.toLowerCase().includes(searchTerm);
 
         // Category filter - handle special "hot-products" category
         let matchesCategory;
@@ -285,14 +282,18 @@ console.log('First product:', products[0]?.name);
         }
       });
 
-      // Sort filtered products: Hot items first, then by name
+      // Sort filtered products: Hot items first, then by current sort option
+      var sortFilter = document.getElementById('sortFilter');
+      var sortValue = sortFilter ? sortFilter.value : '';
       filteredProducts.sort((a, b) => {
-        // Hot items first
         if (a.isHot && !b.isHot) return -1;
         if (!a.isHot && b.isHot) return 1;
-        
-        // Then sort by name
-        return a.name.localeCompare(b.name);
+        switch (sortValue) {
+          case 'name-asc': return a.name.localeCompare(b.name);
+          case 'name-desc': return b.name.localeCompare(a.name);
+          case 'code-asc': return a.code.localeCompare(b.code);
+          default: return a.name.localeCompare(b.name);
+        }
       });
 
       // Reset to first page when filtering
@@ -308,9 +309,11 @@ console.log('First product:', products[0]?.name);
       const pagination = document.getElementById('pagination');
       const totalResults = filteredProducts.length;
       
-      // Hide all products first
+      // Hide all products first (target the <a> wrapper, not the card)
       document.querySelectorAll('.product-card').forEach(card => {
-        card.style.display = 'none';
+        const wrapper = card.closest('a');
+        if (wrapper) wrapper.style.display = 'none';
+        else card.style.display = 'none';
       });
 
       if (totalResults === 0) {
@@ -327,9 +330,12 @@ console.log('First product:', products[0]?.name);
       const startIndex = (currentPage - 1) * itemsPerPage;
       const endIndex = Math.min(startIndex + itemsPerPage, totalResults);
 
-      // Show products for current page
+      // Show products for current page (target the <a> wrapper)
       for (let i = startIndex; i < endIndex; i++) {
-        filteredProducts[i].element.style.display = 'block';
+        var el = filteredProducts[i].element;
+        var wrapper = el.closest('a');
+        if (wrapper) wrapper.style.display = 'block';
+        else el.style.display = 'block';
       }
 
       // Update results count
