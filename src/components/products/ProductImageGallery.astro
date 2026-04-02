@@ -1,5 +1,6 @@
 ---
 import type { ProductMedia } from '../../data/helpers';
+import { getBase } from '../../data/helpers';
 
 interface Props {
   media: ProductMedia[];
@@ -8,10 +9,11 @@ interface Props {
 }
 
 const { media, folderName, productName } = Astro.props;
+const base = getBase();
 
 function resolveUrl(m: ProductMedia): string {
   if (m.media_source === 'file') {
-    return `/images/products/${folderName}/${m.media_destination}`;
+    return `${base}/images/products/${folderName}/${m.media_destination}`;
   }
   return m.media_destination;
 }

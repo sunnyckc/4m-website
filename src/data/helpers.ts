@@ -163,6 +163,15 @@ export interface ContactInfo {
   };
 }
 
+export function getBase(): string {
+  try {
+    const base = import.meta.env.BASE_URL || '/';
+    return base.endsWith('/') ? base.slice(0, -1) : base;
+  } catch {
+    return '';
+  }
+}
+
 function resolveMediaUrl(product: Product, m: ProductMedia): string {
   if (m.media_source === 'file') {
     return `/images/products/${product.folder_name}/${m.media_destination}`;
