@@ -1,7 +1,8 @@
 ---
-import { getContactInfo } from '../../data/helpers.ts';
+import { getContactInfo, getBase } from '../../data/helpers.ts';
 
 const contactInfo = await getContactInfo();
+const base = getBase();
 ---
 
 <footer class="border-t bg-muted/50">
@@ -10,7 +11,7 @@ const contactInfo = await getContactInfo();
       <!-- Company Info -->
       <div class="space-y-4">
         <div class="flex items-center space-x-2">
-          <img src="/images/assets/logo.png" alt="4M Industrial Development Limited" class="h-8 w-auto" />
+          <img src={`${base}/images/assets/logo.png`} alt="4M Industrial Development Limited" class="h-8 w-auto" />
         </div>
         <p class="text-sm text-muted-foreground">
           4M Industrial Development Limited - Educational toys and STEAM learning products for inspiring young minds.
@@ -21,10 +22,10 @@ const contactInfo = await getContactInfo();
       <div class="space-y-4">
         <h3 class="text-sm font-semibold">Quick Links</h3>
         <ul class="space-y-2 text-sm">
-          <li><a href="/products" class="text-muted-foreground hover:text-foreground transition-colors">Products</a></li>
-          <li><a href="/awards" class="text-muted-foreground hover:text-foreground transition-colors">Awards</a></li>
-          <li><a href="/news" class="text-muted-foreground hover:text-foreground transition-colors">News</a></li>
-          <li><a href="/about" class="text-muted-foreground hover:text-foreground transition-colors">About</a></li>
+          <li><a href={`${base}/products`} class="text-muted-foreground hover:text-foreground transition-colors">Products</a></li>
+          <li><a href={`${base}/awards`} class="text-muted-foreground hover:text-foreground transition-colors">Awards</a></li>
+          <li><a href={`${base}/news`} class="text-muted-foreground hover:text-foreground transition-colors">News</a></li>
+          <li><a href={`${base}/about`} class="text-muted-foreground hover:text-foreground transition-colors">About</a></li>
         </ul>
       </div>
 
@@ -32,7 +33,7 @@ const contactInfo = await getContactInfo();
       <div class="space-y-4">
         <h3 class="text-sm font-semibold">Support</h3>
         <ul class="space-y-2 text-sm">
-          <li><a href="/contact" class="text-muted-foreground hover:text-foreground transition-colors">Contact Us</a></li>
+          <li><a href={`${base}/contact`} class="text-muted-foreground hover:text-foreground transition-colors">Contact Us</a></li>
           <li><a href="#" class="text-muted-foreground hover:text-foreground transition-colors">FAQ</a></li>
           <li><a href="#" class="text-muted-foreground hover:text-foreground transition-colors">Shipping</a></li>
           <li><a href="#" class="text-muted-foreground hover:text-foreground transition-colors">Returns</a></li>

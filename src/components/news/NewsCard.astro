@@ -1,5 +1,6 @@
 ---
 import type { NewsArticle } from '../../data/news.ts';
+import { getBase } from '../../data/helpers';
 
 export interface Props {
   article: NewsArticle;
@@ -34,6 +35,7 @@ const sizeClasses = {
 };
 
 const classes = sizeClasses[size];
+const base = getBase();
 ---
 
 <article class={`group ${featured ? 'featured-article' : ''}`}>
@@ -41,7 +43,7 @@ const classes = sizeClasses[size];
     <!-- Image -->
     <div class={`relative overflow-hidden ${size === 'large' ? 'md:order-1' : ''}`}>
       <img 
-        src={article.image || '/images/news/default-news.jpg'} 
+        src={article.image ? `${base}${article.image}` : `${base}/images/news/default-news.jpg`} 
         alt={article.title}
         class={`news-image ${classes.image}`}
         loading={featured ? 'eager' : 'lazy'}
@@ -69,7 +71,7 @@ const classes = sizeClasses[size];
       </div>
       
       <h2 class={`font-bold text-gray-900 mb-4 font-fredoka group-hover:text-blue-600 transition-colors ${classes.title}`}>
-        <a href={`/news/${article.id}`} class="hover:underline">
+        <a href={`${base}/news/${article.id}`} class="hover:underline">
           {article.title}
         </a>
       </h2>
@@ -80,7 +82,7 @@ const classes = sizeClasses[size];
       
       <div class="flex items-center justify-between">
         <a 
-          href={`/news/${article.id}`}
+          href={`${base}/news/${article.id}`}
           class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold transition-colors group/link"
         >
           Read More

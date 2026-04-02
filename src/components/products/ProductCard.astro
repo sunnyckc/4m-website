@@ -2,7 +2,7 @@
 import Card from '../ui/card.astro';
 import Badge from '../ui/badge.astro';
 import type { Product } from '../../data/helpers';
-import { getProductThumbnail } from '../../data/helpers';
+import { getProductThumbnail, getBase } from '../../data/helpers';
 
 interface Props {
   product: Product;
@@ -19,9 +19,10 @@ const {
 } = Astro.props;
 
 const thumbnail = getProductThumbnail(product);
+const base = getBase();
 ---
 
-<a href={`/products/${product.folder_name}`} class="block">
+<a href={`${base}/products/${product.folder_name}`} class="block">
   <Card class={`product-card overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer ${className}`}>
     <!-- Product Image -->
     <div class="aspect-square bg-muted relative overflow-hidden">

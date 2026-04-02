@@ -1,6 +1,9 @@
 ---
 import Layout from '../../components/layout/Layout.astro';
 import { getAllNews, formatDate } from '../../data/news.ts';
+import { getBase } from '../../data/helpers';
+
+const base = getBase();
 
 // Load news data
 const sortedNews = await getAllNews();
@@ -21,7 +24,7 @@ const sortedNews = await getAllNews();
           <div class="bg-card rounded-lg border shadow-sm hover:shadow-md transition-shadow overflow-hidden">
             <div class="aspect-video bg-muted relative overflow-hidden">
               <img 
-                src={article.image || '/images/news/default-news.jpg'} 
+                src={article.image ? `${base}${article.image}` : `${base}/images/news/default-news.jpg`} 
                 alt={article.title}
                 class="w-full h-full object-cover"
                 loading="lazy"
@@ -39,7 +42,7 @@ const sortedNews = await getAllNews();
                 </time>
               </div>
               <h3 class="text-sm font-semibold mb-2 leading-tight">
-                <a href={`/news/${article.id}`} class="hover:text-primary transition-colors">
+                <a href={`${base}/news/${article.id}`} class="hover:text-primary transition-colors">
                   {article.title}
                 </a>
               </h3>
@@ -48,7 +51,7 @@ const sortedNews = await getAllNews();
               </p>
               <div class="flex justify-between items-center">
                 <a 
-                  href={`/news/${article.id}`}
+                  href={`${base}/news/${article.id}`}
                   class="text-xs font-medium text-primary hover:underline"
                 >
                   Read More

@@ -1,7 +1,8 @@
 ---
 import Layout from '../components/layout/Layout.astro';
-import { getAwards } from '../data/helpers';
+import { getAwards, getBase } from '../data/helpers';
 
+const base = getBase();
 const awards = await getAwards();
 ---
 
@@ -21,7 +22,7 @@ const awards = await getAwards();
             {award.media_source === 'file' && award.media_destination && (
               <div class="mb-3 flex justify-center">
                 <img 
-                  src={`/images/awards/${award.media_destination}`} 
+                  src={`${base}/images/awards/${award.media_destination}`} 
                   alt={award.name}
                   class="h-16 w-auto object-contain"
                   loading="lazy"

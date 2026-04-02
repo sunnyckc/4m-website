@@ -3,7 +3,7 @@ import Layout from '../../components/layout/Layout.astro';
 import Card from '../../components/ui/card.astro';
 import Button from '../../components/ui/button.astro';
 import Badge from '../../components/ui/badge.astro';
-import { getProducts, getCategoryById, getProductsByCategory, getProductThumbnail } from '../../data/helpers';
+import { getProducts, getCategoryById, getProductsByCategory, getProductThumbnail, getBase } from '../../data/helpers';
 
 export async function getStaticPaths() {
   const products = await getProducts();
@@ -18,8 +18,10 @@ const { category } = Astro.params;
 const categoryData = await getCategoryById(category);
 const products = await getProductsByCategory(category);
 
+const base = getBase();
+
 if (!categoryData) {
-  return Astro.redirect('/products');
+  return Astro.redirect(`${base}/products`);
 }
 ---
 
@@ -27,9 +29,9 @@ if (!categoryData) {
   <div class="container-custom py-8">
     <!-- Breadcrumb -->
     <nav class="flex mb-8 text-sm">
-      <a href="/" class="text-muted-foreground hover:text-primary">Home</a>
+      <a href={`${base}/`} class="text-muted-foreground hover:text-primary">Home</a>
       <span class="mx-2 text-muted-foreground">/</span>
-      <a href="/products" class="text-muted-foreground hover:text-primary">Products</a>
+      <a href={`${base}/products`} class="text-muted-foreground hover:text-primary">Products</a>
       <span class="mx-2 text-muted-foreground">/</span>
       <span class="text-primary font-medium">{categoryData.name}</span>
     </nav>
@@ -56,7 +58,7 @@ if (!categoryData) {
             const subcategoryProducts = products.filter(p => p.category_sub === subcategory.id);
             return (
               <a 
-                href={`/products?category=${category}&subcategory=${subcategory.id}`}
+                href={`${base}/products?category=${category}&subcategory=${subcategory.id}`}
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors"
               >
                 <span class="font-medium">{subcategory.name}</span>
@@ -73,7 +75,7 @@ if (!categoryData) {
     <!-- Products Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {products.map((product) => (
-        <a href={`/products/${product.folder_name}`} class="block">
+        <a href={`${base}/products/${product.folder_name}`} class="block">
           <Card class="product-card overflow-hidden hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer">
             <div class="aspect-square bg-muted relative overflow-hidden">
               <img 
@@ -109,7 +111,7 @@ if (!categoryData) {
     {products.length === 0 && (
       <div class="text-center py-12">
         <p class="text-lg text-muted-foreground mb-4">No products found in this category.</p>
-        <Button href="/products" variant="outline">
+        <Button href={`${base}/products`} variant="outline">
           Browse All Products
         </Button>
       </div>
@@ -117,7 +119,7 @@ if (!categoryData) {
 
     <!-- Back to All Products -->
     <div class="text-center mt-12">
-      <Button href="/products" variant="outline">
+      <Button href={`${base}/products`} variant="outline">
         ← Back to All Products
       </Button>
     </div>

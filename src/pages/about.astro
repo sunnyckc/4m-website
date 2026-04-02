@@ -2,11 +2,14 @@
 import Layout from '../components/layout/Layout.astro';
 import Card from '../components/ui/card.astro';
 import HeroSlideshow from '../components/ui/hero-slideshow.astro';
+import { getBase } from '../data/helpers';
+
+const base = getBase();
 
 const heroSlides = [
   {
     id: "4m-hero",
-    image: "/images/4m-assets/New_Project_(60).png",
+    image: `${base}/images/4m-assets/New_Project_(60).png`,
     title: "4M - For Minds",
     subtitle: "Helping children develop creativity and imagination since 1993"
   }
@@ -46,7 +49,7 @@ const heroSlides = [
       </div>
       <div class="aspect-square rounded-lg overflow-hidden">
         <img 
-          src="/images/4m-assets/About_Us_2.jpg" 
+          src={`${base}/images/4m-assets/About_Us_2.jpg`} 
           alt="4M Educational Products" 
           class="w-full h-full object-cover"
         />

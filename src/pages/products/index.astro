@@ -6,7 +6,7 @@ import Badge from '../../components/ui/badge.astro';
 import Input from '../../components/ui/input.astro';
 import fs from 'fs';
 import path from 'path';
-import { getProductThumbnail } from '../../data/helpers';
+import { getProductThumbnail, getBase } from '../../data/helpers';
 import type { Product } from '../../data/helpers';
 
 const productsPath = path.join(process.cwd(), 'public/data/products.json');
@@ -14,6 +14,7 @@ const categoriesPath = path.join(process.cwd(), 'public/data/product-categories.
 
 const products: Product[] = JSON.parse(fs.readFileSync(productsPath, 'utf-8'));
 const categoriesData = JSON.parse(fs.readFileSync(categoriesPath, 'utf-8'));
+const base = getBase();
 ---
 
 <Layout title="Products - My Store" description="Browse our complete collection of premium products">
@@ -148,7 +149,7 @@ const categoriesData = JSON.parse(fs.readFileSync(categoriesPath, 'utf-8'));
         <!-- Products Grid -->
         <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {products.map((product) => (
-        <a href={`/products/${product.folder_name}`} class="block">
+        <a href={`${base}/products/${product.folder_name}`} class="block">
           <Card class="product-card overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" 
                 data-name={product.item_name.toLowerCase()}
                 data-code={product.item_code?.toLowerCase() || ''}
