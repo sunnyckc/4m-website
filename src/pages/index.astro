@@ -235,7 +235,7 @@ const steamCollageData = {
             <Card class="overflow-hidden hover:shadow-lg transition-shadow">
               <div class="aspect-video bg-muted">
                 <img 
-                  src={post.image ? `${base}${post.image}` : `${base}/images/news/default-news.jpg`} 
+                  src={post.image ? (post.image.startsWith('http') ? post.image : `${base}${post.image}`) : `${base}/images/news/default-news.jpg`} 
                   alt={post.title}
                   class="w-full h-full object-cover"
                   loading="lazy"

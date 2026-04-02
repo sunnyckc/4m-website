@@ -43,7 +43,7 @@ const base = getBase();
     <!-- Image -->
     <div class={`relative overflow-hidden ${size === 'large' ? 'md:order-1' : ''}`}>
       <img 
-        src={article.image ? `${base}${article.image}` : `${base}/images/news/default-news.jpg`} 
+        src={article.image ? (article.image.startsWith('http') ? article.image : `${base}${article.image}`) : `${base}/images/news/default-news.jpg`} 
         alt={article.title}
         class={`news-image ${classes.image}`}
         loading={featured ? 'eager' : 'lazy'}

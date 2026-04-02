@@ -24,7 +24,7 @@ const sortedNews = await getAllNews();
           <div class="bg-card rounded-lg border shadow-sm hover:shadow-md transition-shadow overflow-hidden">
             <div class="aspect-video bg-muted relative overflow-hidden">
               <img 
-                src={article.image ? `${base}${article.image}` : `${base}/images/news/default-news.jpg`} 
+                src={article.image ? (article.image.startsWith('http') ? article.image : `${base}${article.image}`) : `${base}/images/news/default-news.jpg`} 
                 alt={article.title}
                 class="w-full h-full object-cover"
                 loading="lazy"
