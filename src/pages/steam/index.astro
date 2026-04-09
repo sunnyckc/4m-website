@@ -1,0 +1,77 @@
+---
+import Layout from '../../components/layout/Layout.astro';
+import Button from '../../components/ui/button.astro';
+import { getBase } from '../../data/helpers';
+import { steamPillarConfig, steamPillarOrder } from '../../data/steam-pillars';
+
+const base = getBase();
+
+const pillars = steamPillarOrder.map((slug) => {
+  const p = steamPillarConfig[slug];
+  return {
+    slug,
+    title: p.title,
+    blurb: p.blurb,
+    image: `${base}/images/steam/${p.image}`,
+  };
+});
+---
+
+<Layout
+  title="STEAM Education | 4M Industrial Development Limited"
+  description="Science, Technology, Engineering, Arts, and Mathematics—explore how 4M integrates STEAM into educational toys."
+>
+  <div class="container-custom py-8">
+    <nav class="flex mb-8 text-sm" aria-label="Breadcrumb">
+      <a href={`${base}/`} class="text-muted-foreground hover:text-primary">Home</a>
+      <span class="mx-2 text-muted-foreground">/</span>
+      <span class="text-primary font-medium">STEAM</span>
+    </nav>
+
+    <div class="grid gap-10 lg:grid-cols-2 lg:items-center mb-14">
+      <div class="space-y-4">
+        <h1 class="text-3xl md:text-4xl font-bold text-fun">STEAM Education</h1>
+        <p class="text-lg text-muted-foreground text-comic">
+          Essential elements of healthy mental development are integrated into our product designs and throughout our production
+          process. It is these fundamental STEAM principles that foster creativity, critical thinking, and innovation in young
+          learners.
+        </p>
+        <Button href={`${base}/products`} size="lg" class="font-fredoka btn-bouncy w-fit">
+          Browse all products
+        </Button>
+      </div>
+      <div class="aspect-[4/3] rounded-lg overflow-hidden border shadow-sm">
+        <img
+          src={`${base}/images/steam/hero-main.jpg`}
+          alt="STEAM Education Hub"
+          class="w-full h-full object-cover"
+          loading="eager"
+        />
+      </div>
+    </div>
+
+    <h2 class="text-2xl md:text-3xl font-bold text-fun text-center mb-10">Explore each pillar</h2>
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {pillars.map((p) => (
+        <a
+          href={`${base}/steam/${p.slug}`}
+          class="group rounded-lg border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+        >
+          <div class="aspect-[16/10] overflow-hidden">
+            <img
+              src={p.image}
+              alt=""
+              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+          <div class="p-5 space-y-2">
+            <h3 class="text-xl font-semibold text-fun group-hover:text-primary transition-colors">{p.title}</h3>
+            <p class="text-sm text-muted-foreground text-comic">{p.blurb}</p>
+            <span class="text-sm font-medium text-primary inline-block pt-1">Learn more →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>

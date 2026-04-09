@@ -1,0 +1,56 @@
+---
+import Layout from '../../components/layout/Layout.astro';
+import Button from '../../components/ui/button.astro';
+import { getBase } from '../../data/helpers';
+import { steamPillarConfig, getSteamPillarSlugs, type SteamPillarSlug } from '../../data/steam-pillars';
+
+export function getStaticPaths() {
+  return getSteamPillarSlugs().map((pillar) => ({
+    params: { pillar },
+  }));
+}
+
+const base = getBase();
+const { pillar } = Astro.params;
+
+if (!pillar || !(pillar in steamPillarConfig)) {
+  return Astro.redirect(`${base}/steam`);
+}
+
+const config = steamPillarConfig[pillar as SteamPillarSlug];
+const imageUrl = `${base}/images/steam/${config.image}`;
+---
+
+<Layout
+  title={`${config.title} | STEAM | 4M Industrial Development Limited`}
+  description={config.description}
+  image={imageUrl}
+>
+  <div class="container-custom py-8">
+    <nav class="flex mb-8 text-sm flex-wrap gap-y-1" aria-label="Breadcrumb">
+      <a href={`${base}/`} class="text-muted-foreground hover:text-primary">Home</a>
+      <span class="mx-2 text-muted-foreground">/</span>
+      <a href={`${base}/steam`} class="text-muted-foreground hover:text-primary">STEAM</a>
+      <span class="mx-2 text-muted-foreground">/</span>
+      <span class="text-primary font-medium">{config.title}</span>
+    </nav>
+
+    <div class="grid gap-10 lg:grid-cols-2 lg:items-start mb-10">
+      <div class="aspect-[4/3] rounded-lg overflow-hidden border shadow-sm lg:sticky lg:top-24">
+        <img src={imageUrl} alt="" class="w-full h-full object-cover" loading="eager" />
+      </div>
+      <div class="space-y-6">
+        <h1 class="text-3xl md:text-4xl font-bold text-fun">{config.title}</h1>
+        <p class="text-lg text-muted-foreground text-comic leading-relaxed">{config.description}</p>
+        <div class="flex flex-wrap gap-3">
+          <Button href={`${base}/products/${config.productsPath}`} size="lg" class="font-fredoka btn-bouncy">
+            {config.productsLabel}
+          </Button>
+          <Button href={`${base}/steam`} variant="outline" size="lg">
+            All STEAM pillars
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
