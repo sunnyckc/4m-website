@@ -1,6 +1,7 @@
 ---
-import Layout from '../components/layout/Layout.astro';
-import { getAwards, getBase } from '../data/helpers';
+import { Layout } from '@/layouts';
+import { getAwards } from '@/repositories/awards';
+import { getBase } from '@/config';
 
 const base = getBase();
 const awards = await getAwards();

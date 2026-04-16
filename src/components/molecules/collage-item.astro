@@ -1,0 +1,81 @@
+---
+export interface Props {
+  title?: string;
+  image?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  href?: string;
+  class?: string;
+}
+
+const { 
+  title,
+  image,
+  backgroundColor = "bg-gradient-to-br from-blue-500 to-purple-600",
+  textColor = "text-white",
+  href,
+  class: className = ""
+} = Astro.props;
+
+// Debug logging
+console.log('CollageItem props:', { title, image, backgroundColor });
+
+import { cn } from '@/utils';
+---
+
+{href ? (
+  <a 
+    href={href}
+    class={cn(
+      "block relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:z-10 hover:shadow-2xl",
+      backgroundColor,
+      className
+    )}
+  >
+    <div class="aspect-square w-full h-full">
+      {image ? (
+        <img 
+          src={image} 
+          alt={title || "Collage item"}
+          class="w-full h-full object-cover"
+          onload="console.log('Image loaded:', this.src)"
+          onerror="console.error('Image failed to load:', this.src)"
+        />
+      ) : (
+        <div class={cn("w-full h-full flex items-center justify-center text-center", backgroundColor, textColor)}>
+          {title && (
+            <h3 class="text-sm font-medium">{title}</h3>
+          )}
+          <div class="absolute top-2 left-2 text-xs opacity-50">No Image</div>
+        </div>
+      )}
+    </div>
+  </a>
+) : (
+  <div 
+    class={cn(
+      "relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:z-10 hover:shadow-2xl",
+      backgroundColor,
+      className
+    )}
+  >
+    <div class="aspect-square w-full h-full">
+      {image ? (
+        <img 
+          src={image} 
+          alt={title || "Collage item"}
+          class="w-full h-full object-cover"
+          onload="console.log('Image loaded:', this.src)"
+          onerror="console.error('Image failed to load:', this.src)"
+        />
+      ) : (
+        <div class={cn("w-full h-full flex items-center justify-center text-center", backgroundColor, textColor)}>
+          {title && (
+            <h3 class="text-sm font-medium">{title}</h3>
+          )}
+          <div class="absolute top-2 left-2 text-xs opacity-50">No Image</div>
+        </div>
+      )}
+    </div>
+  </div>
+)}

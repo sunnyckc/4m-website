@@ -1,9 +1,13 @@
 ---
-import Layout from '../../components/layout/Layout.astro';
-import Card from '../../components/ui/card.astro';
-import Button from '../../components/ui/button.astro';
-import Badge from '../../components/ui/badge.astro';
-import { getProducts, getCategoryById, getProductsByCategory, getProductThumbnail, getBase } from '../../data/helpers';
+import { Layout } from '@/layouts';
+import { Card, Button, Badge } from '@/components';
+import {
+  getProducts,
+  getProductsByCategory,
+  getProductThumbnail,
+} from '@/repositories/catalog';
+import { getCategoryById } from '@/repositories/site';
+import { getBase } from '@/config';
 
 export async function getStaticPaths() {
   const products = await getProducts();

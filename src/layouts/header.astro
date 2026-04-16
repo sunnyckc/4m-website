@@ -1,0 +1,54 @@
+---
+import { getBase } from '@/config';
+const base = getBase();
+---
+
+<header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+  <div class="container-custom flex h-20 items-center justify-between py-4">
+    <!-- Logo -->
+    <div class="flex items-center space-x-2">
+      <a href={`${base}/`} class="flex items-center space-x-2">
+        <img src={`${base}/images/assets/logo.png`} alt="4M Industrial Development Limited" class="h-10 w-auto" />
+      </a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="hidden md:flex items-center space-x-8">
+      <a href={`${base}/`} class="text-fun font-medium transition-all duration-200 hover:text-hover hover:scale-105">Home</a>
+      <a href={`${base}/about`} class="text-fun font-medium transition-all duration-200 hover:text-hover hover:scale-105">About Us</a>
+      <a href={`${base}/products`} class="text-fun font-medium transition-all duration-200 hover:text-hover hover:scale-105">Products</a>
+      <a href={`${base}/awards`} class="text-fun font-medium transition-all duration-200 hover:text-hover hover:scale-105">Awards</a>
+      <a href={`${base}/news`} class="text-fun font-medium transition-all duration-200 hover:text-hover hover:scale-105">News</a>
+      <a href={`${base}/contact`} class="text-fun font-medium transition-all duration-200 hover:text-hover hover:scale-105">Contact Us</a>
+    </nav>
+
+    <!-- Mobile menu button -->
+    <button 
+      class="md:hidden p-2 rounded-md hover:bg-accent"
+      x-data="{ open: false }"
+      @click="open = !open"
+      aria-label="Toggle menu"
+    >
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile navigation -->
+  <div 
+    class="md:hidden border-t"
+    x-data="{ open: false }"
+    x-show="open"
+    x-transition
+  >
+    <div class="container-custom py-6 space-y-2">
+      <a href={`${base}/`} class="block py-3 text-fun font-medium transition-colors hover:text-hover">Home</a>
+      <a href={`${base}/about`} class="block py-3 text-fun font-medium transition-colors hover:text-hover">About Us</a>
+      <a href={`${base}/products`} class="block py-3 text-fun font-medium transition-colors hover:text-hover">Products</a>
+      <a href={`${base}/awards`} class="block py-3 text-fun font-medium transition-colors hover:text-hover">Awards</a>
+      <a href={`${base}/news`} class="block py-3 text-fun font-medium transition-colors hover:text-hover">News</a>
+      <a href={`${base}/contact`} class="block py-3 text-fun font-medium transition-colors hover:text-hover">Contact Us</a>
+    </div>
+  </div>
+</header>

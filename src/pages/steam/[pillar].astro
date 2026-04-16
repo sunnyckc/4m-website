@@ -1,8 +1,8 @@
 ---
-import Layout from '../../components/layout/Layout.astro';
-import Button from '../../components/ui/button.astro';
-import { getBase } from '../../data/helpers';
-import { steamPillarConfig, getSteamPillarSlugs, type SteamPillarSlug } from '../../data/steam-pillars';
+import { Layout } from '@/layouts';
+import { Button } from '@/components';
+import { getBase } from '@/config';
+import { steamPillarConfig, getSteamPillarSlugs, type SteamPillarSlug } from '@/config';
 
 export function getStaticPaths() {
   return getSteamPillarSlugs().map((pillar) => ({

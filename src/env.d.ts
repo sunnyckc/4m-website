@@ -9,6 +9,8 @@ declare module '*.astro' {
 interface ImportMetaEnv {
   readonly SITE_URL?: string;
   readonly PUBLIC_SITE_NAME?: string;
+  /** Base URL of your backend (no trailing slash), e.g. https://api.example.com/v1 */
+  readonly PUBLIC_API_URL?: string;
 }
 
 interface ImportMeta {

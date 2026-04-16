@@ -1,5 +1,5 @@
 ---
-import { cn } from "../../lib/utils";
+import { cn } from '@/utils';
 
 export interface Props {
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
@@ -8,6 +8,8 @@ export interface Props {
   href?: string;
   type?: "button" | "submit" | "reset";
   onclick?: string;
+  target?: string;
+  rel?: string;
 }
 
 const { 
@@ -16,6 +18,8 @@ const {
   class: className, 
   href,
   type = "button",
+  target,
+  rel,
   ...props 
 } = Astro.props;
 
@@ -46,7 +50,7 @@ const classes = cn(
 ---
 
 {href ? (
-  <a href={href} class={classes} {...props}>
+  <a href={href} class={classes} target={target} rel={rel} {...props}>
     <slot />
   </a>
 ) : (

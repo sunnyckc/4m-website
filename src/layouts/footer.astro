@@ -1,0 +1,67 @@
+---
+import { getContactInfo } from '@/repositories/site';
+import { getBase } from '@/config';
+
+const contactInfo = await getContactInfo();
+const base = getBase();
+---
+
+<footer class="border-t bg-muted/50">
+  <div class="container-custom py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Company Info -->
+      <div class="space-y-4">
+        <div class="flex items-center space-x-2">
+          <img src={`${base}/images/assets/logo.png`} alt="4M Industrial Development Limited" class="h-8 w-auto" />
+        </div>
+        <p class="text-sm text-muted-foreground">
+          4M Industrial Development Limited - Educational toys and STEAM learning products for inspiring young minds.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="space-y-4">
+        <h3 class="text-sm font-semibold">Quick Links</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href={`${base}/products`} class="text-muted-foreground hover:text-foreground transition-colors">Products</a></li>
+          <li><a href={`${base}/awards`} class="text-muted-foreground hover:text-foreground transition-colors">Awards</a></li>
+          <li><a href={`${base}/news`} class="text-muted-foreground hover:text-foreground transition-colors">News</a></li>
+          <li><a href={`${base}/about`} class="text-muted-foreground hover:text-foreground transition-colors">About</a></li>
+        </ul>
+      </div>
+
+      <!-- Support -->
+      <div class="space-y-4">
+        <h3 class="text-sm font-semibold">Support</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href={`${base}/contact`} class="text-muted-foreground hover:text-foreground transition-colors">Contact Us</a></li>
+          <li><a href="#" class="text-muted-foreground hover:text-foreground transition-colors">FAQ</a></li>
+          <li><a href="#" class="text-muted-foreground hover:text-foreground transition-colors">Shipping</a></li>
+          <li><a href="#" class="text-muted-foreground hover:text-foreground transition-colors">Returns</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="space-y-4">
+        <h3 class="text-sm font-semibold">Contact</h3>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li>Email: {contactInfo.contact.email.display}</li>
+          <li>Phone: {contactInfo.contact.phone.display}</li>
+          <li>Address: {contactInfo.contact.address.full}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-8 pt-8 border-t">
+      <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <p class="text-sm text-muted-foreground">
+          © 2026 {contactInfo.company.name}. All rights reserved.
+        </p>
+        <div class="flex space-x-4 text-sm">
+          <a href="#" class="text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</a>
+          <a href="#" class="text-muted-foreground hover:text-foreground transition-colors">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

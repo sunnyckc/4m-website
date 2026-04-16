@@ -1,0 +1,77 @@
+---
+export interface Props {
+  slides: any[];
+  height?: string;
+}
+
+const { slides = [], height = "h-96 md:h-[500px] lg:h-[600px]" } = Astro.props;
+import { Button } from '@/components/ui';
+---
+
+<div class={`relative overflow-hidden rounded-lg ${height} bg-gray-900`}>
+  {slides.length > 0 && (
+    <div class="relative w-full h-full">
+      <!-- First slide (visible by default) -->
+      <div class="absolute inset-0 w-full h-full">
+        <!-- Background Image -->
+        <div 
+          class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={`background-image: url('${slides[0].image}')`}
+        ></div>
+        
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black/40"></div>
+        
+        <!-- Content -->
+        <div class="relative z-10 flex items-center justify-center h-full">
+          <div class="container-custom">
+            <div class="max-w-4xl mx-auto text-center text-white space-y-6">
+              <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+                {slides[0].title}
+              </h1>
+              
+              {slides[0].subtitle && (
+                <h2 class="text-xl md:text-2xl lg:text-3xl font-medium opacity-90">
+                  {slides[0].subtitle}
+                </h2>
+              )}
+              
+              {slides[0].description && (
+                <p class="text-lg md:text-xl opacity-80 max-w-2xl mx-auto">
+                  {slides[0].description}
+                </p>
+              )}
+              
+              {slides[0].ctaText && slides[0].ctaLink && (
+                <div class="pt-4">
+                  <Button 
+                    href={slides[0].ctaLink}
+                    variant={slides[0].ctaVariant || "default"}
+                    size="lg"
+                    class="bg-white text-black hover:bg-white/90"
+                  >
+                    {slides[0].ctaText}
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+  
+  <!-- Simple indicator that this is a slideshow -->
+  {slides.length > 1 && (
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+      {slides.map((_, index) => (
+        <div class={`w-3 h-3 rounded-full ${index === 0 ? 'bg-white' : 'bg-white/50'}`}></div>
+      ))}
+    </div>
+  )}
+  
+  <!-- Static text indicator -->
+  <div class="absolute top-4 left-4 z-20 bg-black/50 text-white px-3 py-1 rounded text-sm">
+    Slideshow: {slides.length} slides (Static view - Slide 1)
+  </div>
+</div>

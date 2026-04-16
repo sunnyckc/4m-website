@@ -1,11 +1,14 @@
 ---
-import Layout from '../../components/layout/Layout.astro';
-import ProductImageGallery from '../../components/products/ProductImageGallery.astro';
-import RelatedProducts from '../../components/products/RelatedProducts.astro';
-import ManualDownloads from '../../components/products/ManualDownloads.astro';
-import Badge from '../../components/ui/badge.astro';
-import { getProducts, getProductThumbnail, getBase } from '../../data/helpers';
-import type { Product } from '../../data/helpers';
+import { Layout } from '@/layouts';
+import {
+  ProductImageGallery,
+  RelatedProducts,
+  ManualDownloads,
+  Badge,
+} from '@/components';
+import { getProducts, getProductThumbnail } from '@/repositories/catalog';
+import { getBase } from '@/config';
+import type { Product } from '@/types';
 
 export async function getStaticPaths() {
   const products = await getProducts();

@@ -5,8 +5,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/data/*": ["./src/data/*"]
+      "@/layouts/*": ["./src/layouts/*"],
+      "@public/*": ["./public/*"]
     },
     "strict": true,
     "noEmit": true,

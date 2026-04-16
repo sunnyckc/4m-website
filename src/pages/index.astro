@@ -1,13 +1,20 @@
 ---
-import Layout from '../components/layout/Layout.astro';
-import Button from '../components/ui/button.astro';
-import Card from '../components/ui/card.astro';
-import Badge from '../components/ui/badge.astro';
-import HeroSlideshow from '../components/ui/hero-slideshow.astro';
-import SimpleHero from '../components/ui/simple-hero.astro';
-import ImageCollage from '../components/ui/image-collage.astro';
-import { getHotProducts, getFeaturedAwards, getFeaturedNews, getHeroSlides, getSteamCollageData, getProductThumbnail, getSiteLinks, getBase } from '../data/helpers';
-import { formatDate } from '../lib/utils';
+import { Layout } from '@/layouts';
+import {
+  Button,
+  Card,
+  Badge,
+  HeroSlideshow,
+  SimpleHero,
+  ImageCollage,
+} from '@/components';
+import { getHotProducts, getProductThumbnail } from '@/repositories/catalog';
+import { getFeaturedAwards } from '@/repositories/awards';
+import { getSiteLinks } from '@/repositories/site';
+import { getBase } from '@/config';
+import { getFeaturedNews } from '@/repositories/news';
+import type { HeroSlide } from '@/types';
+import { formatDate } from '@/utils';
 
 const hotProducts = await getHotProducts();
 const featuredAwards = await getFeaturedAwards();
@@ -16,7 +23,7 @@ const siteLinks = await getSiteLinks();
 const base = getBase();
 
 // Official 4M hero slides with actual banner images
-const heroSlides = [
+const heroSlides: HeroSlide[] = [
   {
     id: "slide-1",
     image: `${base}/images/hero/4m-banner-1.png`,

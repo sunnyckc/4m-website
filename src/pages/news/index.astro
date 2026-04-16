@@ -1,7 +1,7 @@
 ---
-import Layout from '../../components/layout/Layout.astro';
-import { getAllNews, formatDate } from '../../data/news.ts';
-import { getBase } from '../../data/helpers';
+import { Layout } from '@/layouts';
+import { getAllNews, formatDate } from '@/repositories/news';
+import { getBase } from '@/config';
 
 const base = getBase();
 

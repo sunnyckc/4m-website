@@ -1,6 +1,6 @@
 ---
-import Layout from '../components/layout/Layout.astro';
-import { getContactInfo } from '../data/helpers.ts';
+import { Layout } from '@/layouts';
+import { getContactInfo } from '@/repositories/site';
 
 const contactInfo = await getContactInfo();
 ---
