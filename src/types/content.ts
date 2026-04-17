@@ -43,6 +43,11 @@ export interface ProductCategoriesData {
 export interface CatalogButton {
   label: string;
   url: string;
+  /** Path under `public/` (e.g. `/images/hero/hero-1.svg`) or absolute URL */
+  imageSrc?: string;
+  imageAlt?: string;
+  description?: string;
+  ctaLabel?: string;
 }
 
 export interface SiteLinks {

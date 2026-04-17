@@ -17,3 +17,11 @@ export type {
   CatalogButton,
   ContactInfo,
 } from './content';
+export type {
+  HomeCatalogHotCarouselJson,
+  HomeCatalogHotJson,
+  HomeGalleryLayoutJson,
+  HomeGallerySteamJson,
+  HomeHeroJson,
+  HomeHeroSliderOptions,
+} from './home-sections';

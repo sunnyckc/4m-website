@@ -1,0 +1,31 @@
+{
+  "slides": [
+    {
+      "id": "slide-1",
+      "media": { "type": "image", "src": "/images/hero/4m-banner-1.png" },
+      "imageAlt": "Educational Toys for Young Minds",
+      "hoverText": "Discover our comprehensive range of STEAM educational toys designed to develop critical thinking, creativity, and problem-solving skills in children.",
+      "textPrimary": "Educational Toys for Young Minds",
+      "textSecondary": "Inspiring Learning Through Play",
+      "href": "/products",
+      "ctaLabel": "Explore Products"
+    },
+    {
+      "id": "slide-2",
+      "media": { "type": "image", "src": "/images/hero/4m-banner-2.png" },
+      "imageAlt": "STEAM Learning Made Fun",
+      "hoverText": "Our award-winning educational toys integrate essential STEAM concepts into engaging, hands-on learning experiences for children of all ages.",
+      "textPrimary": "STEAM Learning Made Fun",
+      "textSecondary": "Science • Technology • Engineering • Arts • Mathematics",
+      "href": "/about",
+      "ctaLabel": "Learn More"
+    }
+  ],
+  "options": {
+    "autoplay": true,
+    "autoplayDelayMs": 5000,
+    "showDots": true,
+    "showArrows": true,
+    "heightClassName": "min-h-[370px] h-[370px]"
+  }
+}

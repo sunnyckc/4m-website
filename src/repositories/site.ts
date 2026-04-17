@@ -1,5 +1,16 @@
+import type { GalleryGridItem, HeroBannerSlide } from '@/components/organisms/home/types';
+import homeCatalogHotFallback from '@public/data/home/catalog-hot.json';
+import homeGallerySteamFallback from '@public/data/home/gallery-steam.json';
+import homeHeroFallback from '@public/data/home/hero.json';
 import { loadPublicJson } from '@/utils/load-public-json';
+import { resolveSiteUrl } from '@/utils/resolve-site-url';
 import { CONTACT_INFO_FALLBACK } from '@/constants/contact-fallback';
+import { COMPANY_ADDRESS, getCompanyAddressFull } from '@/constants/company';
+import type {
+  HomeCatalogHotJson,
+  HomeGallerySteamJson,
+  HomeHeroJson,
+} from '@/types/home-sections';
 import type {
   HeroSlide,
   ProductCategoriesData,
@@ -9,6 +20,41 @@ import type {
   SteamCollageData,
   ContactInfo,
 } from '@/types/content';
+
+function resolveHeroSlide(slide: HeroBannerSlide): HeroBannerSlide {
+  const href = slide.href != null ? resolveSiteUrl(slide.href) ?? slide.href : null;
+  if (slide.media.type === 'video') {
+    return {
+      ...slide,
+      media: {
+        ...slide.media,
+        src: resolveSiteUrl(slide.media.src) ?? slide.media.src,
+        posterUrl:
+          slide.media.posterUrl != null
+            ? resolveSiteUrl(slide.media.posterUrl) ?? slide.media.posterUrl
+            : null,
+      },
+      href,
+    };
+  }
+  return {
+    ...slide,
+    media: { ...slide.media, src: resolveSiteUrl(slide.media.src) ?? slide.media.src },
+    href,
+  };
+}
+
+function resolveGalleryItem(item: GalleryGridItem): GalleryGridItem {
+  return {
+    ...item,
+    imageUrl: item.imageUrl != null ? resolveSiteUrl(item.imageUrl) ?? item.imageUrl : null,
+    href: item.href != null ? resolveSiteUrl(item.href) ?? item.href : null,
+    batches: item.batches?.map((b) => ({
+      ...b,
+      href: b.href != null ? resolveSiteUrl(b.href) ?? b.href : null,
+    })),
+  };
+}
 
 const STEAM_COLLAGE_FALLBACK: SteamCollageData = {
   mainItem: {
@@ -50,5 +96,38 @@ export async function getSiteLinks(): Promise<SiteLinks> {
 }
 
 export async function getContactInfo(): Promise<ContactInfo> {
-  return loadPublicJson('contact.json', CONTACT_INFO_FALLBACK);
+  const loaded = await loadPublicJson('contact.json', CONTACT_INFO_FALLBACK);
+  return {
+    ...loaded,
+    contact: {
+      ...loaded.contact,
+      address: {
+        ...COMPANY_ADDRESS,
+        full: getCompanyAddressFull(),
+      },
+    },
+  };
+}
+
+export async function getHomeHero(): Promise<HomeHeroJson> {
+  const data = await loadPublicJson('home/hero.json', homeHeroFallback as HomeHeroJson);
+  return {
+    ...data,
+    slides: data.slides.map(resolveHeroSlide),
+  };
+}
+
+export async function getHomeGallerySteam(): Promise<HomeGallerySteamJson> {
+  const data = await loadPublicJson(
+    'home/gallery-steam.json',
+    homeGallerySteamFallback as HomeGallerySteamJson,
+  );
+  return {
+    ...data,
+    items: data.items.map(resolveGalleryItem),
+  };
+}
+
+export async function getHomeCatalogHot(): Promise<HomeCatalogHotJson> {
+  return loadPublicJson('home/catalog-hot.json', homeCatalogHotFallback as HomeCatalogHotJson);
 }

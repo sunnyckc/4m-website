@@ -4,16 +4,21 @@ import {
   Button,
   Card,
   Badge,
-  HeroSlideshow,
-  SimpleHero,
-  ImageCollage,
+  HeroBannerSlider,
+  GalleryGrid,
+  CatalogSlider,
 } from '@/components';
 import { getHotProducts, getProductThumbnail } from '@/repositories/catalog';
 import { getFeaturedAwards } from '@/repositories/awards';
-import { getSiteLinks } from '@/repositories/site';
+import {
+  getHomeCatalogHot,
+  getHomeGallerySteam,
+  getHomeHero,
+  getSiteLinks,
+} from '@/repositories/site';
 import { getBase } from '@/config';
 import { getFeaturedNews } from '@/repositories/news';
-import type { HeroSlide } from '@/types';
+import type { CatalogSliderItem } from '@/components/organisms/home';
 import { formatDate } from '@/utils';
 
 const hotProducts = await getHotProducts();
@@ -21,90 +26,38 @@ const featuredAwards = await getFeaturedAwards();
 const featuredNews = await getFeaturedNews();
 const siteLinks = await getSiteLinks();
 const base = getBase();
+const homeHero = await getHomeHero();
+const homeGallerySteam = await getHomeGallerySteam();
+const homeCatalogHot = await getHomeCatalogHot();
 
-// Official 4M hero slides with actual banner images
-const heroSlides: HeroSlide[] = [
-  {
-    id: "slide-1",
-    image: `${base}/images/hero/4m-banner-1.png`,
-    title: "Educational Toys for Young Minds",
-    subtitle: "Inspiring Learning Through Play",
-    description: "Discover our comprehensive range of STEAM educational toys designed to develop critical thinking, creativity, and problem-solving skills in children.",
-    ctaText: "Explore Products",
-    ctaLink: `${base}/products`,
-    ctaVariant: "default"
-  },
-  {
-    id: "slide-2", 
-    image: `${base}/images/hero/4m-banner-2.png`,
-    title: "STEAM Learning Made Fun",
-    subtitle: "Science • Technology • Engineering • Arts • Mathematics",
-    description: "Our award-winning educational toys integrate essential STEAM concepts into engaging, hands-on learning experiences for children of all ages.",
-    ctaText: "Learn More",
-    ctaLink: `${base}/about`,
-    ctaVariant: "outline"
-  }
-];
-
-// Direct STEAM collage data with 4M images
-const steamCollageData = {
-  "mainItem": {
-    "id": "main-steam",
-    "title": "STEAM Education Hub",
-    "image": `${base}/images/steam/hero-main.jpg`,
-    "textColor": "text-white",
-    "href": `${base}/steam`
-  },
-  "smallItems": [
-    {
-      "id": "science",
-      "title": "Science",
-      "image": `${base}/images/steam/hero-a.jpg`,
-      "textColor": "text-white",
-      "href": `${base}/steam/science`
-    },
-    {
-      "id": "technology",
-      "title": "Technology", 
-      "image": `${base}/images/steam/hero-b.jpg`,
-      "textColor": "text-white",
-      "href": `${base}/steam/technology`
-    },
-    {
-      "id": "engineering",
-      "title": "Engineering",
-      "image": `${base}/images/steam/hero-c.jpg`,
-      "textColor": "text-white",
-      "href": `${base}/steam/engineering`
-    },
-    {
-      "id": "arts",
-      "title": "Arts",
-      "image": `${base}/images/steam/hero-d.jpg`,
-      "textColor": "text-white",
-      "href": `${base}/steam/arts`
-    },
-    {
-      "id": "mathematics",
-      "title": "Mathematics",
-      "image": `${base}/images/steam/hero-e.jpg`,
-      "textColor": "text-white",
-      "href": `${base}/steam/mathematics`
-    }
-  ]
-};
+const hotCatalogItems: CatalogSliderItem[] = hotProducts.map((p) => ({
+  id: p.folder_name,
+  textPrimary: p.item_name,
+  textSecondary: p.item_description,
+  imageUrl: getProductThumbnail(p) || undefined,
+  imageAlt: p.item_name,
+  hoverText: `View ${p.item_name}`,
+  href: `${base}/products/${p.folder_name}`,
+  batches: [
+    { label: p.category_main.replace(/-/g, ' ') },
+    ...(p.hot_item ? [{ label: 'Hot' as const }] : []),
+  ],
+}));
 ---
 
 <Layout title="4M Industrial Development Limited - STEAM Educational Toys" description="4M Industrial Development Limited - Award-winning educational toys and STEAM learning products. Inspiring creativity, critical thinking, and innovation in children through hands-on educational play experiences.">
   <!-- Hero Slideshow Section -->
   <section class="mb-8">
-    <!-- Full slideshow with auto-height -->
-    <HeroSlideshow 
-      slides={heroSlides}
-      autoplay={true}
-      autoplayInterval={5000}
-      showIndicators={true}
-      showArrows={false}
+    <HeroBannerSlider
+      client:load
+      slides={homeHero.slides}
+      autoplay={homeHero.options?.autoplay ?? true}
+      autoplayDelayMs={homeHero.options?.autoplayDelayMs ?? 5000}
+      showDots={homeHero.options?.showDots ?? true}
+      showArrows={homeHero.options?.showArrows ?? true}
+      className={homeHero.options?.className}
+      heightClassName={homeHero.options?.heightClassName}
+      loop={homeHero.options?.loop ?? true}
     />
   </section>
 
@@ -112,16 +65,20 @@ const steamCollageData = {
   <section class="py-8 lg:py-12">
     <div class="container-custom">
       <div class="text-center space-y-4 mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-fun">STEAM</h2>
-        <p class="text-lg text-muted-foreground max-w-3xl mx-auto text-comic">
-          Essential elements of healthy mental development are integrated into our product designs and throughout our production process. It is these fundamental STEAM principles that foster creativity, critical thinking, and innovation in young learners.
-        </p>
+        <h2 class="text-3xl md:text-4xl font-bold text-fun">{homeGallerySteam.title}</h2>
+        {homeGallerySteam.description ? (
+          <p class="text-lg text-muted-foreground max-w-3xl mx-auto text-comic">
+            {homeGallerySteam.description}
+          </p>
+        ) : null}
       </div>
 
-      <ImageCollage 
-        mainItem={steamCollageData.mainItem}
-        smallItems={steamCollageData.smallItems}
-        class="w-full"
+      <GalleryGrid
+        client:load
+        items={homeGallerySteam.items}
+        gridClassName={homeGallerySteam.layout?.gridClassName ?? 'grid-cols-1 md:grid-cols-3'}
+        gapClassName={homeGallerySteam.layout?.gapClassName ?? 'gap-2'}
+        className={homeGallerySteam.layout?.className ?? 'w-full max-w-4xl mx-auto'}
       />
     </div>
   </section>
@@ -131,47 +88,26 @@ const steamCollageData = {
     <section class="py-16 lg:py-24 bg-muted/30">
       <div class="container-custom">
         <div class="text-center space-y-4 mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-fun">Hot Products</h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
-            Discover our most popular educational toys and STEAM learning kits, loved by children and recommended by educators worldwide.
-          </p>
+          <h2 class="text-3xl md:text-4xl font-bold text-fun">{homeCatalogHot.title}</h2>
+          {homeCatalogHot.description ? (
+            <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
+              {homeCatalogHot.description}
+            </p>
+          ) : null}
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {hotProducts.slice(0, 3).map((product) => (
-            <Card class="overflow-hidden hover:shadow-lg transition-shadow card-playful">
-              <div class="aspect-square bg-muted relative">
-                <img 
-                  src={getProductThumbnail(product)} 
-                  alt={product.item_name}
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                />
-                <!-- Hot Badge -->
-                <div class="absolute top-2 right-2">
-                  <Badge variant="destructive" class="bg-orange-500 hover:bg-orange-600 text-xs font-comic-neue">
-                    Hot
-                  </Badge>
-                </div>
-              </div>
-              <div class="p-6 space-y-4">
-                <div class="space-y-2">
-                  <Badge variant="secondary" class="font-comic-neue">{product.category_main.replace('-', ' ')}</Badge>
-                  <h3 class="text-xl font-semibold font-fredoka">{product.item_name}</h3>
-                  <p class="text-muted-foreground font-comic-neue">{product.item_description}</p>
-                </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-muted-foreground capitalize font-comic-neue">
-                    {product.category_sub.replace('-', ' ')}
-                  </span>
-                  <Button href={`${base}/products/${product.folder_name}`} variant="outline" class="font-fredoka btn-bouncy">
-                    View Details
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+        <CatalogSlider
+          client:load
+          items={hotCatalogItems}
+          itemsPerSlide={homeCatalogHot.carousel.itemsPerSlide}
+          initialSlideIndex={homeCatalogHot.carousel.initialSlideIndex ?? 0}
+          showArrows={homeCatalogHot.carousel.showArrows ?? true}
+          showDots={
+            (homeCatalogHot.carousel.showDots ?? true) &&
+            hotCatalogItems.length > homeCatalogHot.carousel.itemsPerSlide
+          }
+          slideGridClassName={homeCatalogHot.carousel.slideGridClassName}
+        />
 
         <div class="flex justify-center items-center gap-4 mt-12 flex-wrap">
           <Button href={`${base}/products`} size="lg" class="font-fredoka btn-bouncy">

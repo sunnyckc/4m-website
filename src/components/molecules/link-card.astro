@@ -1,0 +1,40 @@
+---
+import Button from '@/components/ui/button.astro';
+
+interface Props {
+  imageSrc: string;
+  imageAlt: string;
+  title: string;
+  description?: string;
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+const { imageSrc, imageAlt, title, description, ctaLabel, ctaHref } = Astro.props;
+---
+
+<div
+  class="flex flex-col overflow-hidden rounded-none border bg-card text-card-foreground shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg sm:flex-row"
+>
+  <div
+    class="relative flex aspect-[4/3] w-full shrink-0 items-center justify-center bg-card sm:aspect-auto sm:h-auto sm:w-[min(44%,220px)]"
+  >
+    <img
+      src={imageSrc}
+      alt={imageAlt}
+      class="h-full w-full object-contain"
+      loading="lazy"
+    />
+  </div>
+  <div class="flex flex-1 flex-col justify-center gap-3 p-5 sm:p-6">
+    <div class="space-y-2">
+      <h3 class="text-lg font-semibold leading-snug text-foreground">{title}</h3>
+      {description && <p class="text-sm text-muted-foreground leading-relaxed">{description}</p>}
+    </div>
+    <div>
+      <Button href={ctaHref} variant="default" size="sm" target="_blank" rel="noopener noreferrer">
+        {ctaLabel}
+      </Button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+{
+  "title": "STEAM",
+  "description": "Essential elements of healthy mental development are integrated into our product designs and throughout our production process. It is these fundamental STEAM principles that foster creativity, critical thinking, and innovation in young learners.",
+  "items": [
+    {
+      "id": "main-steam",
+      "textPrimary": "STEAM Education Hub",
+      "textSecondary": "Explore the full STEAM hub.",
+      "imageUrl": "/images/steam/hero-main.jpg",
+      "imageAlt": "STEAM Education Hub",
+      "hoverText": "Open STEAM hub",
+      "href": "/steam",
+      "batches": [{ "label": "Featured", "href": "/steam" }],
+      "span": { "default": { "col": 1, "row": 1 }, "md": { "col": 2, "row": 2 } }
+    },
+    {
+      "id": "science",
+      "textPrimary": "Science",
+      "imageUrl": "/images/steam/hero-a.jpg",
+      "imageAlt": "Science",
+      "hoverText": "Science",
+      "href": "/steam/science",
+      "span": { "default": { "col": 1, "row": 1 }, "md": { "col": 1, "row": 1 } }
+    },
+    {
+      "id": "technology",
+      "textPrimary": "Technology",
+      "imageUrl": "/images/steam/hero-b.jpg",
+      "imageAlt": "Technology",
+      "hoverText": "Technology",
+      "href": "/steam/technology",
+      "span": { "default": { "col": 1, "row": 1 }, "md": { "col": 1, "row": 1 } }
+    },
+    {
+      "id": "engineering",
+      "textPrimary": "Engineering",
+      "imageUrl": "/images/steam/hero-c.jpg",
+      "imageAlt": "Engineering",
+      "hoverText": "Engineering",
+      "href": "/steam/engineering",
+      "span": { "default": { "col": 1, "row": 1 }, "md": { "col": 1, "row": 1 } }
+    },
+    {
+      "id": "arts",
+      "textPrimary": "Arts",
+      "imageUrl": "/images/steam/hero-d.jpg",
+      "imageAlt": "Arts",
+      "hoverText": "Arts",
+      "href": "/steam/arts",
+      "span": { "default": { "col": 1, "row": 1 }, "md": { "col": 1, "row": 1 } }
+    },
+    {
+      "id": "mathematics",
+      "textPrimary": "Mathematics",
+      "imageUrl": "/images/steam/hero-e.jpg",
+      "imageAlt": "Mathematics",
+      "hoverText": "Mathematics",
+      "href": "/steam/mathematics",
+      "span": { "default": { "col": 1, "row": 1 }, "md": { "col": 1, "row": 1 } }
+    }
+  ],
+  "layout": {
+    "gridClassName": "grid-cols-1 md:grid-cols-3",
+    "gapClassName": "gap-2",
+    "className": "w-full max-w-4xl mx-auto"
+  }
+}

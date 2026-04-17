@@ -10,12 +10,12 @@ const heroSlides = [
     id: "4m-hero",
     image: `${base}/images/4m-assets/New_Project_(60).png`,
     title: "4M - For Minds",
-    subtitle: "Helping children develop creativity and imagination since 1993"
+    subtitle: "Inspiring children to explore the world through creative and educational play"
   }
 ];
 ---
 
-<Layout title="About Us - 4M Industrial Development Limited" description="Learn about 4M's mission to help children develop creativity and imagination through innovative educational toys">
+<Layout title="About Us - 4M Industrial Development Limited" description="4M is an international toy brand inspiring children through creative and educational play — science, robotics, arts and crafts">
   <!-- Hero Section with Image -->
   <HeroSlideshow 
     slides={heroSlides} 
@@ -27,32 +27,22 @@ const heroSlides = [
 
   <div class="container-custom py-8">
     <!-- Main About Section -->
-    <div class="text-center space-y-4 mb-12">
+    <div class="text-center space-y-6 mb-12 max-w-3xl mx-auto">
       <h1 class="text-3xl md:text-4xl font-bold text-fun">About 4M</h1>
-      <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
-        4M has been helping children develop their creativity and imagination since our first product hit the market in 1993. 
-        We create high quality toys and crafts that are imaginative, creative, inspiring and fun.
+      <p class="text-lg text-muted-foreground text-comic">
+        4M is an international toy brand committed to inspiring children to explore the world around them through creative and educational play. From science and robotics to arts and crafts, 4M kits bring learning to life in a fun and engaging way.
+      </p>
+      <p class="text-lg text-muted-foreground text-comic">
+        4M has been helping children develop their creativity and imagination since our first product hit the market in 1993. Following the huge success of Jumbo Chalk and our popular glow-in-the-dark products, we branched into scientific educational toys in 1999 with the launch of Kidz Labs. Now in our third decade of operations, we continue to innovate and manufacture premium products that stimulate mental development, and our 300-strong product catalogue is continually revamped by our home-grown Hong Kong design team.
       </p>
     </div>
 
-    <!-- 4M - For Minds Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-      <div class="space-y-6">
-        <h2 class="text-3xl md:text-4xl font-bold text-fun">4M – For Minds</h2>
-        <p class="text-lg text-muted-foreground text-comic">
-          Following the huge success of Jumbo Chalk and our popular glow-in-the-dark products, we branched into scientific educational toys in 1999 with the launch of Kidz Labs. Now in our third decade of operations, we continue to innovate and manufacture premium products that stimulate mental development.
-        </p>
-        <p class="text-lg text-muted-foreground text-comic">
-          Our 300-strong product catalogue is continually revamped by our home-grown Hong Kong design team. We are proud to now be in specialty boutiques, museum shops and up-market department stores in more than 80 countries around the world.
-        </p>
-      </div>
-      <div class="aspect-square rounded-lg overflow-hidden">
-        <img 
-          src={`${base}/images/4m-assets/About_Us_2.jpg`} 
-          alt="4M Educational Products" 
-          class="w-full h-full object-cover"
-        />
-      </div>
+    <div class="mb-16 max-w-2xl mx-auto aspect-square rounded-lg overflow-hidden">
+      <img
+        src={`${base}/images/4m-assets/About_Us_2.jpg`}
+        alt="4M Educational Products"
+        class="w-full h-full object-cover"
+      />
     </div>
 
     <!-- Four Minds Section -->

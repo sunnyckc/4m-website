@@ -1,4 +1,5 @@
 import type { ContactInfo } from '@/types/content';
+import { COMPANY_ADDRESS, getCompanyAddressFull } from '@/constants/company';
 
 /** Used when `public/data/contact.json` is missing or invalid. */
 export const CONTACT_INFO_FALLBACK: ContactInfo = {
@@ -17,11 +18,8 @@ export const CONTACT_INFO_FALLBACK: ContactInfo = {
       international: '+852 3589 8200',
     },
     address: {
-      line1: 'Unit 3129, 31/F, Sun Hung Kai Centre',
-      line2: '30 Harbour Road, Wan Chai, Hong Kong',
-      city: 'Hong Kong',
-      country: 'Hong Kong',
-      full: 'Unit 3129, 31/F, Sun Hung Kai Centre, 30 Harbour Road, Wan Chai, Hong Kong',
+      ...COMPANY_ADDRESS,
+      full: getCompanyAddressFull(),
     },
   },
   businessHours: {

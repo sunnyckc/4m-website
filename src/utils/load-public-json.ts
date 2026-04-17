@@ -5,6 +5,11 @@ import type {
   SiteLinks,
   SteamCollageData,
 } from '@/types/content';
+import type {
+  HomeCatalogHotJson,
+  HomeGallerySteamJson,
+  HomeHeroJson,
+} from '@/types/home-sections';
 
 /**
  * Load typed JSON from `public/data/*.json` (build-time dynamic import).
@@ -17,6 +22,9 @@ const publicDataLoaders = {
   'product-categories.json': () => import('@public/data/product-categories.json'),
   'site-links.json': () => import('@public/data/site-links.json'),
   'contact.json': () => import('@public/data/contact.json'),
+  'home/hero.json': () => import('@public/data/home/hero.json'),
+  'home/gallery-steam.json': () => import('@public/data/home/gallery-steam.json'),
+  'home/catalog-hot.json': () => import('@public/data/home/catalog-hot.json'),
 } as const;
 
 type PublicDataMap = {
@@ -25,6 +33,9 @@ type PublicDataMap = {
   'product-categories.json': ProductCategoriesData;
   'site-links.json': SiteLinks;
   'contact.json': ContactInfo;
+  'home/hero.json': HomeHeroJson;
+  'home/gallery-steam.json': HomeGallerySteamJson;
+  'home/catalog-hot.json': HomeCatalogHotJson;
 };
 
 export async function loadPublicJson<K extends PublicDataKey>(

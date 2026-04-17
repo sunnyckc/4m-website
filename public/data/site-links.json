@@ -2,11 +2,19 @@
   "catalog_buttons": [
     {
       "label": "E-Catalogue 2026",
-      "url": "https://www.4m-ind.com/4M2026_e-catalogue.html"
+      "url": "https://www.4m-ind.com/4M2026_e-catalogue.html",
+      "description": "Browse our full range of STEAM kits, science toys, and educational products.",
+      "imageSrc": "/images/hero/hero-1.svg",
+      "imageAlt": "E-Catalogue 2026 preview",
+      "ctaLabel": "View e-catalogue"
     },
     {
       "label": "Highlight Catalogue",
-      "url": "https://www.4m-ind.com/4M2026_NewItem.html"
+      "url": "https://www.4m-ind.com/4M2026_NewItem.html",
+      "description": "See the latest new items and seasonal highlights from 4M.",
+      "imageSrc": "/images/hero/hero-2.svg",
+      "imageAlt": "Highlight catalogue preview",
+      "ctaLabel": "View highlights"
     }
   ]
 }
