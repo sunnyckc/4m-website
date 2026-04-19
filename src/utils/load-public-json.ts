@@ -9,6 +9,7 @@ import type {
   HomeCatalogHotJson,
   HomeGallerySteamJson,
   HomeHeroJson,
+  HomeSocialProofJson,
 } from '@/types/home-sections';
 
 /**
@@ -25,6 +26,7 @@ const publicDataLoaders = {
   'home/hero.json': () => import('@public/data/home/hero.json'),
   'home/gallery-steam.json': () => import('@public/data/home/gallery-steam.json'),
   'home/catalog-hot.json': () => import('@public/data/home/catalog-hot.json'),
+  'home/social-proof.json': () => import('@public/data/home/social-proof.json'),
 } as const;
 
 type PublicDataMap = {
@@ -36,6 +38,7 @@ type PublicDataMap = {
   'home/hero.json': HomeHeroJson;
   'home/gallery-steam.json': HomeGallerySteamJson;
   'home/catalog-hot.json': HomeCatalogHotJson;
+  'home/social-proof.json': HomeSocialProofJson;
 };
 
 export async function loadPublicJson<K extends PublicDataKey>(

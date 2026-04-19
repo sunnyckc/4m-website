@@ -39,6 +39,22 @@ export type OrbitBannerKidPlacement = {
   widthPx?: number;
 };
 
+/** Orbit ring geometry for one viewport (px). Unset fields inherit from the next larger breakpoint. */
+export type OrbitBannerOrbitLayout = {
+  radiusPx?: number;
+  centerOffsetXPx?: number;
+  centerOffsetYPx?: number;
+  /** Default item box size when an item omits `sizePx`. */
+  itemSizePx?: number;
+  /** Circle accent diameter in `circleAccent` mode. */
+  itemCircleSizePx?: number;
+};
+
+/** Logo + title + subtitle + CTAs column: vertical nudge in px (negative = up, positive = down). */
+export type OrbitBannerTitleBlockPlacement = {
+  offsetYPx?: number;
+};
+
 /** Landscape hero with kid figure and orbiting product thumbnails (JSON-driven). */
 export type HomeHeroOrbitBannerJson = {
   title?: string;
@@ -61,6 +77,14 @@ export type HomeHeroOrbitBannerJson = {
   ctaHref?: string;
   secondaryCtaText?: string;
   secondaryCtaHref?: string;
+  /**
+   * Vertical offset for the main copy column (logo, titles, CTAs). Per breakpoint; omitted values inherit from the next larger size.
+   */
+  titleBlock?: {
+    large?: OrbitBannerTitleBlockPlacement;
+    medium?: OrbitBannerTitleBlockPlacement;
+    mobile?: OrbitBannerTitleBlockPlacement;
+  };
   background?: {
     image?: string;
     alt?: string;
@@ -71,10 +95,19 @@ export type HomeHeroOrbitBannerJson = {
   kid: {
     image?: string;
     alt?: string;
-    desktop: OrbitBannerKidPlacement;
+    /** Largest screens (1024px+). */
+    large?: OrbitBannerKidPlacement;
+    /** Tablet / medium (768px–1023px). */
+    medium?: OrbitBannerKidPlacement;
+    /** Narrow screens (under 768px). */
     mobile?: OrbitBannerKidPlacement;
+    /**
+     * @deprecated Use `large`. Still read when `large` is omitted (migration).
+     */
+    desktop?: OrbitBannerKidPlacement;
   };
   orbit: {
+    /** @deprecated Prefer `orbit.large` / per-breakpoint layout; still seeds `large` when used. */
     radiusPx?: number;
     /** Orbit center offset from anchor point in px (positive right/down). */
     centerOffsetXPx?: number;
@@ -82,12 +115,16 @@ export type HomeHeroOrbitBannerJson = {
     direction?: OrbitDirection;
     speedSeconds?: number;
     startAngleDeg?: number;
-    /** Default orbit item box size if an item does not provide `sizePx`. */
+    /** Default orbit item box size if an item does not provide `sizePx`. Seeds `large` layout. */
     itemSizePx?: number;
     /** Global display mode applied to all orbit items. */
     itemDisplayMode?: OrbitItemDisplayMode;
-    /** Global circle accent size (px) applied to all items in `circleAccent` mode. */
+    /** Global circle accent size (px) in `circleAccent` mode. Seeds `large` layout. */
     itemCircleSizePx?: number;
+    /** Orbit layout on large screens (1024px+). */
+    large?: OrbitBannerOrbitLayout;
+    medium?: OrbitBannerOrbitLayout;
+    mobile?: OrbitBannerOrbitLayout;
     /** White rectangle behind orbit item thumbnails. */
     itemWhiteRect?: boolean;
     /** Keep products upright while orbiting. */
@@ -165,4 +202,25 @@ export type HomeCatalogHotJson = {
   title: string;
   description?: string;
   carousel: HomeCatalogHotCarouselJson;
+};
+
+/** One partner / retailer / brand mark for the home “As seen on” ribbon. */
+export type HomeSocialProofItemJson = {
+  id?: string;
+  /** Display name (alt text and fallback if `logo` is missing). */
+  name: string;
+  /** Public URL to a PNG/SVG logo under `/public`. */
+  logo?: string;
+  /** Optional link when the mark is clickable. */
+  href?: string;
+  /** Slightly larger mark (e.g. featured partners in the center). */
+  emphasis?: boolean;
+};
+
+export type HomeSocialProofJson = {
+  title: string;
+  subtitle?: string;
+  items: HomeSocialProofItemJson[];
+  /** Optional section root class (Tailwind). */
+  className?: string;
 };

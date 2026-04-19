@@ -12,6 +12,7 @@ import type {
   OrbitSpeedStyle,
 } from '@/types/home-sections';
 
+import { resolveKidPlacements, resolveOrbitLayouts, resolveTitleBlockOffsets } from './hero-orbit-layout';
 import { HeroOrbitTunerPanel } from './hero-orbit-tuner-panel';
 
 export type HeroOrbitBannerProps = {
@@ -136,6 +137,7 @@ function getItemDisplayMode(
 function OrbitItemNode({
   item,
   sizePx,
+  responsiveOrbitSizing,
   counterClass,
   counterStyle,
   tiltDeg,
@@ -145,6 +147,8 @@ function OrbitItemNode({
 }: {
   item: OrbitBannerItemJson;
   sizePx: number;
+  /** When true, item box / circle accent size follow `--hero-orbit-item-size` / `--hero-orbit-item-circle`. */
+  responsiveOrbitSizing?: boolean;
   counterClass?: string;
   counterStyle?: React.CSSProperties;
   tiltDeg?: number;
@@ -170,13 +174,13 @@ function OrbitItemNode({
     <div
       className={cn(
         'relative flex shrink-0 items-center justify-center overflow-hidden rounded-lg transition-transform hover:scale-105',
+        responsiveOrbitSizing === true && 'hero-orbit-item-box-size',
         mode === 'rectangle'
           ? 'border border-white/40 bg-white/90 shadow-md ring-1 ring-black/5'
           : 'border border-transparent bg-transparent shadow-none',
       )}
       style={{
-        width: sizePx,
-        height: sizePx,
+        ...(responsiveOrbitSizing === true ? {} : { width: sizePx, height: sizePx }),
         backgroundColor: mode === 'rectangle' ? rectangleBg : undefined,
       }}
     >
@@ -184,8 +188,8 @@ function OrbitItemNode({
         <span
           className="pointer-events-none absolute left-1/2 top-1/2 rounded-full -translate-x-1/2 -translate-y-1/2"
           style={{
-            width: circleSize,
-            height: circleSize,
+            width: responsiveOrbitSizing === true ? 'var(--hero-orbit-item-circle)' : circleSize,
+            height: responsiveOrbitSizing === true ? 'var(--hero-orbit-item-circle)' : circleSize,
             backgroundColor: circleBg,
             opacity: 0.95,
           }}
@@ -242,6 +246,7 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
     ctaHref,
     secondaryCtaText,
     secondaryCtaHref,
+    titleBlock,
     background,
     kid,
     orbit,
@@ -250,14 +255,9 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
     minHeightClassName = 'min-h-[100dvh]',
   } = config;
 
-  const desktopPlacement = kid.desktop ?? {};
-  const mobilePlacement = kid.mobile ?? desktopPlacement;
-  const kidDesktopX = desktopPlacement.xPercent ?? 76;
-  const kidDesktopY = desktopPlacement.yPercent ?? 100;
-  const kidDesktopWidth = desktopPlacement.widthPx ?? 700;
-  const kidMobileX = mobilePlacement.xPercent ?? kidDesktopX;
-  const kidMobileY = mobilePlacement.yPercent ?? kidDesktopY;
-  const kidMobileWidth = mobilePlacement.widthPx ?? kidDesktopWidth;
+  const kidPl = resolveKidPlacements(kid);
+  const orbitLayouts = resolveOrbitLayouts(orbit);
+  const titleOffsets = resolveTitleBlockOffsets(titleBlock);
 
   const direction = orbit.direction ?? 'clockwise';
   const speedStyle = orbit.speedStyle ?? 'linear';
@@ -274,20 +274,38 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
 
   const startAngle = orbit.startAngleDeg ?? -90;
   const n = Math.max(1, items.length);
-  const radius = orbit.radiusPx ?? 250;
-  const centerOffsetXPx = orbit.centerOffsetXPx ?? -180;
-  const centerOffsetYPx = orbit.centerOffsetYPx ?? -300;
   const defaultItemSizePx = orbit.itemSizePx ?? 72;
   const backgroundOverlayWhiteOpacity = clamp(0, background?.overlayWhiteOpacity ?? 0, 1);
 
   const sectionStyle = {
     '--hero-orbit-duration': `${orbit.speedSeconds ?? 18}s`,
-    '--hero-orbit-kid-x-mobile': `${kidMobileX}%`,
-    '--hero-orbit-kid-y-mobile': `${kidMobileY}%`,
-    '--hero-orbit-kid-x-desktop': `${kidDesktopX}%`,
-    '--hero-orbit-kid-y-desktop': `${kidDesktopY}%`,
-    '--hero-orbit-kid-w-mobile': `${kidMobileWidth}px`,
-    '--hero-orbit-kid-w-desktop': `${kidDesktopWidth}px`,
+    '--hero-orbit-kid-x-mobile': `${kidPl.mobile.xPercent}%`,
+    '--hero-orbit-kid-y-mobile': `${kidPl.mobile.yPercent}%`,
+    '--hero-orbit-kid-w-mobile': `${kidPl.mobile.widthPx}px`,
+    '--hero-orbit-kid-x-medium': `${kidPl.medium.xPercent}%`,
+    '--hero-orbit-kid-y-medium': `${kidPl.medium.yPercent}%`,
+    '--hero-orbit-kid-w-medium': `${kidPl.medium.widthPx}px`,
+    '--hero-orbit-kid-x-large': `${kidPl.large.xPercent}%`,
+    '--hero-orbit-kid-y-large': `${kidPl.large.yPercent}%`,
+    '--hero-orbit-kid-w-large': `${kidPl.large.widthPx}px`,
+    '--hero-orbit-radius-mobile': `${orbitLayouts.mobile.radiusPx}px`,
+    '--hero-orbit-cx-mobile': `${orbitLayouts.mobile.centerOffsetXPx}px`,
+    '--hero-orbit-cy-mobile': `${orbitLayouts.mobile.centerOffsetYPx}px`,
+    '--hero-orbit-item-size-mobile': `${orbitLayouts.mobile.itemSizePx}px`,
+    '--hero-orbit-item-circle-mobile': `${orbitLayouts.mobile.itemCircleSizePx}px`,
+    '--hero-orbit-radius-medium': `${orbitLayouts.medium.radiusPx}px`,
+    '--hero-orbit-cx-medium': `${orbitLayouts.medium.centerOffsetXPx}px`,
+    '--hero-orbit-cy-medium': `${orbitLayouts.medium.centerOffsetYPx}px`,
+    '--hero-orbit-item-size-medium': `${orbitLayouts.medium.itemSizePx}px`,
+    '--hero-orbit-item-circle-medium': `${orbitLayouts.medium.itemCircleSizePx}px`,
+    '--hero-orbit-radius-large': `${orbitLayouts.large.radiusPx}px`,
+    '--hero-orbit-cx-large': `${orbitLayouts.large.centerOffsetXPx}px`,
+    '--hero-orbit-cy-large': `${orbitLayouts.large.centerOffsetYPx}px`,
+    '--hero-orbit-item-size-large': `${orbitLayouts.large.itemSizePx}px`,
+    '--hero-orbit-item-circle-large': `${orbitLayouts.large.itemCircleSizePx}px`,
+    '--hero-title-offset-y-mobile': `${titleOffsets.mobile}px`,
+    '--hero-title-offset-y-medium': `${titleOffsets.medium}px`,
+    '--hero-title-offset-y-large': `${titleOffsets.large}px`,
   } as React.CSSProperties;
 
   const fallbackBg = background?.fallbackColor ?? '#e5e7eb';
@@ -345,7 +363,7 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
     <section
       className={cn(
         /* Clip orbit + kid (absolute) so nothing paints outside the hero box */
-        'relative mb-0 flex min-h-0 w-full flex-col overflow-hidden',
+        'hero-orbit-section relative mb-0 flex min-h-0 w-full flex-col overflow-hidden',
         minHeightClassName,
         className,
       )}
@@ -378,8 +396,8 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
       {/*
         No z-index on this wrapper so children can stack vs. orbit (z-3): line 1 uses z-[2], rest z-[4].
       */}
-      <div className="relative mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col justify-center px-4 py-10 pb-12 sm:px-6 lg:px-8 md:py-12 md:pb-14">
-        <div className="flex w-full max-w-full flex-col justify-center gap-4 pb-1 md:max-w-[60%]">
+      <div className="relative z-10 mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col justify-center px-4 py-10 pb-12 sm:px-6 lg:px-8 md:py-12 md:pb-14">
+        <div className="hero-orbit-title-block flex w-full max-w-full flex-col justify-center gap-4 pb-1 md:max-w-[60%]">
           <img
             src={`${base}/images/assets/logo.png`}
             alt="4M Industrial Development Limited"
@@ -462,25 +480,14 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
       <div className="hero-orbit-anchor">
         <div className="relative h-0 w-0">
           {items.length > 0 ? (
-            <div
-              className="pointer-events-none absolute left-0 top-0 z-0"
-              style={{
-                transform: `translate(${centerOffsetXPx}px, ${centerOffsetYPx}px)`,
-              }}
-            >
+            <div className="hero-orbit-translate pointer-events-none absolute left-0 top-0 z-0">
               {showCenterPoint ? (
                 <div className="absolute left-0 top-0 z-20 -translate-x-1/2 -translate-y-1/2">
                   <span className="block h-3 w-3 rounded-full border border-red-700 bg-red-500/90 shadow-[0_0_0_6px_rgba(239,68,68,0.2)]" />
                 </div>
               ) : null}
               {/* Single orbit track: all items revolve around one center point. */}
-              <div
-                className="relative -translate-x-1/2 -translate-y-1/2"
-                style={{
-                  width: radius * 2,
-                  height: radius * 2,
-                }}
-              >
+              <div className="hero-orbit-ring-size relative -translate-x-1/2 -translate-y-1/2">
                 <div
                   ref={ringRef}
                   className={cn(
@@ -495,24 +502,20 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
                 >
                   {items.map((item, i) => {
                     const angle = startAngle + (360 / n) * i;
-                    const angleRad = (angle * Math.PI) / 180;
                     const overrideSizePx = item.sizePx ?? 0;
                     const sizePx = overrideSizePx > 0 ? overrideSizePx : defaultItemSizePx;
                     const tiltDeg = getItemTiltDeg(config, item, i);
-                    const x = Math.cos(angleRad) * radius;
-                    const y = Math.sin(angleRad) * radius;
                     return (
                       <div
                         key={i}
-                        className="absolute left-1/2 top-1/2 origin-center will-change-transform"
-                        style={{
-                          transform: `translate(${x}px, ${y}px)`,
-                        }}
+                        className="hero-orbit-item-pos absolute left-1/2 top-1/2 origin-center will-change-transform"
+                        style={{ '--hero-item-angle': `${angle}deg` } as React.CSSProperties}
                       >
                         <div className="-translate-x-1/2 -translate-y-1/2">
                           <OrbitItemNode
                             item={item}
                             sizePx={sizePx}
+                            responsiveOrbitSizing={overrideSizePx <= 0}
                             counterClass={useRuntimeOscillation ? undefined : itemCounterClass}
                             counterStyle={
                               useRuntimeOscillation && keepItemsUpright
@@ -521,7 +524,9 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
                             }
                             tiltDeg={tiltDeg}
                             globalDisplayMode={globalItemDisplayMode}
-                            globalCircleSizePx={globalItemCircleSizePx}
+                            globalCircleSizePx={
+                              overrideSizePx <= 0 ? undefined : globalItemCircleSizePx
+                            }
                             fallbackMode={fallbackDisplayMode}
                           />
                         </div>
@@ -535,7 +540,7 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
 
           {showKidPlaceholder ? (
             <div
-              className="absolute bottom-0 right-0 z-10 w-[var(--hero-orbit-kid-w-mobile)] max-w-none rounded-lg bg-muted md:w-[var(--hero-orbit-kid-w-desktop)]"
+              className="absolute bottom-0 right-0 z-10 w-[var(--hero-orbit-kid-w-mobile)] max-w-none rounded-lg bg-muted md:w-[var(--hero-orbit-kid-w-medium)] lg:w-[var(--hero-orbit-kid-w-large)]"
               style={{ aspectRatio: '3 / 4' }}
               aria-hidden
             />
@@ -543,7 +548,7 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
             <img
               src={kidSrc}
               alt={kid.alt ?? ''}
-              className="absolute bottom-0 right-0 z-10 h-auto w-[var(--hero-orbit-kid-w-mobile)] max-w-none object-contain object-bottom md:w-[var(--hero-orbit-kid-w-desktop)]"
+              className="absolute bottom-0 right-0 z-10 h-auto w-[var(--hero-orbit-kid-w-mobile)] max-w-none object-contain object-bottom md:w-[var(--hero-orbit-kid-w-medium)] lg:w-[var(--hero-orbit-kid-w-large)]"
               loading="eager"
               decoding="async"
             />

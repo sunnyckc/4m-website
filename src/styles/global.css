@@ -219,7 +219,37 @@
     @apply font-sans;
   }
 
-  /** Orbit hero: anchor uses CSS vars for mobile/desktop placement (set on parent section). */
+  /**
+   * Orbit hero: CSS vars set on `.hero-orbit-section`; breakpoints match Tailwind `md` (768px) and `lg` (1024px).
+   */
+  .hero-orbit-section {
+    --hero-orbit-r: var(--hero-orbit-radius-mobile);
+    --hero-orbit-cx: var(--hero-orbit-cx-mobile);
+    --hero-orbit-cy: var(--hero-orbit-cy-mobile);
+    --hero-orbit-item-size: var(--hero-orbit-item-size-mobile);
+    --hero-orbit-item-circle: var(--hero-orbit-item-circle-mobile);
+  }
+
+  @media (min-width: 768px) {
+    .hero-orbit-section {
+      --hero-orbit-r: var(--hero-orbit-radius-medium);
+      --hero-orbit-cx: var(--hero-orbit-cx-medium);
+      --hero-orbit-cy: var(--hero-orbit-cy-medium);
+      --hero-orbit-item-size: var(--hero-orbit-item-size-medium);
+      --hero-orbit-item-circle: var(--hero-orbit-item-circle-medium);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-orbit-section {
+      --hero-orbit-r: var(--hero-orbit-radius-large);
+      --hero-orbit-cx: var(--hero-orbit-cx-large);
+      --hero-orbit-cy: var(--hero-orbit-cy-large);
+      --hero-orbit-item-size: var(--hero-orbit-item-size-large);
+      --hero-orbit-item-circle: var(--hero-orbit-item-circle-large);
+    }
+  }
+
   .hero-orbit-anchor {
     position: absolute;
     /* Below hero copy (z-[4] in hero-orbit-banner) so title/CTA stay readable over orbit items. */
@@ -232,8 +262,54 @@
 
   @media (min-width: 768px) {
     .hero-orbit-anchor {
-      left: var(--hero-orbit-kid-x-desktop);
-      top: var(--hero-orbit-kid-y-desktop);
+      left: var(--hero-orbit-kid-x-medium);
+      top: var(--hero-orbit-kid-y-medium);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-orbit-anchor {
+      left: var(--hero-orbit-kid-x-large);
+      top: var(--hero-orbit-kid-y-large);
+    }
+  }
+
+  .hero-orbit-translate {
+    transform: translate(var(--hero-orbit-cx), var(--hero-orbit-cy));
+  }
+
+  .hero-orbit-ring-size {
+    width: calc(var(--hero-orbit-r) * 2);
+    height: calc(var(--hero-orbit-r) * 2);
+  }
+
+  /** Polar placement on the ring; `--hero-item-angle` set inline (e.g. `90deg`). */
+  .hero-orbit-item-pos {
+    transform: translate(
+      calc(cos(var(--hero-item-angle)) * var(--hero-orbit-r)),
+      calc(sin(var(--hero-item-angle)) * var(--hero-orbit-r))
+    );
+  }
+
+  .hero-orbit-item-box-size {
+    width: var(--hero-orbit-item-size);
+    height: var(--hero-orbit-item-size);
+  }
+
+  /** Logo + title + subtitle + CTAs: vertical nudge (negative = up). Vars set on `.hero-orbit-section`. */
+  .hero-orbit-title-block {
+    transform: translateY(var(--hero-title-offset-y-mobile));
+  }
+
+  @media (min-width: 768px) {
+    .hero-orbit-title-block {
+      transform: translateY(var(--hero-title-offset-y-medium));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-orbit-title-block {
+      transform: translateY(var(--hero-title-offset-y-large));
     }
   }
 }

@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Toys \"R\" Us",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Toys_%22R%22_Us_logo.svg/960px-Toys_%22R%22_Us_logo.svg.png"
+  },
+  {
+    "name": "Walmart",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Walmart_Logo.png"
+  },
+  {
+    "name": "British Museum",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/The_British_Museum_logo.svg/960px-The_British_Museum_logo.svg.png"
+  },
+  {
+    "name": "Target",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Target_logo.png"
+  },
+  {
+    "name": "Amazon",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"
+  },
+  {
+    "name": "Hamleys",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/3/38/Hamleys_logo.png"
+  },
+  {
+    "name": "Barnes & Noble",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Barnes_%26_Noble_logo_%282021%29.svg"
+  },
+  {
+    "name": "Indigo",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Indigo_logo.svg"
+  },
+  {
+    "name": "Macy's",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Macy%27s_Logo_2019.png"
+  },
+  {
+    "name": "Kohl's",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Kohl%27s.png"
+  },
+  {
+    "name": "Science Museum (London)",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Smg-logo.png"
+  },
+  {
+    "name": "Questacon (Australia)",
+    "link": "https://upload.wikimedia.org/wikipedia/en/1/17/Questacon_logo.svg"
+  },
+  {
+    "name": "Smithsonian Institution",
+    "link": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Smithsonian_logo_color.svg"
+  }
+]

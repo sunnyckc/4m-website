@@ -6,14 +6,52 @@ import type {
   HeroTextSizeOption,
   HomeHeroOrbitBannerJson,
   OrbitBannerItemJson,
+  OrbitBannerKidPlacement,
+  OrbitBannerOrbitLayout,
+  OrbitBannerTitleBlockPlacement,
   OrbitDirection,
   OrbitItemDisplayMode,
   OrbitSpeedStyle,
 } from '@/types/home-sections';
 
+import { resolveKidPlacements, resolveOrbitLayouts, resolveTitleBlockOffsets } from './hero-orbit-layout';
+
 const PANEL_SIDE_KEY = 'orbit-tuner-side';
 type PanelSide = 'left' | 'right';
 type TunerTab = 'text' | 'image' | 'product';
+
+/** Matches orbit hero CSS breakpoints: `md` 768px, `lg` 1024px. */
+export type OrbitViewportBp = 'mobile' | 'medium' | 'large';
+
+function getOrbitViewportBp(): OrbitViewportBp {
+  if (typeof window === 'undefined') return 'large';
+  if (window.matchMedia('(min-width: 1024px)').matches) return 'large';
+  if (window.matchMedia('(min-width: 768px)').matches) return 'medium';
+  return 'mobile';
+}
+
+const viewportBpLabels: Record<OrbitViewportBp, string> = {
+  large: 'Large (1024px+)',
+  medium: 'Medium (768–1023px)',
+  mobile: 'Mobile (under 768px)',
+};
+
+function useOrbitViewportBreakpoint(): OrbitViewportBp {
+  const [bp, setBp] = React.useState<OrbitViewportBp>(getOrbitViewportBp);
+  React.useEffect(() => {
+    const mqL = window.matchMedia('(min-width: 1024px)');
+    const mqM = window.matchMedia('(min-width: 768px)');
+    const read = () => setBp(getOrbitViewportBp());
+    read();
+    mqL.addEventListener('change', read);
+    mqM.addEventListener('change', read);
+    return () => {
+      mqL.removeEventListener('change', read);
+      mqM.removeEventListener('change', read);
+    };
+  }, []);
+  return bp;
+}
 
 function orbitConfigToCopyableJson(config: HomeHeroOrbitBannerJson): string {
   return `${JSON.stringify(config, null, 2)}\n`;
@@ -81,6 +119,7 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
   const [copied, setCopied] = React.useState(false);
   const [panelSide, setPanelSide] = React.useState<PanelSide>('right');
   const [activeTab, setActiveTab] = React.useState<TunerTab>('text');
+  const viewportBp = useOrbitViewportBreakpoint();
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -100,13 +139,27 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
     [setDraft],
   );
 
-  const patchKidDesktop = React.useCallback(
-    (partial: Partial<HomeHeroOrbitBannerJson['kid']['desktop']>) => {
+  const patchKidLarge = React.useCallback(
+    (partial: Partial<OrbitBannerKidPlacement>) => {
       setDraft((prev) => ({
         ...prev,
         kid: {
           ...prev.kid,
-          desktop: { ...prev.kid.desktop, ...partial },
+          large: { ...(prev.kid.large ?? prev.kid.desktop ?? {}), ...partial },
+          desktop: undefined,
+        },
+      }));
+    },
+    [setDraft],
+  );
+
+  const patchKidMedium = React.useCallback(
+    (partial: Partial<OrbitBannerKidPlacement>) => {
+      setDraft((prev) => ({
+        ...prev,
+        kid: {
+          ...prev.kid,
+          medium: { ...prev.kid.medium, ...partial },
         },
       }));
     },
@@ -114,12 +167,12 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
   );
 
   const patchKidMobile = React.useCallback(
-    (partial: Partial<NonNullable<HomeHeroOrbitBannerJson['kid']['mobile']>>) => {
+    (partial: Partial<OrbitBannerKidPlacement>) => {
       setDraft((prev) => ({
         ...prev,
         kid: {
           ...prev.kid,
-          mobile: { ...(prev.kid.mobile ?? prev.kid.desktop), ...partial },
+          mobile: { ...prev.kid.mobile, ...partial },
         },
       }));
     },
@@ -131,6 +184,40 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
       setDraft((prev) => ({
         ...prev,
         orbit: { ...prev.orbit, ...partial },
+      }));
+    },
+    [setDraft],
+  );
+
+  const patchOrbitLayoutBp = React.useCallback(
+    (bp: 'large' | 'medium' | 'mobile', partial: Partial<OrbitBannerOrbitLayout>) => {
+      setDraft((prev) => {
+        const nextBucket = { ...(prev.orbit[bp] ?? {}), ...partial };
+        const nextOrbit: HomeHeroOrbitBannerJson['orbit'] = {
+          ...prev.orbit,
+          [bp]: nextBucket,
+        };
+        if (bp === 'large') {
+          if (partial.radiusPx !== undefined) nextOrbit.radiusPx = partial.radiusPx;
+          if (partial.centerOffsetXPx !== undefined) nextOrbit.centerOffsetXPx = partial.centerOffsetXPx;
+          if (partial.centerOffsetYPx !== undefined) nextOrbit.centerOffsetYPx = partial.centerOffsetYPx;
+          if (partial.itemSizePx !== undefined) nextOrbit.itemSizePx = partial.itemSizePx;
+          if (partial.itemCircleSizePx !== undefined) nextOrbit.itemCircleSizePx = partial.itemCircleSizePx;
+        }
+        return { ...prev, orbit: nextOrbit };
+      });
+    },
+    [setDraft],
+  );
+
+  const patchTitleBlock = React.useCallback(
+    (bp: 'large' | 'medium' | 'mobile', partial: Partial<OrbitBannerTitleBlockPlacement>) => {
+      setDraft((prev) => ({
+        ...prev,
+        titleBlock: {
+          ...(prev.titleBlock ?? {}),
+          [bp]: { ...(prev.titleBlock?.[bp] ?? {}), ...partial },
+        },
       }));
     },
     [setDraft],
@@ -192,7 +279,9 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
     });
   }, [draft.orbit.itemTiltSeed, patchOrbit]);
 
-  const mobile = draft.kid.mobile ?? draft.kid.desktop;
+  const kidEff = resolveKidPlacements(draft.kid);
+  const orbitEff = resolveOrbitLayouts(draft.orbit);
+  const titleBlockEff = resolveTitleBlockOffsets(draft.titleBlock);
   const overlayPct = Math.round(((draft.background?.overlayWhiteOpacity ?? 0) * 100 + Number.EPSILON) * 10) / 10;
   const globalItemDisplayMode: OrbitItemDisplayMode =
     draft.orbit.itemDisplayMode ??
@@ -250,7 +339,9 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
         <div className="min-h-0 flex-1 overflow-y-auto px-3 py-2">
           <p className="mb-3 text-[11px] text-muted-foreground">
             Copy JSON and replace <code className="rounded bg-muted px-1">orbitBanner</code> in{' '}
-            <code className="rounded bg-muted px-1">public/data/home/hero.json</code>.
+            <code className="rounded bg-muted px-1">public/data/home/hero.json</code>. Copy always includes{' '}
+            <strong>all</strong> breakpoints; kid / orbit layout / title nudge fields below follow your current
+            window width ({viewportBpLabels[viewportBp]}).
           </p>
 
           <div className="flex flex-col gap-3 text-xs">
@@ -396,6 +487,30 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                   onChange={(next) => patch({ logoHeightPx: next })}
                 />
               </FieldRow>
+            </fieldset>
+
+            <fieldset className="space-y-2 rounded-md border border-border p-2">
+              <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">
+                Title block position
+              </legend>
+              <p className="text-[10px] text-muted-foreground">
+                Nudges the logo + title + subtitle + CTA column vertically (px). Negative moves up, positive
+                moves down. Editing <strong>{viewportBpLabels[viewportBp]}</strong>; omitted values inherit from
+                the next larger size.
+              </p>
+              <FieldRow label={`Offset Y (px) — ${viewportBpLabels[viewportBp]}`}>
+                <NumberInput
+                  step={5}
+                  value={
+                    draft.titleBlock?.[viewportBp]?.offsetYPx ?? titleBlockEff[viewportBp]
+                  }
+                  onChange={(next) => patchTitleBlock(viewportBp, { offsetYPx: next })}
+                />
+              </FieldRow>
+            </fieldset>
+
+            <fieldset className="space-y-2 rounded-md border border-border p-2">
+              <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">Layout</legend>
               <FieldRow label="Section className (Tailwind)">
                 <input
                   className={inputClass}
@@ -511,45 +626,70 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                   }
                 />
               </FieldRow>
-              <p className="text-[11px] font-medium text-muted-foreground">Desktop anchor</p>
+              <p className="text-[10px] text-muted-foreground">
+                Anchor position (%) and width (px). Editing <strong>{viewportBpLabels[viewportBp]}</strong>;
+                resize the window to tune other breakpoints. Omitted fields inherit from the next larger size.
+              </p>
+              <p className="text-[11px] font-medium text-muted-foreground">{viewportBpLabels[viewportBp]}</p>
               <div className="grid grid-cols-3 gap-1.5">
                 <FieldRow label="X %">
                   <NumberInput
-                    value={draft.kid.desktop.xPercent}
-                    onChange={(next) => patchKidDesktop({ xPercent: next })}
+                    value={
+                      viewportBp === 'large'
+                        ? (draft.kid.large?.xPercent ??
+                            draft.kid.desktop?.xPercent ??
+                            kidEff.large.xPercent)
+                        : viewportBp === 'medium'
+                          ? (draft.kid.medium?.xPercent ?? kidEff.medium.xPercent)
+                          : (draft.kid.mobile?.xPercent ?? kidEff.mobile.xPercent)
+                    }
+                    onChange={(next) =>
+                      (viewportBp === 'large'
+                        ? patchKidLarge
+                        : viewportBp === 'medium'
+                          ? patchKidMedium
+                          : patchKidMobile)({ xPercent: next })
+                    }
                   />
                 </FieldRow>
                 <FieldRow label="Y %">
                   <NumberInput
-                    value={draft.kid.desktop.yPercent}
-                    onChange={(next) => patchKidDesktop({ yPercent: next })}
+                    value={
+                      viewportBp === 'large'
+                        ? (draft.kid.large?.yPercent ??
+                            draft.kid.desktop?.yPercent ??
+                            kidEff.large.yPercent)
+                        : viewportBp === 'medium'
+                          ? (draft.kid.medium?.yPercent ?? kidEff.medium.yPercent)
+                          : (draft.kid.mobile?.yPercent ?? kidEff.mobile.yPercent)
+                    }
+                    onChange={(next) =>
+                      (viewportBp === 'large'
+                        ? patchKidLarge
+                        : viewportBp === 'medium'
+                          ? patchKidMedium
+                          : patchKidMobile)({ yPercent: next })
+                    }
                   />
                 </FieldRow>
                 <FieldRow label="Width px">
                   <NumberInput
-                    value={draft.kid.desktop.widthPx}
-                    onChange={(next) => patchKidDesktop({ widthPx: next })}
-                  />
-                </FieldRow>
-              </div>
-              <p className="text-[11px] font-medium text-muted-foreground">Mobile anchor</p>
-              <div className="grid grid-cols-3 gap-1.5">
-                <FieldRow label="X %">
-                  <NumberInput
-                    value={mobile.xPercent}
-                    onChange={(next) => patchKidMobile({ xPercent: next })}
-                  />
-                </FieldRow>
-                <FieldRow label="Y %">
-                  <NumberInput
-                    value={mobile.yPercent}
-                    onChange={(next) => patchKidMobile({ yPercent: next })}
-                  />
-                </FieldRow>
-                <FieldRow label="Width px">
-                  <NumberInput
-                    value={mobile.widthPx}
-                    onChange={(next) => patchKidMobile({ widthPx: next })}
+                    value={
+                      viewportBp === 'large'
+                        ? (draft.kid.large?.widthPx ??
+                            draft.kid.desktop?.widthPx ??
+                            kidEff.large.widthPx)
+                        : viewportBp === 'medium'
+                          ? (draft.kid.medium?.widthPx ?? kidEff.medium.widthPx)
+                          : (draft.kid.mobile?.widthPx ?? kidEff.mobile.widthPx)
+                    }
+                    onChange={(next) =>
+                      (viewportBp === 'large'
+                        ? patchKidLarge
+                        : viewportBp === 'medium'
+                          ? patchKidMedium
+                          : patchKidMobile)({ widthPx: next })
+                    }
                   />
                 </FieldRow>
               </div>
@@ -560,33 +700,55 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
             {activeTab === 'product' ? (
               <>
             <fieldset className="space-y-2 rounded-md border border-border p-2">
-              <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">Orbit</legend>
+              <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">Orbit layout</legend>
+              <p className="text-[10px] text-muted-foreground">
+                Radius, center offset, default item size, and circle accent (circleAccent mode). Editing{' '}
+                <strong>{viewportBpLabels[viewportBp]}</strong>; resize the window to tune other breakpoints.
+                Omitted fields inherit from the next larger size.
+              </p>
+              <p className="text-[11px] font-medium text-muted-foreground">{viewportBpLabels[viewportBp]}</p>
               <FieldRow label="Radius (px)">
                 <NumberInput
-                  value={draft.orbit.radiusPx}
-                  onChange={(next) => patchOrbit({ radiusPx: next })}
+                  value={orbitEff[viewportBp].radiusPx}
+                  onChange={(next) => patchOrbitLayoutBp(viewportBp, { radiusPx: next })}
                 />
               </FieldRow>
               <div className="grid grid-cols-2 gap-1.5">
                 <FieldRow label="Center offset X (px)">
                   <NumberInput
-                    value={draft.orbit.centerOffsetXPx}
-                    onChange={(next) => patchOrbit({ centerOffsetXPx: next })}
+                    value={orbitEff[viewportBp].centerOffsetXPx}
+                    onChange={(next) => patchOrbitLayoutBp(viewportBp, { centerOffsetXPx: next })}
                   />
                 </FieldRow>
                 <FieldRow label="Center offset Y (px)">
                   <NumberInput
-                    value={draft.orbit.centerOffsetYPx}
-                    onChange={(next) => patchOrbit({ centerOffsetYPx: next })}
+                    value={orbitEff[viewportBp].centerOffsetYPx}
+                    onChange={(next) => patchOrbitLayoutBp(viewportBp, { centerOffsetYPx: next })}
                   />
                 </FieldRow>
               </div>
-              <FieldRow label="Default item size (px)">
-                <NumberInput
-                  value={draft.orbit.itemSizePx}
-                  onChange={(next) => patchOrbit({ itemSizePx: next })}
-                />
-              </FieldRow>
+              <div className="grid grid-cols-2 gap-1.5">
+                <FieldRow label="Default item size (px)">
+                  <NumberInput
+                    value={orbitEff[viewportBp].itemSizePx}
+                    onChange={(next) => patchOrbitLayoutBp(viewportBp, { itemSizePx: next })}
+                  />
+                </FieldRow>
+                {globalItemDisplayMode === 'circleAccent' ? (
+                  <FieldRow label="Circle size (px)">
+                    <NumberInput
+                      value={orbitEff[viewportBp].itemCircleSizePx}
+                      min={4}
+                      step={5}
+                      onChange={(next) =>
+                        patchOrbitLayoutBp(viewportBp, {
+                          itemCircleSizePx: next != null && next > 0 ? next : undefined,
+                        })
+                      }
+                    />
+                  </FieldRow>
+                ) : null}
+              </div>
               <FieldRow label="Item display mode (all items)">
                 <select
                   className={inputClass}
@@ -607,18 +769,6 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                   ))}
                 </select>
               </FieldRow>
-              {globalItemDisplayMode === 'circleAccent' ? (
-                <FieldRow label="Circle size (px, all items)">
-                  <NumberInput
-                    value={draft.orbit.itemCircleSizePx}
-                    min={4}
-                    step={5}
-                    onChange={(next) =>
-                      patchOrbit({ itemCircleSizePx: next != null && next > 0 ? next : undefined })
-                    }
-                  />
-                </FieldRow>
-              ) : null}
               <FieldRow label="Direction">
                 <select
                   className={inputClass}

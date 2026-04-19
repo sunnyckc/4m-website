@@ -1,0 +1,49 @@
+{
+  "title": "As seen with",
+  "subtitle": "Trusted by educators, retailers, and partners worldwide.",
+  "items": [
+    {
+      "id": "walmart",
+      "name": "Walmart",
+      "logo": "/images/home/social-proof/walmart.png"
+    },
+    {
+      "id": "toys-r-us",
+      "name": "Toys R Us",
+      "logo": "/images/home/social-proof/toys-r-us.png",
+      "emphasis": true
+    },
+    {
+      "id": "british-museum",
+      "name": "The British Museum",
+      "logo": "/images/home/social-proof/british-museum.png",
+      "emphasis": true
+    },
+    {
+      "id": "target",
+      "name": "Target",
+      "logo": "/images/home/social-proof/target.png"
+    },
+    {
+      "id": "science-museum-london",
+      "name": "Science Museum Group",
+      "logo": "/images/home/social-proof/science-museum-london.png",
+      "emphasis": true
+    },
+    {
+      "id": "macys",
+      "name": "Macy's",
+      "logo": "/images/home/social-proof/macys.png"
+    },
+    {
+      "id": "kohls",
+      "name": "Kohl's",
+      "logo": "/images/home/social-proof/kohls.png"
+    },
+    {
+      "id": "hamleys",
+      "name": "Hamleys",
+      "logo": "/images/home/social-proof/hamleys.png"
+    }
+  ]
+}

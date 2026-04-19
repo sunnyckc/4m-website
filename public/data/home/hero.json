@@ -21,10 +21,15 @@
     "kid": {
       "image": "/4m-website/images/hero/orbit/kid.png",
       "alt": "Child thinking and playing",
-      "desktop": {
+      "large": {
         "xPercent": 95,
         "yPercent": 111,
         "widthPx": 740
+      },
+      "medium": {
+        "xPercent": 82,
+        "yPercent": 95,
+        "widthPx": 520
       },
       "mobile": {
         "xPercent": 70,
@@ -42,6 +47,20 @@
       "itemSizePx": 360,
       "itemDisplayMode": "circleAccent",
       "itemCircleSizePx": 214,
+      "medium": {
+        "radiusPx": 320,
+        "centerOffsetXPx": -220,
+        "centerOffsetYPx": -400,
+        "itemSizePx": 260,
+        "itemCircleSizePx": 160
+      },
+      "mobile": {
+        "radiusPx": 200,
+        "centerOffsetXPx": -120,
+        "centerOffsetYPx": -280,
+        "itemSizePx": 140,
+        "itemCircleSizePx": 92
+      },
       "keepItemsUpright": true,
       "speedStyle": "oscillating",
       "oscillationHeight": 45,

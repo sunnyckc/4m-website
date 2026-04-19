@@ -8,6 +8,8 @@ export { GalleryGrid } from './gallery-grid';
 export type { GalleryGridProps } from './gallery-grid';
 export { CatalogSlider } from './catalog-slider';
 export type { CatalogSliderProps } from './catalog-slider';
+export { SocialProofRibbon } from './social-proof-ribbon';
+export type { SocialProofRibbonProps } from './social-proof-ribbon';
 export type {
   HeroBannerSlide,
   HeroSlideMedia,

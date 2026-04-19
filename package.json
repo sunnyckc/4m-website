@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "download-logos": "node scripts/download-logos/index.mjs",
+    "download-logos:png": "node scripts/download-logos/index.mjs --png-only"
   },
   "dependencies": {
     "@astrojs/check": "^0.3.4",
