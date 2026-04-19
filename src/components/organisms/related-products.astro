@@ -17,15 +17,15 @@ const base = getBase();
       
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <div class="product-card group">
+          <div class="product-card">
             <a href={`${base}/products/${product.folder_name}`} class="block">
-              <div class="relative overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-lg transition-all duration-300">
+              <div class="relative overflow-hidden rounded-2xl bg-white shadow-md transition-shadow duration-300 hover:shadow-lg">
                 <!-- Product Image -->
                 <div class="aspect-square overflow-hidden">
                   <img 
                     src={getProductThumbnail(product)}
                     alt={product.item_name}
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    class="h-full w-full object-cover"
                   />
                 </div>
                 
@@ -48,11 +48,6 @@ const base = getBase();
 <style>
   .product-card {
     position: relative;
-  }
-  
-  .product-card:hover {
-    transform: translateY(-2px);
-    transition: transform 0.2s ease-in-out;
   }
   
   /* Responsive adjustments */

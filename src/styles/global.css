@@ -313,3 +313,8 @@
     }
   }
 }
+
+/* Alpine: hide x-cloak nodes until initialized (avoids mobile nav flash) */
+[x-cloak] {
+  display: none !important;
+}

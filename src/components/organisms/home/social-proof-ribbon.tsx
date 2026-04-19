@@ -10,8 +10,11 @@ const LOGO_MAX_W = 'max-w-[min(160px,28vw)]';
 
 function SocialProofItem({
   item,
+  fullWidth = true,
 }: {
   item: HomeSocialProofItemJson;
+  /** Use false when the parent is a flex row so logos stay content-sized and centered. */
+  fullWidth?: boolean;
 }) {
   const emphasis = item.emphasis === true;
   const logoMaxHeightClassName = emphasis
@@ -47,7 +50,8 @@ function SocialProofItem({
   );
 
   const shell = cn(
-    'flex min-h-[3rem] w-full shrink-0 items-center justify-center px-3 py-2 sm:px-4',
+    'flex min-h-[3rem] shrink-0 items-center justify-center px-3 py-2 sm:px-4',
+    fullWidth ? 'w-full' : 'w-auto',
     emphasis && 'md:min-h-[3.5rem]',
   );
 
@@ -98,11 +102,35 @@ export function SocialProofRibbon({ config }: SocialProofRibbonProps) {
           ) : null}
         </div>
 
-        <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 sm:gap-y-10 md:gap-x-8">
-          {items.map((item) => (
-            <SocialProofItem key={item.id ?? item.name} item={item} />
-          ))}
-        </div>
+        {items.length > 4 ? (
+          <>
+            {/* Narrow: keep a simple 2-col grid for all items */}
+            <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-x-4 gap-y-8 sm:hidden">
+              {items.map((item) => (
+                <SocialProofItem key={item.id ?? item.name} item={item} />
+              ))}
+            </div>
+            {/* sm+: first row = 4 columns; remaining row(s) centered as a group */}
+            <div className="mx-auto hidden w-full max-w-5xl flex-col items-stretch gap-y-10 sm:flex md:gap-y-12">
+              <div className="grid w-full grid-cols-4 gap-x-6 gap-y-10 md:gap-x-8">
+                {items.slice(0, 4).map((item) => (
+                  <SocialProofItem key={item.id ?? item.name} item={item} />
+                ))}
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-10 md:gap-x-8">
+                {items.slice(4).map((item) => (
+                  <SocialProofItem key={item.id ?? item.name} item={item} fullWidth={false} />
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6 sm:gap-y-10 md:gap-x-8">
+            {items.map((item) => (
+              <SocialProofItem key={item.id ?? item.name} item={item} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

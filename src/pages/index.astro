@@ -2,57 +2,56 @@
 import { Layout } from '@/layouts';
 import {
   Button,
-  Card,
-  Badge,
   HeroBannerSlider,
   HeroFullViewport,
   HeroOrbitBanner,
+  HomeNewsGallery,
   SocialProofRibbon,
-  GalleryGrid,
-  CatalogSlider,
 } from '@/components';
-import { getHotProducts, getProductThumbnail } from '@/repositories/catalog';
-import { getFeaturedAwards } from '@/repositories/awards';
-import {
-  getHomeCatalogHot,
-  getHomeGallerySteam,
-  getHomeHero,
-  getHomeSocialProof,
-  getSiteLinks,
-} from '@/repositories/site';
+import { getAwards } from '@/repositories/awards';
+import { getHomeHero, getHomeNewsGallery, getHomeSocialProof } from '@/repositories/site';
 import { getBase } from '@/config';
-import { getFeaturedNews } from '@/repositories/news';
-import type { CatalogSliderItem } from '@/components/organisms/home';
-import { formatDate } from '@/utils';
+import type { Award } from '@/types/award';
 
-const hotProducts = await getHotProducts();
-const featuredAwards = await getFeaturedAwards();
-const featuredNews = await getFeaturedNews();
-const siteLinks = await getSiteLinks();
+function awardYearForSort(award: Award): number {
+  const m = award.year.match(/\d{4}/);
+  return m ? parseInt(m[0], 10) : 0;
+}
+
+const allAwards = await getAwards();
+const homeAwardsPreview = [...allAwards]
+  .sort((a, b) => {
+    const yb = awardYearForSort(b);
+    const ya = awardYearForSort(a);
+    if (yb !== ya) return yb - ya;
+    return a.name.localeCompare(b.name);
+  })
+  .slice(0, 6);
 const base = getBase();
 const homeHero = await getHomeHero();
 const homeSocialProof = await getHomeSocialProof();
-const homeGallerySteam = await getHomeGallerySteam();
-const homeCatalogHot = await getHomeCatalogHot();
+const homeNewsGallery = await getHomeNewsGallery();
 
 /** Full-viewport / orbit heroes sit flush; slider keeps spacing before the next section. */
 const immersiveHero =
   (homeHero.variant === 'fullViewport' && homeHero.fullViewport != null) ||
   (homeHero.variant === 'orbitBanner' && homeHero.orbitBanner != null);
 
-const hotCatalogItems: CatalogSliderItem[] = hotProducts.map((p) => ({
-  id: p.folder_name,
-  textPrimary: p.item_name,
-  textSecondary: p.item_description,
-  imageUrl: getProductThumbnail(p) || undefined,
-  imageAlt: p.item_name,
-  hoverText: `View ${p.item_name}`,
-  href: `${base}/products/${p.folder_name}`,
-  batches: [
-    { label: p.category_main.replace(/-/g, ' ') },
-    ...(p.hot_item ? [{ label: 'Hot' as const }] : []),
-  ],
-}));
+const pillarCatalog = {
+  kidzLabs: `${base}/products?category=science-education&subcategory=kidzlabs`,
+  greenScience: `${base}/products?category=science-education&subcategory=green-science`,
+  artsCrafts: `${base}/products?category=creative-crafts&subcategory=creative-crafts`,
+} as const;
+
+/** Home “How can we help you?” tiles → interior audience pages (standard header, no immersive hero). */
+const audiencePaths = {
+  parentsAndTeachers: `${base}/parents-and-teachers`,
+  distributors: `${base}/distributors`,
+} as const;
+
+/** Matches distributors page: low-emphasis text link instead of a primary button. */
+const pillarTextLinkClass =
+  'inline-flex items-center gap-1 font-medium text-blue-600 underline decoration-blue-600/80 underline-offset-[5px] hover:text-blue-800 hover:decoration-blue-800 dark:text-blue-400 dark:decoration-blue-400/70 dark:hover:text-blue-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm';
 ---
 
 <Layout
@@ -99,152 +98,225 @@ const hotCatalogItems: CatalogSliderItem[] = hotProducts.map((p) => ({
     <SocialProofRibbon config={homeSocialProof} />
   ) : null}
 
-  <!-- Steam Education Section -->
-  <section class="py-8 lg:py-12">
+  <!-- Company philosophy -->
+  <section class="py-14 lg:py-20 bg-muted/20" aria-labelledby="home-philosophy-heading">
     <div class="container-custom">
-      <div class="text-center space-y-4 mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-fun">{homeGallerySteam.title}</h2>
-        {homeGallerySteam.description ? (
-          <p class="text-lg text-muted-foreground max-w-3xl mx-auto text-comic">
-            {homeGallerySteam.description}
-          </p>
-        ) : null}
+      <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
+        <div class="space-y-5 text-center lg:text-left">
+          <h2 id="home-philosophy-heading" class="text-3xl md:text-4xl font-bold text-fun">
+            Who we are
+          </h2>
+          <div class="space-y-4 text-lg text-muted-foreground text-comic max-w-prose mx-auto lg:mx-0">
+            <p>
+              For three decades, 4M has designed and manufactured educational toys that blend serious learning with the joy of play—so children build skills while doing what comes naturally: exploring, tinkering, and creating.
+            </p>
+            <p>
+              Our teams own the full journey from concept to carton, working closely with schools, museums, and retailers worldwide to keep STEAM-rich experiences within reach for families and classrooms.
+            </p>
+          </div>
+        </div>
+        <div
+          class="aspect-[4/3] w-full max-w-xl mx-auto rounded-2xl border border-dashed border-muted-foreground/25 bg-gradient-to-br from-primary/15 via-muted to-secondary/20"
+          role="img"
+          aria-label="Placeholder for lifestyle or workshop photography"
+        />
       </div>
-
-      <GalleryGrid
-        client:load
-        items={homeGallerySteam.items}
-        gridClassName={homeGallerySteam.layout?.gridClassName ?? 'grid-cols-1 md:grid-cols-3'}
-        gapClassName={homeGallerySteam.layout?.gapClassName ?? 'gap-2'}
-        className={homeGallerySteam.layout?.className ?? 'w-full max-w-4xl mx-auto'}
-      />
     </div>
   </section>
 
-  <!-- Hot Products Section -->
-  {hotProducts.length > 0 && (
-    <section class="py-16 lg:py-24 bg-muted/30">
-      <div class="container-custom">
-        <div class="text-center space-y-4 mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-fun">{homeCatalogHot.title}</h2>
-          {homeCatalogHot.description ? (
-            <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
-              {homeCatalogHot.description}
+  <!-- Product families: alternating editorial rows (image ↔ copy) -->
+  <section class="py-14 lg:py-24 overflow-hidden" aria-labelledby="home-pillars-heading">
+    <div class="container-custom">
+      <div class="text-center space-y-4 mb-16 lg:mb-20 max-w-2xl mx-auto">
+        <h2 id="home-pillars-heading" class="text-3xl md:text-4xl font-bold text-fun">
+          Explore by product family
+        </h2>
+        <p class="text-lg text-muted-foreground text-comic">
+          Three lines that anchor our catalogue—each with space for photography, illustration, or campaign art alongside the story.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-20 lg:gap-28">
+        <!-- KidzLabs: visual left, copy right -->
+        <article
+          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
+          data-pillar="kidzlabs"
+        >
+          <div
+            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-cyan-200/90 to-blue-500/40 dark:from-cyan-900/50 dark:to-blue-950/60 shadow-sm"
+            role="img"
+            aria-label="Artwork placeholder: KidzLabs"
+          />
+          <div class="space-y-5 lg:max-w-xl lg:justify-self-end text-center lg:text-left">
+            <h3 class="text-2xl md:text-3xl font-bold text-fun">KidzLabs</h3>
+            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
+              High-tech experiments, robotics, and engineering kits for hands-on discovery—built for curious kids who like to take things apart and put them back smarter than before.
             </p>
-          ) : null}
-        </div>
+            <p class="text-lg pt-2">
+              <a href={pillarCatalog.kidzLabs} class={pillarTextLinkClass}>
+                Browse KidzLabs
+                <span aria-hidden="true">→</span>
+              </a>
+            </p>
+          </div>
+        </article>
 
-        <CatalogSlider
-          client:load
-          items={hotCatalogItems}
-          itemsPerSlide={homeCatalogHot.carousel.itemsPerSlide}
-          initialSlideIndex={homeCatalogHot.carousel.initialSlideIndex ?? 0}
-          showArrows={homeCatalogHot.carousel.showArrows ?? true}
-          showDots={
-            (homeCatalogHot.carousel.showDots ?? true) &&
-            hotCatalogItems.length > homeCatalogHot.carousel.itemsPerSlide
-          }
-          slideGridClassName={homeCatalogHot.carousel.slideGridClassName}
-        />
+        <!-- Green Science: copy left, visual right -->
+        <article
+          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
+          data-pillar="green-science"
+        >
+          <div class="space-y-5 lg:max-w-xl order-2 lg:order-1 text-center lg:text-left">
+            <h3 class="text-2xl md:text-3xl font-bold text-fun">Green Science</h3>
+            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
+              Eco-minded engineering and renewable-energy projects children can build, test, and understand—science with a lighter footprint.
+            </p>
+            <p class="text-lg pt-2">
+              <a href={pillarCatalog.greenScience} class={pillarTextLinkClass}>
+                Browse Green Science
+                <span aria-hidden="true">→</span>
+              </a>
+            </p>
+          </div>
+          <div
+            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-lime-200/90 to-emerald-600/35 dark:from-lime-900/40 dark:to-emerald-950/60 shadow-sm order-1 lg:order-2"
+            role="img"
+            aria-label="Artwork placeholder: Green Science"
+          />
+        </article>
 
-        <div class="flex justify-center items-center gap-4 mt-12 flex-wrap">
-          <Button href={`${base}/products`} size="lg" class="font-fredoka btn-bouncy">
-            View All Products
-          </Button>
-          {siteLinks.catalog_buttons.map((btn) => (
-            <Button href={btn.url} size="lg" variant="outline" class="font-fredoka btn-bouncy" target="_blank" rel="noopener noreferrer">
-              {btn.label}
-            </Button>
-          ))}
-        </div>
+        <!-- Arts & Crafts: visual left, copy right -->
+        <article
+          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
+          data-pillar="arts-crafts"
+        >
+          <div
+            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-fuchsia-200/85 to-orange-400/35 dark:from-fuchsia-900/45 dark:to-orange-950/55 shadow-sm"
+            role="img"
+            aria-label="Artwork placeholder: Arts &amp; Crafts"
+          />
+          <div class="space-y-5 lg:max-w-xl lg:justify-self-end text-center lg:text-left">
+            <h3 class="text-2xl md:text-3xl font-bold text-fun">Arts &amp; Crafts</h3>
+            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
+              Creative development through making—fine motor skills, imagination, and open-ended design for kids who express themselves with color, texture, and glue-sticked fingers.
+            </p>
+            <p class="text-lg pt-2">
+              <a href={pillarCatalog.artsCrafts} class={pillarTextLinkClass}>
+                Browse Arts &amp; Crafts
+                <span aria-hidden="true">→</span>
+              </a>
+            </p>
+          </div>
+        </article>
       </div>
-    </section>
-  )}
+    </div>
+  </section>
 
+  <!-- Audience paths: image + label only (no card chrome) -->
+  <section class="py-14 lg:py-20 bg-muted/25" aria-labelledby="home-paths-heading">
+    <div class="container-custom">
+      <div class="text-center space-y-4 mb-12 lg:mb-14">
+        <h2 id="home-paths-heading" class="text-3xl md:text-4xl font-bold text-fun">
+          How can we help you today?
+        </h2>
+        <p class="text-lg text-muted-foreground text-comic max-w-2xl mx-auto">
+          Families, educators, and partners—pick the doorway that matches you. Art above each tile can be replaced anytime.
+        </p>
+      </div>
 
-  <!-- Awards Section -->
-  {featuredAwards.length > 0 && (
-    <section class="py-16 lg:py-24 bg-muted/50">
-      <div class="container-custom">
-        <div class="text-center space-y-4 mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-fun">Award-Winning Excellence</h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
-            Our commitment to quality and innovation has been recognized by industry leaders.
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-12 max-w-3xl mx-auto">
+        <a
+          href={audiencePaths.parentsAndTeachers}
+          class="home-audience-tile group block text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-xl"
+        >
+          <div
+            class="aspect-[4/3] w-full rounded-xl bg-gradient-to-br from-amber-200/75 via-sky-300/45 to-violet-400/40 dark:from-amber-900/40 dark:via-sky-950/35 dark:to-violet-950/40 transition-transform duration-300 group-hover:scale-[1.02]"
+            role="img"
+            aria-label="Placeholder image: Parents and teachers"
+          />
+          <p class="mt-4 text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+            Parents &amp; teachers
           </p>
-        </div>
+        </a>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {featuredAwards.map((award) => (
-            <Card class="text-center p-8 hover:shadow-lg transition-shadow">
-              {award.media_source === 'file' && award.media_destination && (
-                <div class="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-                  <img src={`${base}/images/awards/${award.media_destination}`} alt={award.name} class="w-8 h-8" />
-                </div>
-              )}
-              <h3 class="text-xl font-semibold mb-2">{award.name}</h3>
-              <p class="text-muted-foreground mb-4">{award.program}</p>
-              <div class="text-sm text-muted-foreground">
-                <div>{award.institution}</div>
-                <div>{award.year}</div>
+        <a
+          href={audiencePaths.distributors}
+          class="home-audience-tile group block text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-xl"
+        >
+          <div
+            class="aspect-[4/3] w-full rounded-xl bg-gradient-to-br from-slate-300/70 via-primary/25 to-slate-500/35 dark:from-slate-700/50 dark:via-primary/20 dark:to-slate-900/50 transition-transform duration-300 group-hover:scale-[1.02]"
+            role="img"
+            aria-label="Placeholder image: Distributors"
+          />
+          <p class="mt-4 text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+            Distributors
+          </p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Awards -->
+  <section class="py-16 lg:py-24 bg-muted/50" aria-labelledby="home-awards-heading">
+    <div class="container-custom">
+      <div class="text-center space-y-4 mb-10 lg:mb-12">
+        <h2 id="home-awards-heading" class="text-3xl md:text-4xl font-bold text-fun">
+          Awards
+        </h2>
+        <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
+          Design, education, and industry programs that have recognized our work.
+        </p>
+      </div>
+
+      {homeAwardsPreview.length > 0 ? (
+        <ul
+          class="mx-auto grid max-w-5xl grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-10 md:gap-x-8 md:gap-y-12"
+          role="list"
+        >
+          {homeAwardsPreview.map((award) => (
+            <li class="grid min-w-0 grid-cols-[auto_1fr] items-start gap-3 sm:gap-4">
+              <div class="flex h-11 w-11 shrink-0 items-center justify-center pt-0.5 sm:h-12 sm:w-12">
+                {award.media_source === 'file' && award.media_destination ? (
+                  <img
+                    src={`${base}/images/awards/${award.media_destination}`}
+                    alt=""
+                    width="48"
+                    height="48"
+                    class="h-full w-full object-contain"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <span class="block h-9 w-9 rounded-sm bg-muted-foreground/15" aria-hidden="true" />
+                )}
               </div>
-            </Card>
+              <div class="min-w-0 space-y-1">
+                <p class="text-sm font-semibold leading-snug sm:text-base md:text-lg">
+                  {award.name}
+                  <span class="font-semibold text-muted-foreground"> ({award.year})</span>
+                </p>
+                <p class="text-xs leading-snug text-muted-foreground sm:text-sm md:text-base">
+                  {award.institution}
+                </p>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
+      ) : (
+        <p class="text-center text-muted-foreground text-comic mb-12 max-w-xl mx-auto">
+          Awards will appear here once configured.
+        </p>
+      )}
 
-        <div class="text-center">
+      {allAwards.length > 0 ? (
+        <div class="text-center mt-10">
           <Button href={`${base}/awards`} variant="outline">
-            View All Awards
+            See all awards
           </Button>
         </div>
-      </div>
-    </section>
-  )}
+      ) : null}
+    </div>
+  </section>
 
-  <!-- Latest News -->
-  {featuredNews.length > 0 && (
-    <section class="py-16 lg:py-24">
-      <div class="container-custom">
-        <div class="text-center space-y-4 mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-fun">Latest News</h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
-            Stay updated with our latest announcements, product launches, and company news.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {featuredNews.map((post) => (
-            <Card class="overflow-hidden hover:shadow-lg transition-shadow">
-              <div class="aspect-video bg-muted">
-                <img 
-                  src={post.image ? (post.image.startsWith('http') ? post.image : `${base}${post.image}`) : `${base}/images/news/default-news.jpg`} 
-                  alt={post.title}
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div class="p-6 space-y-4">
-                <div class="space-y-2">
-                  <Badge variant="outline">{post.category}</Badge>
-                  <h3 class="text-xl font-semibold">{post.title}</h3>
-                  <p class="text-muted-foreground">{post.excerpt}</p>
-                </div>
-                <div class="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>{formatDate(post.date)}</span>
-                  <Button href={`${base}/news/${post.id}`} variant="ghost" size="sm">
-                    Read More →
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-
-        <div class="text-center">
-          <Button href={`${base}/news`} variant="outline">
-            View All News
-          </Button>
-        </div>
-      </div>
-    </section>
-  )}
+  <HomeNewsGallery config={homeNewsGallery} />
 </Layout>

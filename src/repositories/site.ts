@@ -2,6 +2,7 @@ import type { GalleryGridItem, HeroBannerSlide } from '@/components/organisms/ho
 import homeCatalogHotFallback from '@public/data/home/catalog-hot.json';
 import homeGallerySteamFallback from '@public/data/home/gallery-steam.json';
 import homeHeroFallback from '@public/data/home/hero.json';
+import homeNewsGalleryFallback from '@public/data/home/news-gallery.json';
 import homeSocialProofFallback from '@public/data/home/social-proof.json';
 import { loadPublicJson } from '@/utils/load-public-json';
 import { resolveSiteUrl } from '@/utils/resolve-site-url';
@@ -13,6 +14,8 @@ import type {
   HomeHeroFullViewportJson,
   HomeHeroJson,
   HomeHeroOrbitBannerJson,
+  HomeNewsGalleryItemJson,
+  HomeNewsGalleryJson,
   HomeSocialProofItemJson,
   HomeSocialProofJson,
 } from '@/types/home-sections';
@@ -108,6 +111,14 @@ function resolveSocialProofItem(item: HomeSocialProofItemJson): HomeSocialProofI
   };
 }
 
+function resolveNewsGalleryItem(item: HomeNewsGalleryItemJson): HomeNewsGalleryItemJson {
+  return {
+    ...item,
+    image: item.image != null ? resolveSiteUrl(item.image) ?? item.image : item.image,
+    href: resolveSiteUrl(item.href) ?? item.href,
+  };
+}
+
 const STEAM_COLLAGE_FALLBACK: SteamCollageData = {
   mainItem: {
     id: 'main-fallback',
@@ -196,5 +207,16 @@ export async function getHomeSocialProof(): Promise<HomeSocialProofJson> {
   return {
     ...data,
     items: data.items.map(resolveSocialProofItem),
+  };
+}
+
+export async function getHomeNewsGallery(): Promise<HomeNewsGalleryJson> {
+  const data = await loadPublicJson(
+    'home/news-gallery.json',
+    homeNewsGalleryFallback as HomeNewsGalleryJson,
+  );
+  return {
+    ...data,
+    items: data.items.map(resolveNewsGalleryItem),
   };
 }

@@ -6,49 +6,85 @@
     "folder_name": "windmill-generator",
     "category_main": "science-education",
     "category_sub": "green-science",
-    "tag_visible": ["renewable energy", "wind power", "electricity", "STEM", "environment", "LED", "generator"],
-    "tag_hidden": ["green-science", "energy", "eco"],
+    "tag_visible": [
+      "renewable energy",
+      "wind power",
+      "electricity",
+      "STEM",
+      "environment",
+      "LED",
+      "generator"
+    ],
+    "tag_hidden": [
+      "green-science",
+      "energy",
+      "eco"
+    ],
     "media": [
       {
         "type": "image",
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "main.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
       },
       {
         "type": "image",
         "sequence": 2,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-1.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-car.png"
       },
       {
         "type": "image",
         "sequence": 3,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-2.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
       },
       {
         "type": "image",
         "sequence": 4,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-3.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
       }
     ],
     "specifications": [
-      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
-      { "field": "barcode", "display_name": "Barcode", "value": "4893156032676" },
-      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 9.2Kg 4.57Cuft" },
-      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
-      { "field": "power_source", "display_name": "Power Source", "value": "Wind energy" },
-      { "field": "includes", "display_name": "Includes", "value": "Windmill parts, LED light, Assembly instructions, Educational booklet" }
+      {
+        "field": "item_size",
+        "display_name": "Size",
+        "value": "16.7cm x 21.5cm x 5.8cm"
+      },
+      {
+        "field": "barcode",
+        "display_name": "Barcode",
+        "value": "4893156032676"
+      },
+      {
+        "field": "packaging",
+        "display_name": "Packaging",
+        "value": "6/Inner 48/Master 9.2Kg 4.57Cuft"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age Range",
+        "value": "8+ years"
+      },
+      {
+        "field": "power_source",
+        "display_name": "Power Source",
+        "value": "Wind energy"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Windmill parts, LED light, Assembly instructions, Educational booklet"
+      }
     ],
     "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
@@ -59,10 +95,26 @@
     ],
     "hot_item": true,
     "multi_language": [
-      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
-      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
-      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
-      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+      {
+        "language": "English",
+        "media_source": "file",
+        "media_destination": "english.pdf"
+      },
+      {
+        "language": "French",
+        "media_source": "file",
+        "media_destination": "french.pdf"
+      },
+      {
+        "language": "German",
+        "media_source": "file",
+        "media_destination": "german.pdf"
+      },
+      {
+        "language": "Spanish",
+        "media_source": "file",
+        "media_destination": "spanish.pdf"
+      }
     ],
     "related_product": []
   },
@@ -73,41 +125,76 @@
     "folder_name": "potato-clock",
     "category_main": "science-education",
     "category_sub": "green-science",
-    "tag_visible": ["electrochemistry", "organic energy", "digital clock", "science experiment", "potatoes", "battery-free"],
-    "tag_hidden": ["green-science", "energy", "chemistry"],
+    "tag_visible": [
+      "electrochemistry",
+      "organic energy",
+      "digital clock",
+      "science experiment",
+      "potatoes",
+      "battery-free"
+    ],
+    "tag_hidden": [
+      "green-science",
+      "energy",
+      "chemistry"
+    ],
     "media": [
       {
         "type": "image",
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "main.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-car.png"
       },
       {
         "type": "image",
         "sequence": 2,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-1.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
       },
       {
         "type": "image",
         "sequence": 3,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-2.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
       }
     ],
     "specifications": [
-      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
-      { "field": "barcode", "display_name": "Barcode", "value": "4893156032751" },
-      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 9.3Kg 4.57Cuft" },
-      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
-      { "field": "power_source", "display_name": "Power Source", "value": "Potato electrodes" },
-      { "field": "includes", "display_name": "Includes", "value": "Digital clock module, Copper and zinc electrodes, Wires, Instructions" }
+      {
+        "field": "item_size",
+        "display_name": "Size",
+        "value": "16.7cm x 21.5cm x 5.8cm"
+      },
+      {
+        "field": "barcode",
+        "display_name": "Barcode",
+        "value": "4893156032751"
+      },
+      {
+        "field": "packaging",
+        "display_name": "Packaging",
+        "value": "6/Inner 48/Master 9.3Kg 4.57Cuft"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age Range",
+        "value": "8+ years"
+      },
+      {
+        "field": "power_source",
+        "display_name": "Power Source",
+        "value": "Potato electrodes"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Digital clock module, Copper and zinc electrodes, Wires, Instructions"
+      }
     ],
     "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
@@ -117,10 +204,26 @@
     ],
     "hot_item": false,
     "multi_language": [
-      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
-      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
-      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
-      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+      {
+        "language": "English",
+        "media_source": "file",
+        "media_destination": "english.pdf"
+      },
+      {
+        "language": "French",
+        "media_source": "file",
+        "media_destination": "french.pdf"
+      },
+      {
+        "language": "German",
+        "media_source": "file",
+        "media_destination": "german.pdf"
+      },
+      {
+        "language": "Spanish",
+        "media_source": "file",
+        "media_destination": "spanish.pdf"
+      }
     ],
     "related_product": []
   },
@@ -131,49 +234,84 @@
     "folder_name": "weather-station",
     "category_main": "science-education",
     "category_sub": "green-science",
-    "tag_visible": ["meteorology", "weather tracking", "greenhouse effect", "terrarium", "data collection", "outdoor science"],
-    "tag_hidden": ["green-science", "weather", "nature"],
+    "tag_visible": [
+      "meteorology",
+      "weather tracking",
+      "greenhouse effect",
+      "terrarium",
+      "data collection",
+      "outdoor science"
+    ],
+    "tag_hidden": [
+      "green-science",
+      "weather",
+      "nature"
+    ],
     "media": [
       {
         "type": "image",
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "main.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
       },
       {
         "type": "image",
         "sequence": 2,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-1.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
       },
       {
         "type": "image",
         "sequence": 3,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-2.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-dinosaur.png"
       },
       {
         "type": "image",
         "sequence": 4,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-3.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
       }
     ],
     "specifications": [
-      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
-      { "field": "barcode", "display_name": "Barcode", "value": "4893156032799" },
-      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 9.3Kg 4.57Cuft" },
-      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
-      { "field": "measurements", "display_name": "Measurements", "value": "Temperature, Humidity, Wind direction, Rainfall" },
-      { "field": "includes", "display_name": "Includes", "value": "Weather instruments, Terrarium bottle, Data recording sheets, Assembly guide" }
+      {
+        "field": "item_size",
+        "display_name": "Size",
+        "value": "16.7cm x 21.5cm x 5.8cm"
+      },
+      {
+        "field": "barcode",
+        "display_name": "Barcode",
+        "value": "4893156032799"
+      },
+      {
+        "field": "packaging",
+        "display_name": "Packaging",
+        "value": "6/Inner 48/Master 9.3Kg 4.57Cuft"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age Range",
+        "value": "8+ years"
+      },
+      {
+        "field": "measurements",
+        "display_name": "Measurements",
+        "value": "Temperature, Humidity, Wind direction, Rainfall"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Weather instruments, Terrarium bottle, Data recording sheets, Assembly guide"
+      }
     ],
     "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
@@ -183,10 +321,26 @@
     ],
     "hot_item": true,
     "multi_language": [
-      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
-      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
-      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
-      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+      {
+        "language": "English",
+        "media_source": "file",
+        "media_destination": "english.pdf"
+      },
+      {
+        "language": "French",
+        "media_source": "file",
+        "media_destination": "french.pdf"
+      },
+      {
+        "language": "German",
+        "media_source": "file",
+        "media_destination": "german.pdf"
+      },
+      {
+        "language": "Spanish",
+        "media_source": "file",
+        "media_destination": "spanish.pdf"
+      }
     ],
     "related_product": []
   },
@@ -197,41 +351,76 @@
     "folder_name": "salt-robot",
     "category_main": "science-education",
     "category_sub": "green-science",
-    "tag_visible": ["robotics", "salt water power", "conductivity", "engineering", "battery cartridges", "mini vehicle"],
-    "tag_hidden": ["green-science", "robotics", "energy"],
+    "tag_visible": [
+      "robotics",
+      "salt water power",
+      "conductivity",
+      "engineering",
+      "battery cartridges",
+      "mini vehicle"
+    ],
+    "tag_hidden": [
+      "green-science",
+      "robotics",
+      "energy"
+    ],
     "media": [
       {
         "type": "image",
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "main.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
       },
       {
         "type": "image",
         "sequence": 2,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-1.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-dinosaur.png"
       },
       {
         "type": "image",
         "sequence": 3,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-2.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
       }
     ],
     "specifications": [
-      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
-      { "field": "barcode", "display_name": "Barcode", "value": "4893156033536" },
-      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 8Kg 4.57Cuft" },
-      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
-      { "field": "power_source", "display_name": "Power Source", "value": "Salt water solution" },
-      { "field": "includes", "display_name": "Includes", "value": "Robot chassis, Motor, Battery cartridges, Assembly instructions" }
+      {
+        "field": "item_size",
+        "display_name": "Size",
+        "value": "16.7cm x 21.5cm x 5.8cm"
+      },
+      {
+        "field": "barcode",
+        "display_name": "Barcode",
+        "value": "4893156033536"
+      },
+      {
+        "field": "packaging",
+        "display_name": "Packaging",
+        "value": "6/Inner 48/Master 8Kg 4.57Cuft"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age Range",
+        "value": "8+ years"
+      },
+      {
+        "field": "power_source",
+        "display_name": "Power Source",
+        "value": "Salt water solution"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Robot chassis, Motor, Battery cartridges, Assembly instructions"
+      }
     ],
     "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
@@ -241,10 +430,26 @@
     ],
     "hot_item": false,
     "multi_language": [
-      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
-      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
-      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
-      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+      {
+        "language": "English",
+        "media_source": "file",
+        "media_destination": "english.pdf"
+      },
+      {
+        "language": "French",
+        "media_source": "file",
+        "media_destination": "french.pdf"
+      },
+      {
+        "language": "German",
+        "media_source": "file",
+        "media_destination": "german.pdf"
+      },
+      {
+        "language": "Spanish",
+        "media_source": "file",
+        "media_destination": "spanish.pdf"
+      }
     ],
     "related_product": []
   },
@@ -255,49 +460,84 @@
     "folder_name": "clean-water",
     "category_main": "science-education",
     "category_sub": "green-science",
-    "tag_visible": ["water filtration", "desalination", "solar power", "water science", "environmental", "purification"],
-    "tag_hidden": ["green-science", "water", "environment"],
+    "tag_visible": [
+      "water filtration",
+      "desalination",
+      "solar power",
+      "water science",
+      "environmental",
+      "purification"
+    ],
+    "tag_hidden": [
+      "green-science",
+      "water",
+      "environment"
+    ],
     "media": [
       {
         "type": "image",
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "main.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-dinosaur.png"
       },
       {
         "type": "image",
         "sequence": 2,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-1.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
       },
       {
         "type": "image",
         "sequence": 3,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-2.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-car.png"
       },
       {
         "type": "image",
         "sequence": 4,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-3.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
       }
     ],
     "specifications": [
-      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
-      { "field": "barcode", "display_name": "Barcode", "value": "4893156032812" },
-      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 24/Master 9.9Kg 2.34Cuft" },
-      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
-      { "field": "power_source", "display_name": "Power Source", "value": "Solar energy" },
-      { "field": "includes", "display_name": "Includes", "value": "Filtration components, Desalination kit, Solar disinfection materials, Test tubes, Instruction manual" }
+      {
+        "field": "item_size",
+        "display_name": "Size",
+        "value": "16.7cm x 21.5cm x 5.8cm"
+      },
+      {
+        "field": "barcode",
+        "display_name": "Barcode",
+        "value": "4893156032812"
+      },
+      {
+        "field": "packaging",
+        "display_name": "Packaging",
+        "value": "6/Inner 24/Master 9.9Kg 2.34Cuft"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age Range",
+        "value": "8+ years"
+      },
+      {
+        "field": "power_source",
+        "display_name": "Power Source",
+        "value": "Solar energy"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Filtration components, Desalination kit, Solar disinfection materials, Test tubes, Instruction manual"
+      }
     ],
     "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
@@ -307,10 +547,26 @@
     ],
     "hot_item": false,
     "multi_language": [
-      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
-      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
-      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
-      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+      {
+        "language": "English",
+        "media_source": "file",
+        "media_destination": "english.pdf"
+      },
+      {
+        "language": "French",
+        "media_source": "file",
+        "media_destination": "french.pdf"
+      },
+      {
+        "language": "German",
+        "media_source": "file",
+        "media_destination": "german.pdf"
+      },
+      {
+        "language": "Spanish",
+        "media_source": "file",
+        "media_destination": "spanish.pdf"
+      }
     ],
     "related_product": []
   },
@@ -321,49 +577,84 @@
     "folder_name": "aqua-robot",
     "category_main": "science-education",
     "category_sub": "green-science",
-    "tag_visible": ["solar power", "robotics", "swimming robot", "renewable energy", "water play", "dual power"],
-    "tag_hidden": ["green-science", "robotics", "solar"],
+    "tag_visible": [
+      "solar power",
+      "robotics",
+      "swimming robot",
+      "renewable energy",
+      "water play",
+      "dual power"
+    ],
+    "tag_hidden": [
+      "green-science",
+      "robotics",
+      "solar"
+    ],
     "media": [
       {
         "type": "image",
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "main.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
       },
       {
         "type": "image",
         "sequence": 2,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-1.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-car.png"
       },
       {
         "type": "image",
         "sequence": 3,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-2.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
       },
       {
         "type": "image",
         "sequence": 4,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-3.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
       }
     ],
     "specifications": [
-      { "field": "item_size", "display_name": "Size", "value": "20.6cm x 27.6cm x 6.1cm" },
-      { "field": "barcode", "display_name": "Barcode", "value": "4893156034151" },
-      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 24/Master 8.7Kg 3.67Cuft" },
-      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
-      { "field": "power_source", "display_name": "Power Source", "value": "Solar cells with battery backup" },
-      { "field": "includes", "display_name": "Includes", "value": "Robot body, Solar panel, Motor, Battery compartment, Assembly instructions" }
+      {
+        "field": "item_size",
+        "display_name": "Size",
+        "value": "20.6cm x 27.6cm x 6.1cm"
+      },
+      {
+        "field": "barcode",
+        "display_name": "Barcode",
+        "value": "4893156034151"
+      },
+      {
+        "field": "packaging",
+        "display_name": "Packaging",
+        "value": "6/Inner 24/Master 8.7Kg 3.67Cuft"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age Range",
+        "value": "8+ years"
+      },
+      {
+        "field": "power_source",
+        "display_name": "Power Source",
+        "value": "Solar cells with battery backup"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Robot body, Solar panel, Motor, Battery compartment, Assembly instructions"
+      }
     ],
     "award_text": [
       "2022 STEM.org Accredited™",
@@ -372,10 +663,26 @@
     ],
     "hot_item": true,
     "multi_language": [
-      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
-      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
-      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
-      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+      {
+        "language": "English",
+        "media_source": "file",
+        "media_destination": "english.pdf"
+      },
+      {
+        "language": "French",
+        "media_source": "file",
+        "media_destination": "french.pdf"
+      },
+      {
+        "language": "German",
+        "media_source": "file",
+        "media_destination": "german.pdf"
+      },
+      {
+        "language": "Spanish",
+        "media_source": "file",
+        "media_destination": "spanish.pdf"
+      }
     ],
     "related_product": []
   },
@@ -386,41 +693,77 @@
     "folder_name": "green-rocket",
     "category_main": "science-education",
     "category_sub": "green-science",
-    "tag_visible": ["rocket", "chemical reactions", "aerodynamics", "eco-friendly", "launch", "baking soda", "vinegar"],
-    "tag_hidden": ["green-science", "chemistry", "physics"],
+    "tag_visible": [
+      "rocket",
+      "chemical reactions",
+      "aerodynamics",
+      "eco-friendly",
+      "launch",
+      "baking soda",
+      "vinegar"
+    ],
+    "tag_hidden": [
+      "green-science",
+      "chemistry",
+      "physics"
+    ],
     "media": [
       {
         "type": "image",
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "main.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-car.png"
       },
       {
         "type": "image",
         "sequence": 2,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-1.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
       },
       {
         "type": "image",
         "sequence": 3,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-2.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
       }
     ],
     "specifications": [
-      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
-      { "field": "barcode", "display_name": "Barcode", "value": "4893156032980" },
-      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 8.5Kg 4.57Cuft" },
-      { "field": "age_range", "display_name": "Age Range", "value": "8+ years" },
-      { "field": "power_source", "display_name": "Power Source", "value": "Chemical reaction (baking soda + vinegar)" },
-      { "field": "includes", "display_name": "Includes", "value": "Rocket body, Launch pad, Measuring tools, Safety instructions, Science guide" }
+      {
+        "field": "item_size",
+        "display_name": "Size",
+        "value": "16.7cm x 21.5cm x 5.8cm"
+      },
+      {
+        "field": "barcode",
+        "display_name": "Barcode",
+        "value": "4893156032980"
+      },
+      {
+        "field": "packaging",
+        "display_name": "Packaging",
+        "value": "6/Inner 48/Master 8.5Kg 4.57Cuft"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age Range",
+        "value": "8+ years"
+      },
+      {
+        "field": "power_source",
+        "display_name": "Power Source",
+        "value": "Chemical reaction (baking soda + vinegar)"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Rocket body, Launch pad, Measuring tools, Safety instructions, Science guide"
+      }
     ],
     "award_text": [
       "2016 A' Design Award in Toy, Games and Hobby Products Design",
@@ -429,10 +772,26 @@
     ],
     "hot_item": false,
     "multi_language": [
-      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
-      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
-      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
-      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+      {
+        "language": "English",
+        "media_source": "file",
+        "media_destination": "english.pdf"
+      },
+      {
+        "language": "French",
+        "media_source": "file",
+        "media_destination": "french.pdf"
+      },
+      {
+        "language": "German",
+        "media_source": "file",
+        "media_destination": "german.pdf"
+      },
+      {
+        "language": "Spanish",
+        "media_source": "file",
+        "media_destination": "spanish.pdf"
+      }
     ],
     "related_product": []
   },
@@ -443,49 +802,85 @@
     "folder_name": "grow-maze",
     "category_main": "science-education",
     "category_sub": "green-science",
-    "tag_visible": ["plants", "biology", "photosynthesis", "maze", "growing", "gardening", "nature"],
-    "tag_hidden": ["green-science", "biology", "nature"],
+    "tag_visible": [
+      "plants",
+      "biology",
+      "photosynthesis",
+      "maze",
+      "growing",
+      "gardening",
+      "nature"
+    ],
+    "tag_hidden": [
+      "green-science",
+      "biology",
+      "nature"
+    ],
     "media": [
       {
         "type": "image",
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "main.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
       },
       {
         "type": "image",
         "sequence": 2,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-1.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
       },
       {
         "type": "image",
         "sequence": 3,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-2.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-dinosaur.png"
       },
       {
         "type": "image",
         "sequence": 4,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "file",
-        "media_destination": "gallery-3.jpg"
+        "media_source": "url",
+        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
       }
     ],
     "specifications": [
-      { "field": "item_size", "display_name": "Size", "value": "16.7cm x 21.5cm x 5.8cm" },
-      { "field": "barcode", "display_name": "Barcode", "value": "4893156033529" },
-      { "field": "packaging", "display_name": "Packaging", "value": "6/Inner 48/Master 7.8Kg 4.57Cuft" },
-      { "field": "age_range", "display_name": "Age Range", "value": "6+ years" },
-      { "field": "growing_time", "display_name": "Growing Time", "value": "7-14 days" },
-      { "field": "includes", "display_name": "Includes", "value": "Maze template, Fast-growing seeds, Growing medium, Watering tools, Plant care guide" }
+      {
+        "field": "item_size",
+        "display_name": "Size",
+        "value": "16.7cm x 21.5cm x 5.8cm"
+      },
+      {
+        "field": "barcode",
+        "display_name": "Barcode",
+        "value": "4893156033529"
+      },
+      {
+        "field": "packaging",
+        "display_name": "Packaging",
+        "value": "6/Inner 48/Master 7.8Kg 4.57Cuft"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age Range",
+        "value": "6+ years"
+      },
+      {
+        "field": "growing_time",
+        "display_name": "Growing Time",
+        "value": "7-14 days"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Maze template, Fast-growing seeds, Growing medium, Watering tools, Plant care guide"
+      }
     ],
     "award_text": [
       "2022 STEM.org Accredited™",
@@ -494,10 +889,26 @@
     ],
     "hot_item": true,
     "multi_language": [
-      { "language": "English", "media_source": "file", "media_destination": "english.pdf" },
-      { "language": "French", "media_source": "file", "media_destination": "french.pdf" },
-      { "language": "German", "media_source": "file", "media_destination": "german.pdf" },
-      { "language": "Spanish", "media_source": "file", "media_destination": "spanish.pdf" }
+      {
+        "language": "English",
+        "media_source": "file",
+        "media_destination": "english.pdf"
+      },
+      {
+        "language": "French",
+        "media_source": "file",
+        "media_destination": "french.pdf"
+      },
+      {
+        "language": "German",
+        "media_source": "file",
+        "media_destination": "german.pdf"
+      },
+      {
+        "language": "Spanish",
+        "media_source": "file",
+        "media_destination": "spanish.pdf"
+      }
     ],
     "related_product": []
   }

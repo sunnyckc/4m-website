@@ -1,121 +1,130 @@
 ---
 import { Layout } from '@/layouts';
-import { Card, HeroSlideshow } from '@/components';
-import { getBase } from '@/config';
 
-const base = getBase();
-
-const heroSlides = [
-  {
-    id: "4m-hero",
-    image: `${base}/images/4m-assets/New_Project_(60).png`,
-    title: "4M - For Minds",
-    subtitle: "Inspiring children to explore the world through creative and educational play"
-  }
-];
+/** One readable measure; title + body share it so edges line up. */
+const measure = 'w-full max-w-3xl mx-auto';
+const body = 'text-lg text-muted-foreground text-comic leading-relaxed';
+const h2 = 'text-2xl md:text-3xl font-bold text-fun';
+const miniThumb =
+  'shrink-0 w-36 h-36 sm:w-40 sm:h-40 rounded-xl border border-dashed border-muted-foreground/25 shadow-sm';
+/** Wide block for a future team / company group photo */
+const groupPhotoPlaceholder =
+  'w-full aspect-[21/9] rounded-xl border border-dashed border-muted-foreground/25 shadow-sm bg-gradient-to-br from-slate-200/85 via-muted/80 to-primary/15 dark:from-slate-800/55 dark:via-muted/40 dark:to-primary/25';
 ---
 
-<Layout title="About Us - 4M Industrial Development Limited" description="4M is an international toy brand inspiring children through creative and educational play — science, robotics, arts and crafts">
-  <!-- Hero Section with Image -->
-  <HeroSlideshow 
-    slides={heroSlides} 
-    autoplay={false} 
-    showIndicators={false} 
-    showArrows={false}
-    class="mb-16"
-  />
+<Layout
+  title="About Us - 4M Industrial Development Limited"
+  description="We believe toys should spark a chain reaction in creativity and confidence. Since 1993, 4M has designed STEM kits in Hong Kong that turn curiosity into lifelong learning."
+>
+  <div class="container-custom py-8 md:py-12 lg:py-14">
+    <main class={`${measure} space-y-14 md:space-y-16 lg:space-y-20`} aria-label="About 4M">
+      <!-- Hero title -->
+      <header>
+        <h1 class="text-3xl md:text-4xl lg:text-[2.65rem] font-bold text-fun leading-tight text-balance text-foreground">
+          We believe toys should spark a chain reaction in{' '}
+          <span class="font-fredoka font-semibold text-primary dark:text-sky-400">creativity</span>
+          {' '}and{' '}
+          <span class="font-fredoka font-semibold text-secondary dark:text-amber-300">confidence</span>
+        </h1>
+      </header>
 
-  <div class="container-custom py-8">
-    <!-- Main About Section -->
-    <div class="text-center space-y-6 mb-12 max-w-3xl mx-auto">
-      <h1 class="text-3xl md:text-4xl font-bold text-fun">About 4M</h1>
-      <p class="text-lg text-muted-foreground text-comic">
-        4M is an international toy brand committed to inspiring children to explore the world around them through creative and educational play. From science and robotics to arts and crafts, 4M kits bring learning to life in a fun and engaging way.
-      </p>
-      <p class="text-lg text-muted-foreground text-comic">
-        4M has been helping children develop their creativity and imagination since our first product hit the market in 1993. Following the huge success of Jumbo Chalk and our popular glow-in-the-dark products, we branched into scientific educational toys in 1999 with the launch of Kidz Labs. Now in our third decade of operations, we continue to innovate and manufacture premium products that stimulate mental development, and our 300-strong product catalogue is continually revamped by our home-grown Hong Kong design team.
-      </p>
-    </div>
-
-    <div class="mb-16 max-w-2xl mx-auto aspect-square rounded-lg overflow-hidden">
-      <img
-        src={`${base}/images/4m-assets/About_Us_2.jpg`}
-        alt="4M Educational Products"
-        class="w-full h-full object-cover"
+      <div
+        class={groupPhotoPlaceholder}
+        role="img"
+        aria-label="Placeholder for company or team group photo"
       />
-    </div>
 
-    <!-- Four Minds Section -->
-    <div class="mb-16">
-      <div class="text-center space-y-4 mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-fun">4M – Four Minds</h2>
-        <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
-          Imaginative, creative, inspiring and fun are the 4 core principles that birthed 4M; characteristics that are in our people, our designs, and throughout our production process. These are the essential elements of healthy mental development that we hope to instill in every precious young mind:
+      <!-- Opening -->
+      <div class="space-y-6" aria-labelledby="about-opening-heading">
+        <h2 id="about-opening-heading" class="sr-only">Why 4M</h2>
+        <p class={body}>
+          At 4M, we believe a toy shouldn't just be something a child plays with—it should be the start of a chain
+          reaction.
+        </p>
+        <p class={body}>
+          It starts with a box, but it ends with a discovery that changes how a child sees the world. Our mission is to
+          provide the "spark" that turns curiosity into a lifelong passion for learning, creating, and questioning.
         </p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div class="p-8 text-center group cursor-pointer">
-          <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-primary transition-transform duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 2L3 7v11a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V7l-7-5z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Imaginative</h3>
-          <p class="text-muted-foreground">
-            With an imaginative mind, we can see the world for what it is and what it might be.
-          </p>
-        </div>
 
-        <div class="p-8 text-center group cursor-pointer">
-          <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-primary transition-transform duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Inspiring</h3>
-          <p class="text-muted-foreground">
-            With an inspiring mind, we have the courage to explore new horizons and face challenges.
+      <!-- Everyday ideas -->
+      <section class="space-y-10 md:space-y-12" aria-labelledby="about-everyday-heading">
+        <header class="space-y-4">
+          <h2 id="about-everyday-heading" class={h2}>
+            From Everyday Object to Extraordinary Ideas
+          </h2>
+          <p class={body}>
+            We don't just sell kit, we sell an 'aha' moment. We take the mundane and make it magnetic.
           </p>
-        </div>
+        </header>
 
-        <div class="p-8 text-center group cursor-pointer">
-          <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-primary transition-transform duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Creative</h3>
-          <p class="text-muted-foreground">
-            With a creative mind, we dream up innovative solutions to overcome life's obstacles.
-          </p>
-        </div>
+        <ul class="list-none space-y-12 md:space-y-14 p-0 m-0" role="list">
+          <li
+            class="flex flex-col sm:flex-row gap-6 sm:gap-8 sm:items-center"
+            data-about-mini="potato"
+          >
+            <div
+              class={`${miniThumb} bg-gradient-to-br from-amber-200/90 to-yellow-600/30 dark:from-amber-900/45 dark:to-yellow-900/40 mx-auto sm:mx-0 sm:shrink-0`}
+              role="img"
+              aria-label="Product image placeholder: potato clock or similar kit"
+            />
+            <div class="min-w-0 flex-1 space-y-2 text-left">
+              <h3 class="text-lg font-semibold text-foreground text-comic">The Power of a Potato</h3>
+              <p class={body}>
+                It's not just a vegetable; it's the battery that brings a digital clock to life.
+              </p>
+            </div>
+          </li>
 
-        <div class="p-8 text-center group cursor-pointer">
-          <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-primary transition-transform duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Fun</h3>
-          <p class="text-muted-foreground">
-            With a fun mind, we appreciate and savour our world full of wonders, every day.
-          </p>
-        </div>
-      </div>
-    </div>
+          <li
+            class="flex flex-col sm:flex-row-reverse gap-6 sm:gap-8 sm:items-center"
+            data-about-mini="dig"
+          >
+            <div
+              class={`${miniThumb} bg-gradient-to-br from-stone-200/90 to-amber-800/25 dark:from-stone-700/50 dark:to-amber-950/40 mx-auto sm:mx-0 sm:shrink-0`}
+              role="img"
+              aria-label="Product image placeholder: dig / excavation kit"
+            />
+            <div class="min-w-0 flex-1 space-y-2 text-left">
+              <h3 class="text-lg font-semibold text-foreground text-comic">The Thrill of the Dig</h3>
+              <p class={body}>
+                It's not just a block of plaster; it's a prehistoric mystery waiting for a young paleontologist to
+                unearth a T-Rex.
+              </p>
+            </div>
+          </li>
 
-    <!-- For Young Minds Section -->
-    <div class="text-center bg-muted/30 rounded-2xl p-12">
-      <div class="space-y-4 mb-8">
-        <h2 class="text-3xl md:text-4xl font-bold text-fun">For Young Minds</h2>
-        <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
-          The development of executive brain function is a critical aspect of children's education, influencing their ability to learn and process information for the rest of their lives.
+          <li
+            class="flex flex-col sm:flex-row gap-6 sm:gap-8 sm:items-center"
+            data-about-mini="upcycling"
+          >
+            <div
+              class={`${miniThumb} bg-gradient-to-br from-slate-200/90 to-emerald-700/25 dark:from-slate-700/45 dark:to-emerald-950/45 mx-auto sm:mx-0 sm:shrink-0`}
+              role="img"
+              aria-label="Product image placeholder: upcycling / can robot kit"
+            />
+            <div class="min-w-0 flex-1 space-y-2 text-left">
+              <h3 class="text-lg font-semibold text-foreground text-comic">The Future of Upcycling</h3>
+              <p class={body}>
+                A discarded soda can isn't trash—it's the chassis for a solar-powered rover or a walking robot.
+              </p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Philosophy -->
+      <section class="space-y-6 pb-4" aria-labelledby="about-philosophy-heading">
+        <h2 id="about-philosophy-heading" class={h2}>
+          The 4M Philosophy
+        </h2>
+        <p class={body}>
+          Since 1993, our Hong Kong-based design team has been obsessed with the Four Minds: being Imaginative,
+          Creative, Inspiring, and Fun. We know that when a child builds a robot with their own hands, they aren't just
+          practicing eye-hand coordination—they are building the confidence to realize they can solve problems, invent
+          solutions, and shape the future.
         </p>
-      </div>
-      <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
-        Our educational toys, through easy to use yet sophisticated applied science and crafts, spark and engage the higher brain activities that make us successful thinkers: logic, inference, analysis, and imagination.
-      </p>
-    </div>
-
+      </section>
+    </main>
   </div>
 </Layout>

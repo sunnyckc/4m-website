@@ -67,21 +67,21 @@ export default {
       },
       animation: {
         'hero-orbit-spin-cw':
-          'hero-orbit-spin-cw var(--hero-orbit-duration, 14s) linear infinite',
+          'hero-orbit-spin-cw var(--hero-orbit-duration, 40s) linear infinite',
         'hero-orbit-spin-ccw':
-          'hero-orbit-spin-ccw var(--hero-orbit-duration, 14s) linear infinite',
+          'hero-orbit-spin-ccw var(--hero-orbit-duration, 40s) linear infinite',
         'hero-orbit-spin-cw-osc':
-          'hero-orbit-spin-cw-osc var(--hero-orbit-duration, 14s) linear infinite',
+          'hero-orbit-spin-cw-osc var(--hero-orbit-duration, 40s) linear infinite',
         'hero-orbit-spin-ccw-osc':
-          'hero-orbit-spin-ccw-osc var(--hero-orbit-duration, 14s) linear infinite',
+          'hero-orbit-spin-ccw-osc var(--hero-orbit-duration, 40s) linear infinite',
         'hero-orbit-counter-cw':
-          'hero-orbit-counter-cw var(--hero-orbit-duration, 14s) linear infinite',
+          'hero-orbit-counter-cw var(--hero-orbit-duration, 40s) linear infinite',
         'hero-orbit-counter-ccw':
-          'hero-orbit-counter-ccw var(--hero-orbit-duration, 14s) linear infinite',
+          'hero-orbit-counter-ccw var(--hero-orbit-duration, 40s) linear infinite',
         'hero-orbit-counter-cw-osc':
-          'hero-orbit-counter-cw-osc var(--hero-orbit-duration, 14s) linear infinite',
+          'hero-orbit-counter-cw-osc var(--hero-orbit-duration, 40s) linear infinite',
         'hero-orbit-counter-ccw-osc':
-          'hero-orbit-counter-ccw-osc var(--hero-orbit-duration, 14s) linear infinite',
+          'hero-orbit-counter-ccw-osc var(--hero-orbit-duration, 40s) linear infinite',
       },
       fontFamily: {
         sans: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],

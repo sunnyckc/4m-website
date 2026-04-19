@@ -74,11 +74,11 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
       .map((product) => {
         const thumb = getProductThumbnail(product);
         const tags = [...product.tag_visible, ...product.tag_hidden].join(' ').toLowerCase();
-        const hot = product.hot_item
-          ? `<div class="absolute top-2 right-2"><span class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold bg-orange-500 hover:bg-orange-600 text-white">Hot</span></div>`
+        const hotPill = product.hot_item
+          ? '<span class="pointer-events-none absolute right-1.5 top-1.5 z-10 inline-flex items-center rounded-full bg-orange-500 px-2 py-0.5 text-[10px] font-semibold leading-none text-white shadow-sm">Top seller</span>'
           : '';
-        return `<a href="${base}/products/${encodeURIComponent(product.folder_name)}" class="block">
-  <div class="rounded-2xl border bg-card text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 product-card overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+        return `<a href="${base}/products/${encodeURIComponent(product.folder_name)}" class="group block origin-center rounded-md transition-transform duration-200 ease-out hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+  <div class="product-card"
        data-name="${escapeHtml(product.item_name.toLowerCase())}"
        data-code="${escapeHtml((product.item_code || '').toLowerCase())}"
        data-category="${escapeHtml(product.category_main)}"
@@ -86,17 +86,11 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
        data-tags="${escapeHtml(tags)}"
        data-description="${escapeHtml(product.item_description.toLowerCase())}"
        data-hot-item="${product.hot_item ? 'true' : 'false'}">
-    <div class="aspect-square bg-muted relative overflow-hidden">
-      <img src="${escapeHtml(thumb)}" alt="${escapeHtml(product.item_name)}" class="w-full h-full object-cover transition-transform duration-300 ease-in-out product-image" loading="lazy" />
-      ${hot}
+    <div class="relative aspect-square w-full overflow-hidden rounded-md border border-border bg-muted">
+      ${hotPill}
+      <img src="${escapeHtml(thumb)}" alt="${escapeHtml(product.item_name)}" class="h-full w-full object-cover transition-opacity duration-200 group-hover:opacity-90" loading="lazy" />
     </div>
-    <div class="p-4 space-y-3">
-      <div class="space-y-2">
-        <h3 class="font-semibold text-lg leading-tight">${escapeHtml(product.item_name)}</h3>
-        ${product.item_code ? `<p class="text-xs text-muted-foreground font-mono">${escapeHtml(product.item_code)}</p>` : ''}
-        <p class="text-sm text-muted-foreground line-clamp-2">${escapeHtml(product.item_description)}</p>
-      </div>
-    </div>
+    <p class="mt-2 px-0.5 text-center text-[11px] font-normal leading-snug text-muted-foreground line-clamp-3 group-hover:text-foreground transition-colors">${escapeHtml(product.item_name)}</p>
   </div>
 </a>`;
       })
@@ -383,5 +377,14 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
     el.addEventListener('click', () => clearFilters());
   });
 
-  selectCategory('', '');
+  const params = new URLSearchParams(window.location.search);
+  const urlCategory = params.get('category')?.trim() ?? '';
+  const urlSubcategory = params.get('subcategory')?.trim() ?? '';
+  if (urlCategory !== '' && urlSubcategory !== '') {
+    selectCategory(urlCategory, urlSubcategory);
+  } else if (urlCategory !== '') {
+    selectCategory(urlCategory, '');
+  } else {
+    selectCategory('', '');
+  }
 }

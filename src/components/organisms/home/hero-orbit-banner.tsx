@@ -278,7 +278,7 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
   const backgroundOverlayWhiteOpacity = clamp(0, background?.overlayWhiteOpacity ?? 0, 1);
 
   const sectionStyle = {
-    '--hero-orbit-duration': `${orbit.speedSeconds ?? 18}s`,
+    '--hero-orbit-duration': `${orbit.speedSeconds ?? 40}s`,
     '--hero-orbit-kid-x-mobile': `${kidPl.mobile.xPercent}%`,
     '--hero-orbit-kid-y-mobile': `${kidPl.mobile.yPercent}%`,
     '--hero-orbit-kid-w-mobile': `${kidPl.mobile.widthPx}px`,
@@ -326,7 +326,7 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
       return;
     }
 
-    const T = Math.max(1, orbit.speedSeconds ?? 18);
+    const T = Math.max(1, orbit.speedSeconds ?? 40);
     const directionSign = direction === 'clockwise' ? 1 : -1;
     /** 0..~0.95 — speed multiplier is `1 + amp*sin(...)`, stays forward (never reverses). */
     const amp = clamp(0, (orbit.oscillationHeight ?? 45) / 100, 0.95);
@@ -467,7 +467,7 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
                   asChild
                   size="lg"
                   variant="outline"
-                  className="font-fredoka rounded-xl border-white/80 bg-white/80 px-8 text-base text-foreground hover:bg-white"
+                  className="font-fredoka btn-bouncy rounded-xl px-8 text-base shadow-md"
                 >
                   <a href={secondaryCtaHref}>{secondaryCtaText}</a>
                 </Button>

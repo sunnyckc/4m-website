@@ -1,0 +1,112 @@
+---
+import { Button } from '@/components';
+import { getBase } from '@/config';
+import { cn } from '@/utils';
+import type { HomeNewsGalleryJson } from '@/types/home-sections';
+
+interface Props {
+  config: HomeNewsGalleryJson;
+}
+
+const { config } = Astro.props;
+const title = config.title ?? 'Latest news';
+const { subtitle, items, className, gridClassName } = config;
+const base = getBase();
+const seeAllNewsHref = `${base}/news`;
+
+const placeholderGradients = [
+  'from-indigo-500/90 to-slate-800/80',
+  'from-amber-500/85 to-orange-800/78',
+  'from-emerald-500/85 to-teal-900/75',
+  'from-rose-500/80 to-red-900/72',
+  'from-sky-500/85 to-blue-900/78',
+  'from-violet-500/85 to-purple-950/80',
+];
+
+function isExternalHref(href: string): boolean {
+  return /^https?:\/\//i.test(href);
+}
+---
+
+<section
+  class={cn('py-16 lg:py-24', className)}
+  aria-labelledby="home-news-gallery-heading"
+>
+  <div class="container-custom">
+    <div class="mb-10 space-y-4 text-center lg:mb-12">
+      <h2 id="home-news-gallery-heading" class="text-3xl font-bold text-fun md:text-4xl">
+        {title}
+      </h2>
+      {subtitle ? (
+        <p class="mx-auto max-w-2xl text-lg text-muted-foreground text-comic">{subtitle}</p>
+      ) : null}
+    </div>
+
+    {
+      items.length > 0 ? (
+        <div
+          class={cn(
+            'grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:gap-5',
+            gridClassName,
+          )}
+        >
+          {items.map((item, i) => {
+            const showOverlay = item.showOverlay !== false;
+            const external = isExternalHref(item.href);
+            const label = item.imageAlt ?? item.headline;
+            const gradient = placeholderGradients[i % placeholderGradients.length];
+            const linkProps = external
+              ? { target: '_blank' as const, rel: 'noopener noreferrer' as const }
+              : {};
+
+            return (
+              <a
+                href={item.href}
+                class="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl outline-none ring-offset-background transition duration-300 hover:brightness-[1.03] focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                aria-label={label}
+                {...linkProps}
+              >
+                {item.image ? (
+                  <img
+                    src={item.image}
+                    alt=""
+                    class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <div class={cn('absolute inset-0 bg-gradient-to-br', gradient)} aria-hidden="true" />
+                )}
+
+                {showOverlay ? (
+                  <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/78 via-black/45 to-transparent px-3 pb-3 pt-12 sm:px-4 sm:pb-4 sm:pt-14">
+                    {item.date ? (
+                      <p class="text-left text-[10px] font-medium uppercase tracking-[0.12em] text-white/85 sm:text-xs">
+                        {item.date}
+                      </p>
+                    ) : null}
+                    <p class="mt-1 line-clamp-2 text-left text-sm font-semibold leading-snug text-white sm:text-base">
+                      {item.headline}
+                    </p>
+                  </div>
+                ) : null}
+              </a>
+            );
+          })}
+        </div>
+      ) : (
+        <p class="text-center text-comic text-muted-foreground">No stories to show yet.</p>
+      )
+    }
+
+    {
+      items.length > 0 ? (
+        <div class="mt-10 text-center">
+          <Button href={seeAllNewsHref} variant="outline">
+            See all news
+          </Button>
+        </div>
+      ) : null
+    }
+  </div>
+</section>

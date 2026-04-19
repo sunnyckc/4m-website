@@ -1,33 +1,14 @@
 ---
-import LinkCard from '@/components/molecules/link-card.astro';
-import { getContactInfo, getSiteLinks } from '@/repositories/site';
+import { getContactInfo } from '@/repositories/site';
 import { getBase } from '@/config';
-import type { CatalogButton } from '@/types';
 
 const contactInfo = await getContactInfo();
-const siteLinks = await getSiteLinks();
 const base = getBase();
-
-const catalogFallbackImages = [`${base}/images/hero/hero-1.svg`, `${base}/images/hero/hero-2.svg`];
-
-function resolveCatalogImageSrc(btn: CatalogButton, index: number): string {
-  if (btn.imageSrc) {
-    return btn.imageSrc.startsWith('http')
-      ? btn.imageSrc
-      : `${base}${btn.imageSrc.startsWith('/') ? '' : '/'}${btn.imageSrc}`;
-  }
-  return catalogFallbackImages[index] ?? catalogFallbackImages[0];
-}
 ---
 
 <footer class="border-t bg-muted/50">
   <div class="container-custom py-12">
-    <div
-      class:list={[
-        'grid grid-cols-1 gap-8 md:grid-cols-2 xl:items-start',
-        siteLinks.catalog_buttons.length > 0 ? 'xl:grid-cols-4' : 'xl:grid-cols-3',
-      ]}
-    >
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3 xl:items-start">
       <!-- Company Info (left on desktop) -->
       <div class="space-y-4">
         <div class="flex items-center space-x-2">
@@ -51,12 +32,7 @@ function resolveCatalogImageSrc(btn: CatalogButton, index: number): string {
       </div>
 
       <!-- Contact -->
-      <div
-        class:list={[
-          'space-y-4',
-          siteLinks.catalog_buttons.length === 0 ? 'md:col-span-2 xl:col-span-1' : '',
-        ]}
-      >
+      <div class="space-y-4 md:col-span-2 xl:col-span-1">
         <h3 class="text-sm font-semibold">Contact</h3>
         <ul class="space-y-2 text-sm text-muted-foreground">
           <li>Email: {contactInfo.contact.email.display}</li>
@@ -71,25 +47,6 @@ function resolveCatalogImageSrc(btn: CatalogButton, index: number): string {
           </li>
         </ul>
       </div>
-
-      <!-- E-catalogues: heading + two cards stacked top / bottom -->
-      {siteLinks.catalog_buttons.length > 0 && (
-        <div class="space-y-4 xl:min-w-0">
-          <h2 class="text-lg font-semibold tracking-tight">E-catalogues</h2>
-          <div class="flex flex-col gap-6">
-            {siteLinks.catalog_buttons.map((btn, index) => (
-              <LinkCard
-                imageSrc={resolveCatalogImageSrc(btn, index)}
-                imageAlt={btn.imageAlt ?? `${btn.label} cover`}
-                title={btn.label}
-                description={btn.description}
-                ctaLabel={btn.ctaLabel ?? 'View catalogue'}
-                ctaHref={btn.url}
-              />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
 
     <div class="mt-8 pt-8 border-t">

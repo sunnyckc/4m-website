@@ -224,3 +224,31 @@ export type HomeSocialProofJson = {
   /** Optional section root class (Tailwind). */
   className?: string;
 };
+
+/** One image tile for the home “Latest news” gallery (links to internal or external URL). */
+export type HomeNewsGalleryItemJson = {
+  id?: string;
+  /** Path under `/public` (e.g. `/images/...`) or absolute `http(s)` URL. Omit for gradient placeholder. */
+  image?: string;
+  /** Destination when the tile is clicked (resolved with site base for internal paths). */
+  href: string;
+  headline: string;
+  /** Shown in overlay when `showOverlay` is true (any display string, e.g. `April 2026`). */
+  date?: string;
+  /**
+   * When false, the tile is image (or placeholder) only. Default true — bottom gradient + date/headline.
+   */
+  showOverlay?: boolean;
+  /** Accessible name; defaults to `headline`. */
+  imageAlt?: string;
+};
+
+export type HomeNewsGalleryJson = {
+  title?: string;
+  subtitle?: string;
+  items: HomeNewsGalleryItemJson[];
+  /** Optional section root class (Tailwind). */
+  className?: string;
+  /** Optional grid classes (default: 2 cols narrow, 3 cols from `sm`). */
+  gridClassName?: string;
+};

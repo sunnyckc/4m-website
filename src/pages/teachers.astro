@@ -1,0 +1,23 @@
+---
+import { getBase } from '@/config';
+
+const base = getBase();
+const target = `${base}/parents-and-teachers/`;
+const absoluteTarget =
+  Astro.site != null ? new URL(`${base}/parents-and-teachers/`, Astro.site).href : target;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redirecting…</title>
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={absoluteTarget} />
+  </head>
+  <body>
+    <p><a href={target}>Continue to Parents &amp; teachers</a></p>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "title": "Latest news",
+  "subtitle": "Trade shows, partnerships, and stories — swap images and links in public/data/home/news-gallery.json.",
+  "items": [
+    {
+      "id": "placeholder-1",
+      "href": "/news",
+      "headline": "2026 trade show schedule",
+      "date": "Coming soon",
+      "showOverlay": true
+    },
+    {
+      "id": "placeholder-2",
+      "href": "/news",
+      "headline": "New museum partnership",
+      "date": "Announcement",
+      "showOverlay": true
+    },
+    {
+      "id": "placeholder-3",
+      "href": "/news",
+      "headline": "STEAM kit spotlight",
+      "date": "Product",
+      "showOverlay": true
+    },
+    {
+      "id": "placeholder-4",
+      "href": "/news",
+      "headline": "Educator resources update",
+      "date": "Resources",
+      "showOverlay": true
+    },
+    {
+      "id": "placeholder-5",
+      "href": "/news",
+      "headline": "Sustainability in Green Science",
+      "date": "Story",
+      "showOverlay": true
+    },
+    {
+      "id": "placeholder-6",
+      "href": "/news",
+      "headline": "Behind the design",
+      "date": "Studio",
+      "showOverlay": false
+    }
+  ]
+}

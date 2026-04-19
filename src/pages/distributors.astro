@@ -1,0 +1,206 @@
+---
+import { Layout } from '@/layouts';
+import { Button } from '@/components';
+import { getBase } from '@/config';
+
+const base = getBase();
+
+const productCatalog2026Url = 'https://online.pubhtml5.com/tiul/igjj/';
+const productHighlight2026Url = 'https://online.pubhtml5.com/tiul/mdoy/#p=1';
+
+const amazonStoreUrl = 'https://www.amazon.com/';
+
+const textLinkClass =
+  'inline-flex items-center gap-1 font-medium text-blue-600 underline decoration-blue-600/80 underline-offset-[5px] hover:text-blue-800 hover:decoration-blue-800 dark:text-blue-400 dark:decoration-blue-400/70 dark:hover:text-blue-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm';
+---
+
+<Layout
+  title="For Distributors & partners - 4M wholesale"
+  description="Partner with 4M for wholesale, compliance support, and global distribution of STEAM educational toys."
+>
+  <div class="container-custom py-8">
+    <nav class="mb-8 flex text-sm" aria-label="Breadcrumb">
+      <a href={`${base}/`} class="text-muted-foreground hover:text-primary">Home</a>
+      <span class="mx-2 text-muted-foreground">/</span>
+      <span class="text-primary font-medium">For Distributors</span>
+    </nav>
+
+    <div class="mx-auto max-w-3xl space-y-6 text-center mb-14 lg:mb-20">
+      <h1 class="text-3xl font-bold text-fun md:text-4xl">For Distributors</h1>
+      <p class="text-lg text-muted-foreground text-comic">
+        We work with retailers, museums, and distributors worldwide. Here is a quick snapshot of how we show up in market—pricing tiers, certifications, and merchandising assets are a conversation away.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 pt-2">
+        <Button href={`${base}/contact`} size="lg" class="font-fredoka btn-bouncy">
+          Contact us
+        </Button>
+        <Button
+          href={productCatalog2026Url}
+          size="lg"
+          variant="outline"
+          class="font-fredoka btn-bouncy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Product Catalog 2026
+        </Button>
+        <Button
+          href={productHighlight2026Url}
+          size="lg"
+          variant="outline"
+          class="font-fredoka btn-bouncy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Product Highlight 2026
+        </Button>
+      </div>
+    </div>
+  </div>
+
+  <section
+    class="pb-14 lg:pb-24 overflow-hidden"
+    aria-label="Partnership highlights for distributors"
+  >
+    <div class="container-custom">
+      <div class="flex flex-col gap-20 lg:gap-28">
+        <!-- 1: visual left, copy right — heritage & design -->
+        <article
+          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
+          data-distributor-section="heritage"
+        >
+          <div
+            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-sky-200/90 to-indigo-500/40 dark:from-sky-900/50 dark:to-indigo-950/60 shadow-sm"
+            role="img"
+            aria-label="Placeholder: team, workshop, or heritage timeline artwork"
+          />
+          <div class="space-y-5 lg:max-w-xl lg:justify-self-end text-center lg:text-left">
+            <h3 class="text-2xl md:text-3xl font-bold text-fun">30+ years of STEAM, built in-house</h3>
+            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
+              For more than three decades we have shipped our own concepts to classrooms, gift shops, and toy aisles around the world. We sketch, prototype, and refine every line ourselves—so the story on the box matches what is inside.
+            </p>
+          </div>
+        </article>
+
+        <!-- 2: copy left, visual right — retail shelf -->
+        <article
+          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
+          data-distributor-section="retail"
+        >
+          <div class="space-y-5 lg:max-w-xl order-2 lg:order-1 text-center lg:text-left">
+            <h3 class="text-2xl md:text-3xl font-bold text-fun">On shelf with names shoppers trust</h3>
+            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
+              Our ranges sit alongside major retailers and specialty channels—designed for clear facings, strong shelf presence, and packaging that explains the learning outcome in a glance. Swap this block for a hero photo of your favourite endcap when you have art ready.
+            </p>
+          </div>
+          <div
+            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-amber-200/85 to-rose-500/35 dark:from-amber-900/45 dark:to-rose-950/55 shadow-sm order-1 lg:order-2"
+            role="img"
+            aria-label="Placeholder: retail shelf or merchandising photography"
+          />
+        </article>
+
+        <!-- 3: visual left, copy right — Amazon & demand -->
+        <article
+          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
+          data-distributor-section="market-demand"
+        >
+          <div
+            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-orange-200/90 to-amber-600/35 dark:from-orange-900/45 dark:to-amber-950/55 shadow-sm"
+            role="img"
+            aria-label="Placeholder: ecommerce or unboxing campaign artwork"
+          />
+          <div class="space-y-5 lg:max-w-xl lg:justify-self-end text-center lg:text-left">
+            <h3 class="text-2xl md:text-3xl font-bold text-fun">Demand you can see in the wild</h3>
+            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
+              Families already discover us online—reviews, repeat purchases, and seasonal spikes show that the ideas land. Use our storefront as a reference while you build your own assortment and forecasts.
+            </p>
+            <p class="text-lg">
+              <a
+                href={amazonStoreUrl}
+                class={textLinkClass}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Visit our Amazon store
+                <span aria-hidden="true">→</span>
+              </a>
+            </p>
+          </div>
+        </article>
+
+        <!-- 4: copy left, visual right — marketing package -->
+        <article
+          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
+          data-distributor-section="marketing-support"
+        >
+          <div class="space-y-5 lg:max-w-xl order-2 lg:order-1 text-center lg:text-left">
+            <h3 class="text-2xl md:text-3xl font-bold text-fun">More than product—we package how you sell it</h3>
+            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
+              We bundle practical marketing support so your buyers and floor teams can move from delivery to sell-through without guessing. Swap this art for campaign shots, PDF spreads, or training-day photography when you have it.
+            </p>
+            <div class="max-w-prose mx-auto lg:mx-0 text-left">
+              <ul
+                class="list-disc space-y-2 pl-5 text-lg text-muted-foreground text-comic leading-relaxed marker:text-primary"
+              >
+                <li>
+                  Multi-language translation and localized copy for each SKU—tailored to your region so packaging, hangtags, and digital listings read naturally to local families.
+                </li>
+                <li>
+                  A seller’s kit with guidance on demos, talking points, and shelf placement—so staff know how to present the line and keep facings working hard.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-violet-200/90 to-purple-600/35 dark:from-violet-900/45 dark:to-purple-950/55 shadow-sm order-1 lg:order-2"
+            role="img"
+            aria-label="Placeholder: marketing collateral, seller kit, or merchandising guidelines artwork"
+          />
+        </article>
+
+        <!-- 5: visual left, copy right — vertical integration -->
+        <article
+          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
+          data-distributor-section="supply-chain"
+        >
+          <div
+            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-slate-200/90 to-primary/30 dark:from-slate-800/60 dark:to-primary/25 shadow-sm"
+            role="img"
+            aria-label="Placeholder: factory, warehouse, or logistics photography"
+          />
+          <div class="space-y-5 lg:max-w-xl lg:justify-self-end text-center lg:text-left">
+            <h3 class="text-2xl md:text-3xl font-bold text-fun">Factory to warehouse to your dock</h3>
+            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
+              We control our production line and inventory flow—tooling, assembly, QC holds, and outbound logistics sit under one roof. That means predictable lead times, fewer hand-offs, and a partner who can answer the phone when something needs adjusting mid-season.
+            </p>
+          </div>
+        </article>
+
+        <!-- 6: copy left, visual right — testing & safety -->
+        <article
+          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
+          data-distributor-section="safety"
+        >
+          <div class="space-y-5 lg:max-w-xl order-2 lg:order-1 text-center lg:text-left">
+            <h3 class="text-2xl md:text-3xl font-bold text-fun">International-grade testing, safety first</h3>
+            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
+              Every SKU is exercised against rigorous international benchmarks—not because regulations ask nicely, but because parents and educators should never have to wonder. Compliance packs and renewal schedules are part of how we work, not an afterthought.
+            </p>
+            <p class="text-center lg:text-left">
+              <a href={`${base}/contact`} class={textLinkClass}>
+                Request certification summaries
+                <span aria-hidden="true">→</span>
+              </a>
+            </p>
+          </div>
+          <div
+            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-emerald-200/90 to-teal-600/35 dark:from-emerald-900/45 dark:to-teal-950/55 shadow-sm order-1 lg:order-2"
+            role="img"
+            aria-label="Placeholder: lab testing or certification artwork"
+          />
+        </article>
+      </div>
+    </div>
+  </section>
+</Layout>
