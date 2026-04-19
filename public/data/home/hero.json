@@ -1,7 +1,7 @@
 {
   "variant": "orbitBanner",
   "orbitBanner": {
-    "title": "Toys for Curious Minds",
+    "title": "Educational Toys for Creative Young Minds",
     "titleSize": "lg",
     "subtitle": "Play, learn, and explore.",
     "subtitleSize": "lg",
@@ -14,15 +14,15 @@
       "image": "/images/hero/orbit/background.png",
       "alt": "Colorful playroom scene behind the hero",
       "fallbackColor": "#e0f2fe",
-      "overlayWhiteOpacity": 0.28
+      "overlayWhiteOpacity": 0.75
     },
     "kid": {
       "image": "/images/hero/orbit/kid.png",
       "alt": "Child thinking and playing",
       "desktop": {
-        "xPercent": 76,
-        "yPercent": 73,
-        "widthPx": 560
+        "xPercent": 92,
+        "yPercent": 100,
+        "widthPx": 700
       },
       "mobile": {
         "xPercent": 70,
@@ -31,7 +31,7 @@
       }
     },
     "orbit": {
-      "radiusPx": 240,
+      "radiusPx": 250,
       "direction": "clockwise",
       "speedSeconds": 18,
       "startAngleDeg": -95,

@@ -57,6 +57,9 @@ export type HomeHeroOrbitBannerJson = {
   };
   orbit: {
     radiusPx: number;
+    /** Orbit center offset from anchor point in px (positive right/down). */
+    centerOffsetXPx?: number;
+    centerOffsetYPx?: number;
     direction?: OrbitDirection;
     speedSeconds: number;
     startAngleDeg?: number;

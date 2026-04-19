@@ -159,6 +159,8 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
   const startAngle = orbit.startAngleDeg ?? -90;
   const n = Math.max(1, items.length);
   const radius = orbit.radiusPx;
+  const centerOffsetXPx = orbit.centerOffsetXPx ?? -180;
+  const centerOffsetYPx = orbit.centerOffsetYPx ?? -300;
   const defaultItemSizePx = orbit.itemSizePx ?? 72;
   const backgroundOverlayWhiteOpacity = clamp(0, background?.overlayWhiteOpacity ?? 0, 1);
 
@@ -256,13 +258,13 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
       </div>
 
       <div className="hero-orbit-anchor">
-        <div className="relative flex flex-col items-center">
+        <div className="relative h-0 w-0">
           {items.length > 0 ? (
             <div
-              className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2"
+              className="pointer-events-none absolute z-0"
               style={{
-                width: (radius + 96) * 2,
-                height: (radius + 96) * 2,
+                left: centerOffsetXPx,
+                top: centerOffsetYPx,
               }}
             >
               <div
@@ -273,7 +275,8 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
               >
                 {items.map((item, i) => {
                   const angle = startAngle + (360 / n) * i;
-                  const sizePx = item.sizePx ?? defaultItemSizePx;
+                  const overrideSizePx = item.sizePx ?? 0;
+                  const sizePx = overrideSizePx > 0 ? overrideSizePx : defaultItemSizePx;
                   return (
                     <div
                       key={i}
@@ -297,7 +300,7 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
 
           {showKidPlaceholder ? (
             <div
-              className="relative z-10 w-[var(--hero-orbit-kid-w-mobile)] max-w-[90vw] rounded-lg bg-muted md:w-[var(--hero-orbit-kid-w-desktop)]"
+              className="absolute bottom-0 right-0 z-10 w-[var(--hero-orbit-kid-w-mobile)] max-w-none rounded-lg bg-muted md:w-[var(--hero-orbit-kid-w-desktop)]"
               style={{ aspectRatio: '3 / 4' }}
               aria-hidden
             />
@@ -305,7 +308,7 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
             <img
               src={kidSrc}
               alt={kid.alt ?? ''}
-              className="relative z-10 h-auto max-h-[min(85dvh,920px)] w-[var(--hero-orbit-kid-w-mobile)] max-w-[min(90vw,var(--hero-orbit-kid-w-mobile))] object-contain object-bottom md:w-[var(--hero-orbit-kid-w-desktop)]"
+              className="absolute bottom-0 right-0 z-10 h-auto w-[var(--hero-orbit-kid-w-mobile)] max-w-none object-contain object-bottom md:w-[var(--hero-orbit-kid-w-desktop)]"
               loading="eager"
               decoding="async"
             />

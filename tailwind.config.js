@@ -14,16 +14,24 @@ export default {
         },
         'hero-orbit-spin-cw-osc': {
           '0%': { transform: 'rotate(0deg)' },
-          '20%': { transform: 'rotate(48deg)' },
-          '50%': { transform: 'rotate(198deg)' },
-          '80%': { transform: 'rotate(320deg)' },
+          '12.5%': { transform: 'rotate(63deg)' },
+          '25%': { transform: 'rotate(90deg)' },
+          '37.5%': { transform: 'rotate(117deg)' },
+          '50%': { transform: 'rotate(180deg)' },
+          '62.5%': { transform: 'rotate(243deg)' },
+          '75%': { transform: 'rotate(270deg)' },
+          '87.5%': { transform: 'rotate(297deg)' },
           '100%': { transform: 'rotate(360deg)' },
         },
         'hero-orbit-spin-ccw-osc': {
           '0%': { transform: 'rotate(0deg)' },
-          '20%': { transform: 'rotate(-48deg)' },
-          '50%': { transform: 'rotate(-198deg)' },
-          '80%': { transform: 'rotate(-320deg)' },
+          '12.5%': { transform: 'rotate(-63deg)' },
+          '25%': { transform: 'rotate(-90deg)' },
+          '37.5%': { transform: 'rotate(-117deg)' },
+          '50%': { transform: 'rotate(-180deg)' },
+          '62.5%': { transform: 'rotate(-243deg)' },
+          '75%': { transform: 'rotate(-270deg)' },
+          '87.5%': { transform: 'rotate(-297deg)' },
           '100%': { transform: 'rotate(-360deg)' },
         },
         'hero-orbit-counter-cw': {
@@ -36,16 +44,24 @@ export default {
         },
         'hero-orbit-counter-cw-osc': {
           '0%': { transform: 'rotate(0deg)' },
-          '20%': { transform: 'rotate(-48deg)' },
-          '50%': { transform: 'rotate(-198deg)' },
-          '80%': { transform: 'rotate(-320deg)' },
+          '12.5%': { transform: 'rotate(-63deg)' },
+          '25%': { transform: 'rotate(-90deg)' },
+          '37.5%': { transform: 'rotate(-117deg)' },
+          '50%': { transform: 'rotate(-180deg)' },
+          '62.5%': { transform: 'rotate(-243deg)' },
+          '75%': { transform: 'rotate(-270deg)' },
+          '87.5%': { transform: 'rotate(-297deg)' },
           '100%': { transform: 'rotate(-360deg)' },
         },
         'hero-orbit-counter-ccw-osc': {
           '0%': { transform: 'rotate(0deg)' },
-          '20%': { transform: 'rotate(48deg)' },
-          '50%': { transform: 'rotate(198deg)' },
-          '80%': { transform: 'rotate(320deg)' },
+          '12.5%': { transform: 'rotate(63deg)' },
+          '25%': { transform: 'rotate(90deg)' },
+          '37.5%': { transform: 'rotate(117deg)' },
+          '50%': { transform: 'rotate(180deg)' },
+          '62.5%': { transform: 'rotate(243deg)' },
+          '75%': { transform: 'rotate(270deg)' },
+          '87.5%': { transform: 'rotate(297deg)' },
           '100%': { transform: 'rotate(360deg)' },
         },
       },
@@ -55,17 +71,17 @@ export default {
         'hero-orbit-spin-ccw':
           'hero-orbit-spin-ccw var(--hero-orbit-duration, 14s) linear infinite',
         'hero-orbit-spin-cw-osc':
-          'hero-orbit-spin-cw-osc var(--hero-orbit-duration, 14s) ease-in-out infinite',
+          'hero-orbit-spin-cw-osc var(--hero-orbit-duration, 14s) linear infinite',
         'hero-orbit-spin-ccw-osc':
-          'hero-orbit-spin-ccw-osc var(--hero-orbit-duration, 14s) ease-in-out infinite',
+          'hero-orbit-spin-ccw-osc var(--hero-orbit-duration, 14s) linear infinite',
         'hero-orbit-counter-cw':
           'hero-orbit-counter-cw var(--hero-orbit-duration, 14s) linear infinite',
         'hero-orbit-counter-ccw':
           'hero-orbit-counter-ccw var(--hero-orbit-duration, 14s) linear infinite',
         'hero-orbit-counter-cw-osc':
-          'hero-orbit-counter-cw-osc var(--hero-orbit-duration, 14s) ease-in-out infinite',
+          'hero-orbit-counter-cw-osc var(--hero-orbit-duration, 14s) linear infinite',
         'hero-orbit-counter-ccw-osc':
-          'hero-orbit-counter-ccw-osc var(--hero-orbit-duration, 14s) ease-in-out infinite',
+          'hero-orbit-counter-ccw-osc var(--hero-orbit-duration, 14s) linear infinite',
       },
       fontFamily: {
         sans: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],

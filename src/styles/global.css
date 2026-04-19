@@ -223,7 +223,8 @@
   .hero-orbit-anchor {
     position: absolute;
     z-index: 5;
-    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
     left: var(--hero-orbit-kid-x-mobile);
     top: var(--hero-orbit-kid-y-mobile);
   }

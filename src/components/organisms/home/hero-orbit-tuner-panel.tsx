@@ -447,6 +447,34 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                   onChange={(e) => patchOrbit({ radiusPx: Number(e.target.value) || 0 })}
                 />
               </FieldRow>
+              <div className="grid grid-cols-2 gap-1.5">
+                <FieldRow label="Center offset X (px)">
+                  <input
+                    type="number"
+                    className={inputClass}
+                    value={draft.orbit.centerOffsetXPx ?? -180}
+                    onChange={(e) =>
+                      patchOrbit({
+                        centerOffsetXPx:
+                          e.target.value === '' ? undefined : Number(e.target.value) || 0,
+                      })
+                    }
+                  />
+                </FieldRow>
+                <FieldRow label="Center offset Y (px)">
+                  <input
+                    type="number"
+                    className={inputClass}
+                    value={draft.orbit.centerOffsetYPx ?? -300}
+                    onChange={(e) =>
+                      patchOrbit({
+                        centerOffsetYPx:
+                          e.target.value === '' ? undefined : Number(e.target.value) || 0,
+                      })
+                    }
+                  />
+                </FieldRow>
+              </div>
               <FieldRow label="Default item size (px)">
                 <input
                   type="number"
@@ -545,7 +573,12 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                       value={item.sizePx ?? ''}
                       onChange={(e) => {
                         const raw = e.target.value;
-                        patchItem(i, { sizePx: raw === '' ? undefined : Number(raw) || 72 });
+                        if (raw === '') {
+                          patchItem(i, { sizePx: undefined });
+                          return;
+                        }
+                        const value = Number(raw);
+                        patchItem(i, { sizePx: Number.isFinite(value) && value > 0 ? value : undefined });
                       }}
                     />
                   </FieldRow>
