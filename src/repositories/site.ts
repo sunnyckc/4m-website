@@ -11,6 +11,7 @@ import type {
   HomeGallerySteamJson,
   HomeHeroFullViewportJson,
   HomeHeroJson,
+  HomeHeroOrbitBannerJson,
 } from '@/types/home-sections';
 import type {
   HeroSlide,
@@ -51,6 +52,36 @@ function resolveFullViewport(
   return {
     ...fv,
     ctaHref: resolveSiteUrl(fv.ctaHref) ?? fv.ctaHref,
+  };
+}
+
+function resolveOrbitBanner(ob: HomeHeroOrbitBannerJson): HomeHeroOrbitBannerJson {
+  return {
+    ...ob,
+    ctaHref: ob.ctaHref != null ? resolveSiteUrl(ob.ctaHref) ?? ob.ctaHref : ob.ctaHref,
+    secondaryCtaHref:
+      ob.secondaryCtaHref != null
+        ? resolveSiteUrl(ob.secondaryCtaHref) ?? ob.secondaryCtaHref
+        : ob.secondaryCtaHref,
+    background:
+      ob.background != null
+        ? {
+            ...ob.background,
+            image:
+              ob.background.image != null
+                ? resolveSiteUrl(ob.background.image) ?? ob.background.image
+                : ob.background.image,
+          }
+        : undefined,
+    kid: {
+      ...ob.kid,
+      image: ob.kid.image != null ? resolveSiteUrl(ob.kid.image) ?? ob.kid.image : ob.kid.image,
+    },
+    items: ob.items.map((item) => ({
+      ...item,
+      image: item.image != null ? resolveSiteUrl(item.image) ?? item.image : item.image,
+      href: item.href != null ? resolveSiteUrl(item.href) ?? item.href : item.href,
+    })),
   };
 }
 
@@ -126,6 +157,8 @@ export async function getHomeHero(): Promise<HomeHeroJson> {
     slides: data.slides.map(resolveHeroSlide),
     fullViewport:
       data.fullViewport != null ? resolveFullViewport(data.fullViewport) : undefined,
+    orbitBanner:
+      data.orbitBanner != null ? resolveOrbitBanner(data.orbitBanner) : undefined,
   };
 }
 

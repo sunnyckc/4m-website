@@ -218,4 +218,20 @@
   .font-poppins {
     @apply font-sans;
   }
+
+  /** Orbit hero: anchor uses CSS vars for mobile/desktop placement (set on parent section). */
+  .hero-orbit-anchor {
+    position: absolute;
+    z-index: 5;
+    transform: translate(-50%, -50%);
+    left: var(--hero-orbit-kid-x-mobile);
+    top: var(--hero-orbit-kid-y-mobile);
+  }
+
+  @media (min-width: 768px) {
+    .hero-orbit-anchor {
+      left: var(--hero-orbit-kid-x-desktop);
+      top: var(--hero-orbit-kid-y-desktop);
+    }
+  }
 }

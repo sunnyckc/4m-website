@@ -1,5 +1,73 @@
 {
-  "variant": "fullViewport",
+  "variant": "orbitBanner",
+  "orbitBanner": {
+    "title": "Toys for Curious Minds",
+    "titleSize": "lg",
+    "subtitle": "Play, learn, and explore.",
+    "subtitleSize": "lg",
+    "ctaText": "Shop now",
+    "ctaHref": "/products",
+    "secondaryCtaText": "Learn more",
+    "secondaryCtaHref": "/about",
+    "minHeightClassName": "min-h-[100dvh]",
+    "background": {
+      "image": "/images/hero/orbit/background.png",
+      "alt": "Colorful playroom scene behind the hero",
+      "fallbackColor": "#e0f2fe",
+      "overlayWhiteOpacity": 0.28
+    },
+    "kid": {
+      "image": "/images/hero/orbit/kid.png",
+      "alt": "Child thinking and playing",
+      "desktop": {
+        "xPercent": 76,
+        "yPercent": 73,
+        "widthPx": 560
+      },
+      "mobile": {
+        "xPercent": 70,
+        "yPercent": 78,
+        "widthPx": 280
+      }
+    },
+    "orbit": {
+      "radiusPx": 240,
+      "direction": "clockwise",
+      "speedSeconds": 18,
+      "startAngleDeg": -95,
+      "itemSizePx": 80,
+      "itemWhiteRect": true,
+      "keepItemsUpright": true,
+      "speedStyle": "linear"
+    },
+    "items": [
+      {
+        "image": "/images/hero/orbit/product-robot.png",
+        "href": "/products",
+        "sizePx": 80
+      },
+      {
+        "image": "/images/hero/orbit/product-car.png",
+        "href": "/products",
+        "sizePx": 80
+      },
+      {
+        "image": "/images/hero/orbit/product-blocks.png",
+        "href": "/products",
+        "sizePx": 80
+      },
+      {
+        "image": "/images/hero/orbit/product-bear.png",
+        "href": "/products",
+        "sizePx": 80
+      },
+      {
+        "image": "/images/hero/orbit/product-dinosaur.png",
+        "href": "/products",
+        "sizePx": 80
+      }
+    ]
+  },
   "fullViewport": {
     "title": "Educational Toys for Young Minds",
     "subtitle": "Inspiring STEAM learning through play — explore hands-on kits that spark curiosity and creativity.",

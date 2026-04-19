@@ -6,6 +6,7 @@ import {
   Badge,
   HeroBannerSlider,
   HeroFullViewport,
+  HeroOrbitBanner,
   GalleryGrid,
   CatalogSlider,
 } from '@/components';
@@ -49,11 +50,20 @@ const hotCatalogItems: CatalogSliderItem[] = hotProducts.map((p) => ({
 <Layout
   title="4M Industrial Development Limited - STEAM Educational Toys"
   description="4M Industrial Development Limited - Award-winning educational toys and STEAM learning products. Inspiring creativity, critical thinking, and innovation in children through hands-on educational play experiences."
-  revealHeaderOnScroll={homeHero.variant === 'fullViewport' && homeHero.fullViewport != null}
+  revealHeaderOnScroll={
+    (homeHero.variant === 'fullViewport' && homeHero.fullViewport != null) ||
+    (homeHero.variant === 'orbitBanner' && homeHero.orbitBanner != null)
+  }
 >
-  <!-- Hero: full-viewport centered layout or classic slider -->
-  <section class="mb-8">
-    {homeHero.variant === 'fullViewport' && homeHero.fullViewport ? (
+  <!-- Hero: orbit banner, full-viewport centered layout, or classic slider -->
+  <section class={homeHero.variant === 'orbitBanner' ? 'mb-0' : 'mb-8'}>
+    {homeHero.variant === 'orbitBanner' && homeHero.orbitBanner ? (
+      <HeroOrbitBanner
+        client:load
+        config={homeHero.orbitBanner}
+        showTuner={import.meta.env.DEV}
+      />
+    ) : homeHero.variant === 'fullViewport' && homeHero.fullViewport ? (
       <HeroFullViewport
         client:load
         title={homeHero.fullViewport.title}
