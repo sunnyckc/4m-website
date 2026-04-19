@@ -9,6 +9,7 @@ import { COMPANY_ADDRESS, getCompanyAddressFull } from '@/constants/company';
 import type {
   HomeCatalogHotJson,
   HomeGallerySteamJson,
+  HomeHeroFullViewportJson,
   HomeHeroJson,
 } from '@/types/home-sections';
 import type {
@@ -41,6 +42,15 @@ function resolveHeroSlide(slide: HeroBannerSlide): HeroBannerSlide {
     ...slide,
     media: { ...slide.media, src: resolveSiteUrl(slide.media.src) ?? slide.media.src },
     href,
+  };
+}
+
+function resolveFullViewport(
+  fv: HomeHeroFullViewportJson,
+): HomeHeroFullViewportJson {
+  return {
+    ...fv,
+    ctaHref: resolveSiteUrl(fv.ctaHref) ?? fv.ctaHref,
   };
 }
 
@@ -114,6 +124,8 @@ export async function getHomeHero(): Promise<HomeHeroJson> {
   return {
     ...data,
     slides: data.slides.map(resolveHeroSlide),
+    fullViewport:
+      data.fullViewport != null ? resolveFullViewport(data.fullViewport) : undefined,
   };
 }
 

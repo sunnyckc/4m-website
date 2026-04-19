@@ -1,9 +1,25 @@
 ---
 import { getBase } from '@/config';
+
+export interface Props {
+  /** When true, header stays off-screen until the user scrolls down (immersive hero). */
+  revealOnScroll?: boolean;
+}
+
+const { revealOnScroll = false } = Astro.props;
 const base = getBase();
 ---
 
-<header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+<header
+  class:list={[
+    'z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60',
+    revealOnScroll
+      ? 'fixed top-0 left-0 right-0 transition-transform duration-300 ease-out -translate-y-full pointer-events-none'
+      : 'sticky top-0',
+  ]}
+  data-reveal-header={revealOnScroll ? '' : undefined}
+  aria-hidden={revealOnScroll ? 'true' : undefined}
+>
   <div class="container-custom flex h-20 items-center justify-between py-4">
     <!-- Logo -->
     <div class="flex items-center space-x-2">
@@ -52,3 +68,21 @@ const base = getBase();
     </div>
   </div>
 </header>
+{revealOnScroll && (
+  <script is:inline>
+    (function () {
+      var el = document.querySelector('[data-reveal-header]');
+      if (!el) return;
+      var TH = 32;
+      function update() {
+        var show = window.scrollY > TH;
+        el.classList.toggle('-translate-y-full', !show);
+        el.classList.toggle('translate-y-0', show);
+        el.classList.toggle('pointer-events-none', !show);
+        el.setAttribute('aria-hidden', show ? 'false' : 'true');
+      }
+      update();
+      window.addEventListener('scroll', update, { passive: true });
+    })();
+  </script>
+)}

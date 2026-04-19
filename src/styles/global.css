@@ -1,3 +1,82 @@
+/* Self-hosted Poppins — paths are relative to this file; Vite resolves & bundles them */
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('./poppins/Poppins-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -54,31 +133,24 @@
   * {
     @apply border-border;
   }
+  html {
+    @apply font-sans;
+  }
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Fredoka', 'Comic Neue', cursive, system-ui, sans-serif;
+    @apply bg-background text-foreground font-sans;
   }
-  
-  /* Fun headings with different fonts */
+
   h1, h2, h3 {
-    font-family: 'Fredoka', cursive;
-    font-weight: 600;
+    @apply font-semibold;
   }
-  
+
   h4, h5, h6 {
-    font-family: 'Kalam', cursive;
-    font-weight: 500;
+    @apply font-medium;
   }
-  
-  /* Playful body text */
-  p, span, div {
-    font-family: 'Comic Neue', cursive;
-  }
-  
-  /* Button text should be fun too */
-  button, .btn {
-    font-family: 'Fredoka', cursive;
-    font-weight: 500;
+
+  button,
+  .btn {
+    @apply font-medium;
   }
 }
 
@@ -92,19 +164,17 @@
     @apply bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent;
   }
   
-  /* Fun kid-friendly utilities */
+  /* Legacy class names — all use Poppins (same as font-sans) */
   .text-playful {
-    font-family: 'Kalam', cursive;
-    font-weight: 400;
+    @apply font-sans font-normal;
   }
-  
+
   .text-fun {
-    font-family: 'Fredoka', cursive;
-    font-weight: 500;
+    @apply font-sans font-medium;
   }
-  
+
   .text-comic {
-    font-family: 'Comic Neue', cursive;
+    @apply font-sans;
   }
   
   .btn-bouncy {
@@ -142,16 +212,10 @@
     @apply inline-block px-3 py-1 bg-yellow-500 text-white text-sm font-semibold rounded-full;
   }
   
-  /* Font family utilities */
-  .font-fredoka {
-    font-family: 'Fredoka', cursive;
-  }
-  
-  .font-comic-neue {
-    font-family: 'Comic Neue', cursive;
-  }
-  
-  .font-kalam {
-    font-family: 'Kalam', cursive;
+  .font-fredoka,
+  .font-comic-neue,
+  .font-kalam,
+  .font-poppins {
+    @apply font-sans;
   }
 }

@@ -11,7 +11,26 @@ export type HomeHeroSliderOptions = {
   loop?: boolean;
 };
 
+/** Centered full-viewport hero (alternative to the slider). */
+export type HomeHeroFullViewportJson = {
+  title: string;
+  subtitle?: string;
+  ctaText: string;
+  ctaHref: string;
+  /** CSS `background` value (gradient, etc.). */
+  background?: string;
+  className?: string;
+  innerClassName?: string;
+  minHeightClassName?: string;
+  mediaSlotMinHeightClassName?: string;
+  /** When false, the reserved media slot is omitted. */
+  showMediaSlot?: boolean;
+};
+
 export type HomeHeroJson = {
+  /** `slider` — carousel hero; `fullViewport` — centered full-height hero. */
+  variant?: 'slider' | 'fullViewport';
+  fullViewport?: HomeHeroFullViewportJson;
   slides: HeroBannerSlide[];
   options?: HomeHeroSliderOptions;
 };

@@ -8,14 +8,16 @@ export interface Props {
   title: string;
   description?: string;
   image?: string;
+  /** Hide the header until the user scrolls (e.g. full-viewport home hero). */
+  revealHeaderOnScroll?: boolean;
 }
 
-const { title, description, image } = Astro.props;
+const { title, description, image, revealHeaderOnScroll = false } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} image={image}>
   <div class="min-h-screen flex flex-col">
-    <Header />
+    <Header revealOnScroll={revealHeaderOnScroll} />
     <main class="flex-1">
       <slot />
     </main>

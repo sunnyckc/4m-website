@@ -5,6 +5,7 @@ import {
   Card,
   Badge,
   HeroBannerSlider,
+  HeroFullViewport,
   GalleryGrid,
   CatalogSlider,
 } from '@/components';
@@ -45,20 +46,40 @@ const hotCatalogItems: CatalogSliderItem[] = hotProducts.map((p) => ({
 }));
 ---
 
-<Layout title="4M Industrial Development Limited - STEAM Educational Toys" description="4M Industrial Development Limited - Award-winning educational toys and STEAM learning products. Inspiring creativity, critical thinking, and innovation in children through hands-on educational play experiences.">
-  <!-- Hero Slideshow Section -->
+<Layout
+  title="4M Industrial Development Limited - STEAM Educational Toys"
+  description="4M Industrial Development Limited - Award-winning educational toys and STEAM learning products. Inspiring creativity, critical thinking, and innovation in children through hands-on educational play experiences."
+  revealHeaderOnScroll={homeHero.variant === 'fullViewport' && homeHero.fullViewport != null}
+>
+  <!-- Hero: full-viewport centered layout or classic slider -->
   <section class="mb-8">
-    <HeroBannerSlider
-      client:load
-      slides={homeHero.slides}
-      autoplay={homeHero.options?.autoplay ?? true}
-      autoplayDelayMs={homeHero.options?.autoplayDelayMs ?? 5000}
-      showDots={homeHero.options?.showDots ?? true}
-      showArrows={homeHero.options?.showArrows ?? true}
-      className={homeHero.options?.className}
-      heightClassName={homeHero.options?.heightClassName}
-      loop={homeHero.options?.loop ?? true}
-    />
+    {homeHero.variant === 'fullViewport' && homeHero.fullViewport ? (
+      <HeroFullViewport
+        client:load
+        title={homeHero.fullViewport.title}
+        subtitle={homeHero.fullViewport.subtitle}
+        ctaText={homeHero.fullViewport.ctaText}
+        ctaHref={homeHero.fullViewport.ctaHref}
+        background={homeHero.fullViewport.background}
+        className={homeHero.fullViewport.className}
+        innerClassName={homeHero.fullViewport.innerClassName}
+        minHeightClassName={homeHero.fullViewport.minHeightClassName}
+        mediaSlotMinHeightClassName={homeHero.fullViewport.mediaSlotMinHeightClassName}
+        showMediaSlot={homeHero.fullViewport.showMediaSlot ?? true}
+      />
+    ) : (
+      <HeroBannerSlider
+        client:load
+        slides={homeHero.slides}
+        autoplay={homeHero.options?.autoplay ?? true}
+        autoplayDelayMs={homeHero.options?.autoplayDelayMs ?? 5000}
+        showDots={homeHero.options?.showDots ?? true}
+        showArrows={homeHero.options?.showArrows ?? true}
+        className={homeHero.options?.className}
+        heightClassName={homeHero.options?.heightClassName}
+        loop={homeHero.options?.loop ?? true}
+      />
+    )}
   </section>
 
   <!-- Steam Education Section -->

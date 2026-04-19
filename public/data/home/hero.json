@@ -1,4 +1,13 @@
 {
+  "variant": "fullViewport",
+  "fullViewport": {
+    "title": "Educational Toys for Young Minds",
+    "subtitle": "Inspiring STEAM learning through play — explore hands-on kits that spark curiosity and creativity.",
+    "ctaText": "Explore Products",
+    "ctaHref": "/products",
+    "showMediaSlot": true,
+    "mediaSlotMinHeightClassName": "min-h-[min(35vh,260px)]"
+  },
   "slides": [
     {
       "id": "slide-1",
