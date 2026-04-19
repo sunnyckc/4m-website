@@ -222,7 +222,8 @@
   /** Orbit hero: anchor uses CSS vars for mobile/desktop placement (set on parent section). */
   .hero-orbit-anchor {
     position: absolute;
-    z-index: 5;
+    /* Below hero copy (z-[4] in hero-orbit-banner) so title/CTA stay readable over orbit items. */
+    z-index: 3;
     width: 0;
     height: 0;
     left: var(--hero-orbit-kid-x-mobile);

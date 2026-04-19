@@ -10,5 +10,9 @@ export function resolveSiteUrl(path: string | null | undefined): string | null |
   if (/^https?:\/\//i.test(trimmed)) return trimmed;
   const base = getBase();
   const normalized = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  // Accept already-prefixed internal URLs to avoid `/base/base/...`.
+  if (base !== '' && (normalized === base || normalized.startsWith(`${base}/`))) {
+    return normalized;
+  }
   return `${base}${normalized}`;
 }

@@ -7,11 +7,13 @@ import type {
   HomeHeroOrbitBannerJson,
   OrbitBannerItemJson,
   OrbitDirection,
+  OrbitItemDisplayMode,
   OrbitSpeedStyle,
 } from '@/types/home-sections';
 
 const PANEL_SIDE_KEY = 'orbit-tuner-side';
 type PanelSide = 'left' | 'right';
+type TunerTab = 'text' | 'image' | 'product';
 
 function orbitConfigToCopyableJson(config: HomeHeroOrbitBannerJson): string {
   return `${JSON.stringify(config, null, 2)}\n`;
@@ -31,6 +33,40 @@ function FieldRow({ label, children }: FieldRowProps) {
 const inputClass =
   'w-full rounded-md border border-input bg-background px-2 py-1 text-xs ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
 
+function NumberInput({
+  value,
+  onChange,
+  min,
+  max,
+  step = 10,
+}: {
+  value: number | undefined;
+  onChange: (next: number | undefined) => void;
+  min?: number;
+  max?: number;
+  step?: number;
+}) {
+  return (
+    <input
+      type="number"
+      step={step}
+      min={min}
+      max={max}
+      className={inputClass}
+      value={value ?? ''}
+      onChange={(e) => {
+        const raw = e.target.value;
+        if (raw === '') {
+          onChange(undefined);
+          return;
+        }
+        const next = Number(raw);
+        onChange(Number.isFinite(next) ? next : undefined);
+      }}
+    />
+  );
+}
+
 export type HeroOrbitTunerPanelProps = {
   draft: HomeHeroOrbitBannerJson;
   setDraft: React.Dispatch<React.SetStateAction<HomeHeroOrbitBannerJson>>;
@@ -38,11 +74,13 @@ export type HeroOrbitTunerPanelProps = {
 };
 
 const textSizeOptions: HeroTextSizeOption[] = ['sm', 'md', 'lg', 'xl'];
+const itemDisplayModes: OrbitItemDisplayMode[] = ['transparent', 'rectangle', 'circleAccent'];
 
 export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTunerPanelProps) {
   const [open, setOpen] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
   const [panelSide, setPanelSide] = React.useState<PanelSide>('right');
+  const [activeTab, setActiveTab] = React.useState<TunerTab>('text');
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -122,7 +160,7 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
   const addItem = React.useCallback(() => {
     setDraft((prev) => ({
       ...prev,
-      items: [...prev.items, { image: '', href: '/products', sizePx: 72 }],
+      items: [...prev.items, { image: '', href: '/products' }],
     }));
   }, [setDraft]);
 
@@ -147,8 +185,18 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
     }
   }, [draft]);
 
+  const reshuffleTilts = React.useCallback(() => {
+    patchOrbit({
+      randomizeItemTilt: true,
+      itemTiltSeed: (draft.orbit.itemTiltSeed ?? 1) + 1,
+    });
+  }, [draft.orbit.itemTiltSeed, patchOrbit]);
+
   const mobile = draft.kid.mobile ?? draft.kid.desktop;
   const overlayPct = Math.round(((draft.background?.overlayWhiteOpacity ?? 0) * 100 + Number.EPSILON) * 10) / 10;
+  const globalItemDisplayMode: OrbitItemDisplayMode =
+    draft.orbit.itemDisplayMode ??
+    (draft.orbit.itemWhiteRect != null ? (draft.orbit.itemWhiteRect ? 'rectangle' : 'transparent') : 'rectangle');
 
   const openButtonPos = panelSide === 'left' ? 'left-3 md:left-4' : 'right-3 md:right-4';
   const panelSideClass =
@@ -228,11 +276,81 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
               </div>
             </fieldset>
 
+            <div className="grid grid-cols-3 gap-1 rounded-md border border-border bg-muted/30 p-1">
+              <button
+                type="button"
+                className={cn(
+                  'rounded px-2 py-1 text-[11px] font-medium',
+                  activeTab === 'text' ? 'bg-background shadow-sm' : 'text-muted-foreground',
+                )}
+                onClick={() => setActiveTab('text')}
+              >
+                Text
+              </button>
+              <button
+                type="button"
+                className={cn(
+                  'rounded px-2 py-1 text-[11px] font-medium',
+                  activeTab === 'image' ? 'bg-background shadow-sm' : 'text-muted-foreground',
+                )}
+                onClick={() => setActiveTab('image')}
+              >
+                Image
+              </button>
+              <button
+                type="button"
+                className={cn(
+                  'rounded px-2 py-1 text-[11px] font-medium',
+                  activeTab === 'product' ? 'bg-background shadow-sm' : 'text-muted-foreground',
+                )}
+                onClick={() => setActiveTab('product')}
+              >
+                Product
+              </button>
+            </div>
+
+            {activeTab === 'text' ? (
+              <>
             <fieldset className="space-y-2 rounded-md border border-border p-2">
               <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">Content</legend>
-              <FieldRow label="Title">
+              <FieldRow label="Title line 1 (below orbit)">
                 <input
                   className={inputClass}
+                  value={draft.titleLine1 ?? ''}
+                  onChange={(e) =>
+                    patch({
+                      titleLine1: e.target.value || undefined,
+                    })
+                  }
+                />
+              </FieldRow>
+              <FieldRow label="Title line 2 (above orbit)">
+                <input
+                  className={inputClass}
+                  value={draft.titleLine2 ?? ''}
+                  onChange={(e) =>
+                    patch({
+                      titleLine2: e.target.value || undefined,
+                    })
+                  }
+                />
+              </FieldRow>
+              <label className="flex cursor-pointer items-center gap-2 text-[11px]">
+                <input
+                  type="checkbox"
+                  checked={draft.titleLine2RainbowGradient === true}
+                  onChange={(e) =>
+                    patch({
+                      titleLine2RainbowGradient: e.target.checked ? true : undefined,
+                    })
+                  }
+                />
+                Rainbow gradient on title line 2 (split title only)
+              </label>
+              <FieldRow label="Title (single line fallback)">
+                <input
+                  className={inputClass}
+                  placeholder="Used if both lines above are empty"
                   value={draft.title ?? ''}
                   onChange={(e) => patch({ title: e.target.value || undefined })}
                 />
@@ -269,6 +387,14 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                     </option>
                   ))}
                 </select>
+              </FieldRow>
+              <FieldRow label="Logo height (px)">
+                <NumberInput
+                  value={draft.logoHeightPx}
+                  min={20}
+                  step={5}
+                  onChange={(next) => patch({ logoHeightPx: next })}
+                />
               </FieldRow>
               <FieldRow label="Section className (Tailwind)">
                 <input
@@ -317,7 +443,11 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                 />
               </FieldRow>
             </fieldset>
+              </>
+            ) : null}
 
+            {activeTab === 'image' ? (
+              <>
             <fieldset className="space-y-2 rounded-md border border-border p-2">
               <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">Background</legend>
               <FieldRow label="Image URL / path">
@@ -346,7 +476,7 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                   type="range"
                   min="0"
                   max="100"
-                  step="1"
+                  step="10"
                   value={Math.round((draft.background?.overlayWhiteOpacity ?? 0) * 100)}
                   onChange={(e) =>
                     patchBg({ overlayWhiteOpacity: Number(e.target.value) / 100 })
@@ -384,105 +514,111 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
               <p className="text-[11px] font-medium text-muted-foreground">Desktop anchor</p>
               <div className="grid grid-cols-3 gap-1.5">
                 <FieldRow label="X %">
-                  <input
-                    type="number"
-                    className={inputClass}
+                  <NumberInput
                     value={draft.kid.desktop.xPercent}
-                    onChange={(e) => patchKidDesktop({ xPercent: Number(e.target.value) || 0 })}
+                    onChange={(next) => patchKidDesktop({ xPercent: next })}
                   />
                 </FieldRow>
                 <FieldRow label="Y %">
-                  <input
-                    type="number"
-                    className={inputClass}
+                  <NumberInput
                     value={draft.kid.desktop.yPercent}
-                    onChange={(e) => patchKidDesktop({ yPercent: Number(e.target.value) || 0 })}
+                    onChange={(next) => patchKidDesktop({ yPercent: next })}
                   />
                 </FieldRow>
                 <FieldRow label="Width px">
-                  <input
-                    type="number"
-                    className={inputClass}
+                  <NumberInput
                     value={draft.kid.desktop.widthPx}
-                    onChange={(e) => patchKidDesktop({ widthPx: Number(e.target.value) || 1 })}
+                    onChange={(next) => patchKidDesktop({ widthPx: next })}
                   />
                 </FieldRow>
               </div>
               <p className="text-[11px] font-medium text-muted-foreground">Mobile anchor</p>
               <div className="grid grid-cols-3 gap-1.5">
                 <FieldRow label="X %">
-                  <input
-                    type="number"
-                    className={inputClass}
+                  <NumberInput
                     value={mobile.xPercent}
-                    onChange={(e) => patchKidMobile({ xPercent: Number(e.target.value) || 0 })}
+                    onChange={(next) => patchKidMobile({ xPercent: next })}
                   />
                 </FieldRow>
                 <FieldRow label="Y %">
-                  <input
-                    type="number"
-                    className={inputClass}
+                  <NumberInput
                     value={mobile.yPercent}
-                    onChange={(e) => patchKidMobile({ yPercent: Number(e.target.value) || 0 })}
+                    onChange={(next) => patchKidMobile({ yPercent: next })}
                   />
                 </FieldRow>
                 <FieldRow label="Width px">
-                  <input
-                    type="number"
-                    className={inputClass}
+                  <NumberInput
                     value={mobile.widthPx}
-                    onChange={(e) => patchKidMobile({ widthPx: Number(e.target.value) || 1 })}
+                    onChange={(next) => patchKidMobile({ widthPx: next })}
                   />
                 </FieldRow>
               </div>
             </fieldset>
+              </>
+            ) : null}
 
+            {activeTab === 'product' ? (
+              <>
             <fieldset className="space-y-2 rounded-md border border-border p-2">
               <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">Orbit</legend>
               <FieldRow label="Radius (px)">
-                <input
-                  type="number"
-                  className={inputClass}
+                <NumberInput
                   value={draft.orbit.radiusPx}
-                  onChange={(e) => patchOrbit({ radiusPx: Number(e.target.value) || 0 })}
+                  onChange={(next) => patchOrbit({ radiusPx: next })}
                 />
               </FieldRow>
               <div className="grid grid-cols-2 gap-1.5">
                 <FieldRow label="Center offset X (px)">
-                  <input
-                    type="number"
-                    className={inputClass}
-                    value={draft.orbit.centerOffsetXPx ?? -180}
-                    onChange={(e) =>
-                      patchOrbit({
-                        centerOffsetXPx:
-                          e.target.value === '' ? undefined : Number(e.target.value) || 0,
-                      })
-                    }
+                  <NumberInput
+                    value={draft.orbit.centerOffsetXPx}
+                    onChange={(next) => patchOrbit({ centerOffsetXPx: next })}
                   />
                 </FieldRow>
                 <FieldRow label="Center offset Y (px)">
-                  <input
-                    type="number"
-                    className={inputClass}
-                    value={draft.orbit.centerOffsetYPx ?? -300}
-                    onChange={(e) =>
-                      patchOrbit({
-                        centerOffsetYPx:
-                          e.target.value === '' ? undefined : Number(e.target.value) || 0,
-                      })
-                    }
+                  <NumberInput
+                    value={draft.orbit.centerOffsetYPx}
+                    onChange={(next) => patchOrbit({ centerOffsetYPx: next })}
                   />
                 </FieldRow>
               </div>
               <FieldRow label="Default item size (px)">
-                <input
-                  type="number"
-                  className={inputClass}
-                  value={draft.orbit.itemSizePx ?? 72}
-                  onChange={(e) => patchOrbit({ itemSizePx: Number(e.target.value) || 72 })}
+                <NumberInput
+                  value={draft.orbit.itemSizePx}
+                  onChange={(next) => patchOrbit({ itemSizePx: next })}
                 />
               </FieldRow>
+              <FieldRow label="Item display mode (all items)">
+                <select
+                  className={inputClass}
+                  value={globalItemDisplayMode}
+                  onChange={(e) => {
+                    const nextMode = e.target.value as OrbitItemDisplayMode;
+                    patchOrbit({
+                      itemDisplayMode: nextMode,
+                      itemWhiteRect:
+                        nextMode === 'rectangle' ? true : nextMode === 'transparent' ? false : undefined,
+                    });
+                  }}
+                >
+                  {itemDisplayModes.map((mode) => (
+                    <option key={mode} value={mode}>
+                      {mode}
+                    </option>
+                  ))}
+                </select>
+              </FieldRow>
+              {globalItemDisplayMode === 'circleAccent' ? (
+                <FieldRow label="Circle size (px, all items)">
+                  <NumberInput
+                    value={draft.orbit.itemCircleSizePx}
+                    min={4}
+                    step={5}
+                    onChange={(next) =>
+                      patchOrbit({ itemCircleSizePx: next != null && next > 0 ? next : undefined })
+                    }
+                  />
+                </FieldRow>
+              ) : null}
               <FieldRow label="Direction">
                 <select
                   className={inputClass}
@@ -503,35 +639,38 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                   <option value="oscillating">oscillating</option>
                 </select>
               </FieldRow>
+              <div className="grid grid-cols-2 gap-1.5">
+                <FieldRow label="Oscillation height (%)">
+                  <NumberInput
+                    value={draft.orbit.oscillationHeight}
+                    min={0}
+                    max={95}
+                    step={5}
+                    onChange={(next) => patchOrbit({ oscillationHeight: next })}
+                  />
+                </FieldRow>
+                <FieldRow label="Oscillation frequency">
+                  <NumberInput
+                    value={draft.orbit.oscillationFrequency}
+                    min={0.25}
+                    step={0.25}
+                    onChange={(next) => patchOrbit({ oscillationFrequency: next })}
+                  />
+                </FieldRow>
+              </div>
               <FieldRow label="Speed (seconds / revolution)">
-                <input
-                  type="number"
-                  step="0.5"
-                  min="1"
-                  className={inputClass}
+                <NumberInput
                   value={draft.orbit.speedSeconds}
-                  onChange={(e) => patchOrbit({ speedSeconds: Number(e.target.value) || 1 })}
+                  min={1}
+                  onChange={(next) => patchOrbit({ speedSeconds: next })}
                 />
               </FieldRow>
               <FieldRow label="Start angle (deg)">
-                <input
-                  type="number"
-                  className={inputClass}
-                  value={draft.orbit.startAngleDeg ?? -90}
-                  onChange={(e) => {
-                    const raw = e.target.value;
-                    patchOrbit({ startAngleDeg: raw === '' ? undefined : Number(raw) || 0 });
-                  }}
+                <NumberInput
+                  value={draft.orbit.startAngleDeg}
+                  onChange={(next) => patchOrbit({ startAngleDeg: next })}
                 />
               </FieldRow>
-              <label className="flex items-center gap-2 text-[11px]">
-                <input
-                  type="checkbox"
-                  checked={draft.orbit.itemWhiteRect ?? true}
-                  onChange={(e) => patchOrbit({ itemWhiteRect: e.target.checked })}
-                />
-                White rectangle behind item
-              </label>
               <label className="flex items-center gap-2 text-[11px]">
                 <input
                   type="checkbox"
@@ -540,11 +679,56 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                 />
                 Keep products upright (no spin)
               </label>
+              <label className="flex items-center gap-2 text-[11px]">
+                <input
+                  type="checkbox"
+                  checked={draft.orbit.randomizeItemTilt ?? false}
+                  onChange={(e) => patchOrbit({ randomizeItemTilt: e.target.checked })}
+                />
+                Randomize per-item tilt
+              </label>
+              <div className="grid grid-cols-3 gap-1.5">
+                <FieldRow label="Tilt min deg">
+                  <NumberInput
+                    value={draft.orbit.itemTiltMinDeg}
+                    min={0}
+                    step={1}
+                    onChange={(next) => patchOrbit({ itemTiltMinDeg: next })}
+                  />
+                </FieldRow>
+                <FieldRow label="Tilt max deg">
+                  <NumberInput
+                    value={draft.orbit.itemTiltMaxDeg}
+                    min={0}
+                    step={1}
+                    onChange={(next) => patchOrbit({ itemTiltMaxDeg: next })}
+                  />
+                </FieldRow>
+                <FieldRow label="Tilt seed">
+                  <NumberInput
+                    value={draft.orbit.itemTiltSeed}
+                    step={1}
+                    onChange={(next) => patchOrbit({ itemTiltSeed: next })}
+                  />
+                </FieldRow>
+              </div>
+              <Button type="button" variant="outline" size="sm" onClick={reshuffleTilts}>
+                Reshuffle item tilts
+              </Button>
+              <label className="flex items-center gap-2 text-[11px]">
+                <input
+                  type="checkbox"
+                  checked={draft.orbit.showCenterPoint ?? true}
+                  onChange={(e) => patchOrbit({ showCenterPoint: e.target.checked })}
+                />
+                Show orbit center point
+              </label>
             </fieldset>
 
             <fieldset className="space-y-2 rounded-md border border-border p-2">
               <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">Orbit items</legend>
-              {draft.items.map((item, i) => (
+              {draft.items.map((item, i) => {
+                return (
                 <div key={i} className="space-y-2 rounded-md bg-muted/40 p-2">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-medium">Item {i + 1}</span>
@@ -566,19 +750,39 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                       onChange={(e) => patchItem(i, { href: e.target.value || undefined })}
                     />
                   </FieldRow>
-                  <FieldRow label="Size override (px)">
-                    <input
-                      type="number"
-                      className={inputClass}
-                      value={item.sizePx ?? ''}
-                      onChange={(e) => {
-                        const raw = e.target.value;
-                        if (raw === '') {
-                          patchItem(i, { sizePx: undefined });
-                          return;
+                  {globalItemDisplayMode === 'rectangle' ? (
+                    <FieldRow label="Rectangle bg hex (e.g. #ffffff)">
+                      <input
+                        className={inputClass}
+                        value={item.backgroundColorHex ?? ''}
+                        onChange={(e) =>
+                          patchItem(i, {
+                            backgroundColorHex: e.target.value || undefined,
+                          })
                         }
-                        const value = Number(raw);
-                        patchItem(i, { sizePx: Number.isFinite(value) && value > 0 ? value : undefined });
+                      />
+                    </FieldRow>
+                  ) : null}
+                  {globalItemDisplayMode === 'circleAccent' ? (
+                    <>
+                      <FieldRow label="Circle color hex (e.g. #22d3ee)">
+                        <input
+                          className={inputClass}
+                          value={item.circleColorHex ?? ''}
+                          onChange={(e) =>
+                            patchItem(i, {
+                              circleColorHex: e.target.value || undefined,
+                            })
+                          }
+                        />
+                      </FieldRow>
+                    </>
+                  ) : null}
+                  <FieldRow label="Size override (px)">
+                    <NumberInput
+                      value={item.sizePx}
+                      onChange={(next) => {
+                        patchItem(i, { sizePx: next != null && next > 0 ? next : undefined });
                       }}
                     />
                   </FieldRow>
@@ -593,11 +797,14 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                     Force placeholder (gray block)
                   </label>
                 </div>
-              ))}
+                );
+              })}
               <Button type="button" variant="outline" size="sm" onClick={addItem}>
                 Add item
               </Button>
             </fieldset>
+              </>
+            ) : null}
           </div>
         </div>
 

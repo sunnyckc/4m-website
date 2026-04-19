@@ -32,6 +32,11 @@ const homeHero = await getHomeHero();
 const homeGallerySteam = await getHomeGallerySteam();
 const homeCatalogHot = await getHomeCatalogHot();
 
+/** Full-viewport / orbit heroes sit flush; slider keeps spacing before the next section. */
+const immersiveHero =
+  (homeHero.variant === 'fullViewport' && homeHero.fullViewport != null) ||
+  (homeHero.variant === 'orbitBanner' && homeHero.orbitBanner != null);
+
 const hotCatalogItems: CatalogSliderItem[] = hotProducts.map((p) => ({
   id: p.folder_name,
   textPrimary: p.item_name,
@@ -50,47 +55,42 @@ const hotCatalogItems: CatalogSliderItem[] = hotProducts.map((p) => ({
 <Layout
   title="4M Industrial Development Limited - STEAM Educational Toys"
   description="4M Industrial Development Limited - Award-winning educational toys and STEAM learning products. Inspiring creativity, critical thinking, and innovation in children through hands-on educational play experiences."
-  revealHeaderOnScroll={
-    (homeHero.variant === 'fullViewport' && homeHero.fullViewport != null) ||
-    (homeHero.variant === 'orbitBanner' && homeHero.orbitBanner != null)
-  }
+  revealHeaderOnScroll={immersiveHero}
 >
-  <!-- Hero: orbit banner, full-viewport centered layout, or classic slider -->
-  <section class={homeHero.variant === 'orbitBanner' ? 'mb-0' : 'mb-8'}>
-    {homeHero.variant === 'orbitBanner' && homeHero.orbitBanner ? (
-      <HeroOrbitBanner
-        client:load
-        config={homeHero.orbitBanner}
-        showTuner={import.meta.env.DEV}
-      />
-    ) : homeHero.variant === 'fullViewport' && homeHero.fullViewport ? (
-      <HeroFullViewport
-        client:load
-        title={homeHero.fullViewport.title}
-        subtitle={homeHero.fullViewport.subtitle}
-        ctaText={homeHero.fullViewport.ctaText}
-        ctaHref={homeHero.fullViewport.ctaHref}
-        background={homeHero.fullViewport.background}
-        className={homeHero.fullViewport.className}
-        innerClassName={homeHero.fullViewport.innerClassName}
-        minHeightClassName={homeHero.fullViewport.minHeightClassName}
-        mediaSlotMinHeightClassName={homeHero.fullViewport.mediaSlotMinHeightClassName}
-        showMediaSlot={homeHero.fullViewport.showMediaSlot ?? true}
-      />
-    ) : (
-      <HeroBannerSlider
-        client:load
-        slides={homeHero.slides}
-        autoplay={homeHero.options?.autoplay ?? true}
-        autoplayDelayMs={homeHero.options?.autoplayDelayMs ?? 5000}
-        showDots={homeHero.options?.showDots ?? true}
-        showArrows={homeHero.options?.showArrows ?? true}
-        className={homeHero.options?.className}
-        heightClassName={homeHero.options?.heightClassName}
-        loop={homeHero.options?.loop ?? true}
-      />
-    )}
-  </section>
+  <!-- Hero: each variant owns its root element and vertical spacing (no page-level wrapper). -->
+  {homeHero.variant === 'orbitBanner' && homeHero.orbitBanner ? (
+    <HeroOrbitBanner
+      client:load
+      config={homeHero.orbitBanner}
+      showTuner={import.meta.env.DEV}
+    />
+  ) : homeHero.variant === 'fullViewport' && homeHero.fullViewport ? (
+    <HeroFullViewport
+      client:load
+      title={homeHero.fullViewport.title}
+      subtitle={homeHero.fullViewport.subtitle}
+      ctaText={homeHero.fullViewport.ctaText}
+      ctaHref={homeHero.fullViewport.ctaHref}
+      background={homeHero.fullViewport.background}
+      className={homeHero.fullViewport.className}
+      innerClassName={homeHero.fullViewport.innerClassName}
+      minHeightClassName={homeHero.fullViewport.minHeightClassName}
+      mediaSlotMinHeightClassName={homeHero.fullViewport.mediaSlotMinHeightClassName}
+      showMediaSlot={homeHero.fullViewport.showMediaSlot ?? true}
+    />
+  ) : (
+    <HeroBannerSlider
+      client:load
+      slides={homeHero.slides}
+      autoplay={homeHero.options?.autoplay ?? true}
+      autoplayDelayMs={homeHero.options?.autoplayDelayMs ?? 5000}
+      showDots={homeHero.options?.showDots ?? true}
+      showArrows={homeHero.options?.showArrows ?? true}
+      className={homeHero.options?.className}
+      heightClassName={homeHero.options?.heightClassName}
+      loop={homeHero.options?.loop ?? true}
+    />
+  )}
 
   <!-- Steam Education Section -->
   <section class="py-8 lg:py-12">

@@ -38,7 +38,7 @@ export function HeroFullViewport({
   return (
     <section
       className={cn(
-        'relative flex w-full flex-col overflow-hidden',
+        'relative mb-8 flex w-full flex-col overflow-hidden',
         !background && 'bg-sky-100',
         minHeightClassName,
         className,

@@ -1,28 +1,30 @@
 {
   "variant": "orbitBanner",
   "orbitBanner": {
-    "title": "Educational Toys for Creative Young Minds",
+    "titleLine1": "Educational toys for",
+    "titleLine2": "Creative young minds",
+    "logoHeightPx": 56,
     "titleSize": "lg",
     "subtitle": "Play, learn, and explore.",
     "subtitleSize": "lg",
     "ctaText": "Shop now",
-    "ctaHref": "/products",
+    "ctaHref": "/4m-website/products",
     "secondaryCtaText": "Learn more",
-    "secondaryCtaHref": "/about",
+    "secondaryCtaHref": "/4m-website/about",
     "minHeightClassName": "min-h-[100dvh]",
     "background": {
-      "image": "/images/hero/orbit/background.png",
+      "image": "/4m-website/images/hero/orbit/background.png",
       "alt": "Colorful playroom scene behind the hero",
       "fallbackColor": "#e0f2fe",
       "overlayWhiteOpacity": 0.75
     },
     "kid": {
-      "image": "/images/hero/orbit/kid.png",
+      "image": "/4m-website/images/hero/orbit/kid.png",
       "alt": "Child thinking and playing",
       "desktop": {
-        "xPercent": 92,
-        "yPercent": 100,
-        "widthPx": 700
+        "xPercent": 95,
+        "yPercent": 111,
+        "widthPx": 740
       },
       "mobile": {
         "xPercent": 70,
@@ -31,42 +33,53 @@
       }
     },
     "orbit": {
-      "radiusPx": 250,
+      "radiusPx": 420,
+      "centerOffsetXPx": -280,
+      "centerOffsetYPx": -510,
       "direction": "clockwise",
       "speedSeconds": 18,
       "startAngleDeg": -95,
-      "itemSizePx": 80,
-      "itemWhiteRect": true,
+      "itemSizePx": 360,
+      "itemDisplayMode": "circleAccent",
+      "itemCircleSizePx": 214,
       "keepItemsUpright": true,
-      "speedStyle": "linear"
+      "speedStyle": "oscillating",
+      "oscillationHeight": 45,
+      "oscillationFrequency": 4,
+      "randomizeItemTilt": true,
+      "itemTiltMinDeg": 5,
+      "itemTiltMaxDeg": 15,
+      "itemTiltSeed": 1,
+      "showCenterPoint": true
     },
     "items": [
       {
-        "image": "/images/hero/orbit/product-robot.png",
-        "href": "/products",
-        "sizePx": 80
+        "image": "/4m-website/images/hero/orbit/product-robot.png",
+        "href": "/4m-website/products",
+        "circleColorHex": "#7dd3fc"
       },
       {
-        "image": "/images/hero/orbit/product-car.png",
-        "href": "/products",
-        "sizePx": 80
+        "image": "/4m-website/images/hero/orbit/product-car.png",
+        "href": "/4m-website/products",
+        "circleColorHex": "#fca5a5"
       },
       {
-        "image": "/images/hero/orbit/product-blocks.png",
-        "href": "/products",
-        "sizePx": 80
+        "image": "/4m-website/images/hero/orbit/product-blocks.png",
+        "href": "/4m-website/products",
+        "circleColorHex": "#ffffff"
       },
       {
-        "image": "/images/hero/orbit/product-bear.png",
-        "href": "/products",
-        "sizePx": 80
+        "image": "/4m-website/images/hero/orbit/product-bear.png",
+        "href": "/4m-website/products",
+        "circleColorHex": "#d6b38a"
       },
       {
-        "image": "/images/hero/orbit/product-dinosaur.png",
-        "href": "/products",
-        "sizePx": 80
+        "image": "/4m-website/images/hero/orbit/product-dinosaur.png",
+        "href": "/4m-website/products",
+        "circleColorHex": "#86efac"
       }
-    ]
+    ],
+    "titleLine2RainbowGradient": true
   },
   "fullViewport": {
     "title": "Educational Toys for Young Minds",

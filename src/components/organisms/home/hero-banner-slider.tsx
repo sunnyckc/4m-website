@@ -60,7 +60,7 @@ export function HeroBannerSlider({
   }
 
   return (
-    <div className={cn('relative w-full', className)}>
+    <div className={cn('relative mb-8 w-full', className)}>
       <Carousel
         className="w-full"
         setApi={setApi}
