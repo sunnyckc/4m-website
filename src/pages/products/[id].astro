@@ -50,6 +50,7 @@ const base = getBase();
 ---
 
 <Layout title={`${product.item_name} - 4M`} description={product.item_description}>
+  <div class="page-section-bg">
   <div class="container-custom py-8">
     <!-- Breadcrumb Navigation -->
     <nav class="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
@@ -169,5 +170,6 @@ const base = getBase();
 
     <!-- Related Products -->
     <RelatedProducts products={relatedProducts} />
+  </div>
   </div>
 </Layout>
