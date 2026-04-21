@@ -115,11 +115,17 @@ const pillarTextLinkClass =
             </p>
           </div>
         </div>
-        <div
-          class="aspect-[4/3] w-full max-w-xl mx-auto rounded-2xl border border-dashed border-muted-foreground/25 bg-gradient-to-br from-primary/15 via-muted to-secondary/20"
-          role="img"
-          aria-label="Placeholder for lifestyle or workshop photography"
-        />
+        <div class="aspect-[4/3] w-full max-w-xl mx-auto overflow-hidden rounded-2xl border border-border/60 bg-muted shadow-md">
+          <img
+            src={`${base}/images/home/showroom.jpg`}
+            alt="4M KidzLabs educational kits on display in a bright retail showroom with colorful shelving"
+            class="h-full w-full object-cover"
+            width="1600"
+            height="1066"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
       </div>
     </div>
   </section>
@@ -132,7 +138,7 @@ const pillarTextLinkClass =
           Explore by product family
         </h2>
         <p class="text-lg text-muted-foreground text-comic">
-          Three lines that anchor our catalogue—each with space for photography, illustration, or campaign art alongside the story.
+          Three lines that anchor our catalogue—each shown here with photography from our retail displays.
         </p>
       </div>
 
@@ -142,11 +148,17 @@ const pillarTextLinkClass =
           class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
           data-pillar="kidzlabs"
         >
-          <div
-            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-cyan-200/90 to-blue-500/40 dark:from-cyan-900/50 dark:to-blue-950/60 shadow-sm"
-            role="img"
-            aria-label="Artwork placeholder: KidzLabs"
-          />
+          <div class="home-pillar-visual aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/60 shadow-md">
+            <img
+              src={`${base}/images/home/kidzlabs.jpg`}
+              alt="KidzLabs STEAM kits, robotics, and science toys on display"
+              class="h-full w-full object-cover"
+              width="1600"
+              height="1068"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
           <div class="space-y-5 lg:max-w-xl lg:justify-self-end text-center lg:text-left">
             <h3 class="text-2xl md:text-3xl font-bold text-fun">KidzLabs</h3>
             <p class="text-lg text-muted-foreground text-comic leading-relaxed">
@@ -178,11 +190,17 @@ const pillarTextLinkClass =
               </a>
             </p>
           </div>
-          <div
-            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-lime-200/90 to-emerald-600/35 dark:from-lime-900/40 dark:to-emerald-950/60 shadow-sm order-1 lg:order-2"
-            role="img"
-            aria-label="Artwork placeholder: Green Science"
-          />
+          <div class="home-pillar-visual aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/60 shadow-md order-1 lg:order-2">
+            <img
+              src={`${base}/images/home/green-science.jpg`}
+              alt="Green Science eco-engineering and renewable energy kits on shelves"
+              class="h-full w-full object-cover"
+              width="1600"
+              height="1064"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </article>
 
         <!-- Arts & Crafts: visual left, copy right -->
@@ -190,11 +208,17 @@ const pillarTextLinkClass =
           class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
           data-pillar="arts-crafts"
         >
-          <div
-            class="home-pillar-visual min-h-[240px] sm:min-h-[300px] lg:min-h-[340px] xl:min-h-[400px] w-full rounded-2xl border border-dashed border-muted-foreground/20 bg-gradient-to-br from-fuchsia-200/85 to-orange-400/35 dark:from-fuchsia-900/45 dark:to-orange-950/55 shadow-sm"
-            role="img"
-            aria-label="Artwork placeholder: Arts &amp; Crafts"
-          />
+          <div class="home-pillar-visual aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/60 shadow-md">
+            <img
+              src={`${base}/images/home/arts-crafts.jpg`}
+              alt="Arts and Crafts creative kits and activity sets on display"
+              class="h-full w-full object-cover"
+              width="1600"
+              height="1162"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
           <div class="space-y-5 lg:max-w-xl lg:justify-self-end text-center lg:text-left">
             <h3 class="text-2xl md:text-3xl font-bold text-fun">Arts &amp; Crafts</h3>
             <p class="text-lg text-muted-foreground text-comic leading-relaxed">
@@ -212,7 +236,7 @@ const pillarTextLinkClass =
     </div>
   </section>
 
-  <!-- Audience paths: image + label only (no card chrome) -->
+  <!-- Audience paths: text tiles -->
   <section class="py-14 lg:py-20 bg-muted/25" aria-labelledby="home-paths-heading">
     <div class="container-custom">
       <div class="text-center space-y-4 mb-12 lg:mb-14">
@@ -220,35 +244,25 @@ const pillarTextLinkClass =
           How can we help you today?
         </h2>
         <p class="text-lg text-muted-foreground text-comic max-w-2xl mx-auto">
-          Families, educators, and partners—pick the doorway that matches you. Art above each tile can be replaced anytime.
+          Families, educators, and partners—pick the doorway that matches you.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-12 max-w-3xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 max-w-3xl mx-auto">
         <a
           href={audiencePaths.parentsAndTeachers}
-          class="home-audience-tile group block text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-xl"
+          class="home-audience-tile group block rounded-xl border border-border/80 bg-card/60 px-8 py-10 text-center shadow-sm transition-colors hover:border-primary/40 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          <div
-            class="aspect-[4/3] w-full rounded-xl bg-gradient-to-br from-amber-200/75 via-sky-300/45 to-violet-400/40 dark:from-amber-900/40 dark:via-sky-950/35 dark:to-violet-950/40 transition-transform duration-300 group-hover:scale-[1.02]"
-            role="img"
-            aria-label="Placeholder image: Parents and teachers"
-          />
-          <p class="mt-4 text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+          <p class="text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
             Parents &amp; teachers
           </p>
         </a>
 
         <a
           href={audiencePaths.distributors}
-          class="home-audience-tile group block text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-xl"
+          class="home-audience-tile group block rounded-xl border border-border/80 bg-card/60 px-8 py-10 text-center shadow-sm transition-colors hover:border-primary/40 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          <div
-            class="aspect-[4/3] w-full rounded-xl bg-gradient-to-br from-slate-300/70 via-primary/25 to-slate-500/35 dark:from-slate-700/50 dark:via-primary/20 dark:to-slate-900/50 transition-transform duration-300 group-hover:scale-[1.02]"
-            role="img"
-            aria-label="Placeholder image: Distributors"
-          />
-          <p class="mt-4 text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
+          <p class="text-xl font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors">
             Distributors
           </p>
         </a>

@@ -1,3 +1,4 @@
+export { default as Breadcrumb } from './breadcrumb.astro';
 export { default as CollageItem } from './collage-item.astro';
 export { default as LinkCard } from './link-card.astro';
 export { default as ManualDownloads } from './manual-downloads.astro';

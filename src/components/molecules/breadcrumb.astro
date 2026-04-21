@@ -1,0 +1,41 @@
+---
+/** One trail segment; omit `href` for the current page. */
+export interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+export interface Props {
+  items: BreadcrumbItem[];
+  /** Extra classes for the `<nav>` (e.g. `mb-0` when inside a sticky bar). */
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+const navClass = className !== undefined ? className : 'mb-6';
+---
+
+<nav aria-label="Breadcrumb" class:list={['text-sm', navClass]}>
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground">
+    {
+      items.map((item, index) => (
+        <li class="flex min-w-0 items-center gap-x-2">
+          {index > 0 && (
+            <span class="shrink-0 text-muted-foreground/60" aria-hidden="true">
+              /
+            </span>
+          )}
+          {item.href !== undefined && item.href !== '' ? (
+            <a href={item.href} class="truncate transition-colors hover:text-primary">
+              {item.label}
+            </a>
+          ) : (
+            <span class="truncate font-medium text-foreground" aria-current="page">
+              {item.label}
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

@@ -1,48 +1,59 @@
 {
   "title": "Latest news",
-  "subtitle": "Trade shows, partnerships, and stories — swap images and links in public/data/home/news-gallery.json.",
   "items": [
     {
       "id": "placeholder-1",
+      "image": "/images/home/news/news1.jpg",
       "href": "/news",
       "headline": "2026 trade show schedule",
       "date": "Coming soon",
-      "showOverlay": true
+      "showOverlay": true,
+      "imageAlt": "News photo 1"
     },
     {
       "id": "placeholder-2",
+      "image": "/images/home/news/news2.jpg",
       "href": "/news",
       "headline": "New museum partnership",
       "date": "Announcement",
-      "showOverlay": true
+      "showOverlay": true,
+      "imageAlt": "News photo 2"
     },
     {
       "id": "placeholder-3",
+      "image": "/images/home/news/news3.jpg",
       "href": "/news",
       "headline": "STEAM kit spotlight",
       "date": "Product",
-      "showOverlay": true
+      "showOverlay": true,
+      "imageAlt": "News photo 3"
     },
     {
       "id": "placeholder-4",
+      "image": "/images/home/news/news4.jpg",
       "href": "/news",
       "headline": "Educator resources update",
       "date": "Resources",
-      "showOverlay": true
+      "showOverlay": true,
+      "imageAlt": "News photo 4"
     },
     {
       "id": "placeholder-5",
+      "image": "/images/home/news/news5.jpg",
       "href": "/news",
       "headline": "Sustainability in Green Science",
       "date": "Story",
-      "showOverlay": true
+      "showOverlay": true,
+      "imageAlt": "News photo 5"
     },
     {
       "id": "placeholder-6",
+      "image": "/images/home/news/news6.jpg",
       "href": "/news",
       "headline": "Behind the design",
       "date": "Studio",
-      "showOverlay": false
+      "showOverlay": false,
+      "imageAlt": "News photo 6"
     }
   ]
 }

@@ -1,5 +1,6 @@
 ---
 import { Layout } from '@/layouts';
+import { Breadcrumb } from '@/components';
 import { ProductsCatalog } from '@/components/organisms';
 import { getProductCategories } from '@/repositories/site';
 import { getBase } from '@/config';
@@ -9,8 +10,13 @@ const base = getBase();
 ---
 
 <Layout title="Products - My Store" description="Browse our complete collection of premium products">
-  <div class="page-section-bg">
   <div class="container-custom py-8">
+    <Breadcrumb
+      items={[
+        { label: 'Home', href: `${base}/` },
+        { label: 'Products' },
+      ]}
+    />
     <div class="text-center space-y-4 mb-12">
       <h1 class="text-3xl md:text-4xl font-bold text-fun">Our Products</h1>
       <p class="text-lg text-muted-foreground max-w-2xl mx-auto text-comic">
@@ -19,6 +25,5 @@ const base = getBase();
     </div>
 
     <ProductsCatalog categories={categoriesData.categories} base={base} />
-  </div>
   </div>
 </Layout>

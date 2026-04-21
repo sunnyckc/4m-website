@@ -44,9 +44,9 @@
       "direction": "clockwise",
       "speedSeconds": 40,
       "startAngleDeg": -95,
-      "itemSizePx": 360,
+      "itemSizePx": 310,
       "itemDisplayMode": "circleAccent",
-      "itemCircleSizePx": 214,
+      "itemCircleSizePx": 249,
       "medium": {
         "radiusPx": 320,
         "centerOffsetXPx": -220,
@@ -69,33 +69,37 @@
       "itemTiltMinDeg": 5,
       "itemTiltMaxDeg": 15,
       "itemTiltSeed": 1,
-      "showCenterPoint": true
+      "showCenterPoint": true,
+      "large": {
+        "itemCircleSizePx": 249,
+        "itemSizePx": 310
+      }
     },
     "items": [
       {
-        "image": "/4m-website/images/hero/orbit/product-robot.png",
+        "image": "/4m-website/images/hero/orbit/orbit-purple.png",
         "href": "/4m-website/products",
-        "circleColorHex": "#7dd3fc"
+        "circleColorHex": "#a855f7"
       },
       {
-        "image": "/4m-website/images/hero/orbit/product-car.png",
+        "image": "/4m-website/images/hero/orbit/orbit-blue.png",
         "href": "/4m-website/products",
-        "circleColorHex": "#fca5a5"
+        "circleColorHex": "#2563eb"
       },
       {
-        "image": "/4m-website/images/hero/orbit/product-blocks.png",
+        "image": "/4m-website/images/hero/orbit/orbit-light-blue.png",
         "href": "/4m-website/products",
-        "circleColorHex": "#ffffff"
+        "circleColorHex": "#38bdf8"
       },
       {
-        "image": "/4m-website/images/hero/orbit/product-bear.png",
+        "image": "/4m-website/images/hero/orbit/orbit-green.png",
         "href": "/4m-website/products",
-        "circleColorHex": "#d6b38a"
+        "circleColorHex": "#22c55e"
       },
       {
-        "image": "/4m-website/images/hero/orbit/product-dinosaur.png",
+        "image": "/4m-website/images/hero/orbit/orbit-yellow.png",
         "href": "/4m-website/products",
-        "circleColorHex": "#86efac"
+        "circleColorHex": "#eab308"
       }
     ],
     "titleLine2RainbowGradient": true

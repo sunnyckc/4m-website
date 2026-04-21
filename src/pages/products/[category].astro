@@ -1,6 +1,6 @@
 ---
 import { Layout } from '@/layouts';
-import { Button, Badge } from '@/components';
+import { Breadcrumb, Button, Badge } from '@/components';
 import {
   getProducts,
   getProductsByCategory,
@@ -30,16 +30,15 @@ if (!categoryData) {
 ---
 
 <Layout title={`${categoryData.name} - Products`} description={categoryData.description}>
-  <div class="page-section-bg">
   <div class="container-custom py-8">
-    <!-- Breadcrumb -->
-    <nav class="flex mb-8 text-sm">
-      <a href={`${base}/`} class="text-muted-foreground hover:text-primary">Home</a>
-      <span class="mx-2 text-muted-foreground">/</span>
-      <a href={`${base}/products`} class="text-muted-foreground hover:text-primary">Products</a>
-      <span class="mx-2 text-muted-foreground">/</span>
-      <span class="text-primary font-medium">{categoryData.name}</span>
-    </nav>
+    <Breadcrumb
+      items={[
+        { label: 'Home', href: `${base}/` },
+        { label: 'Products', href: `${base}/products` },
+        { label: categoryData.name },
+      ]}
+      class="mb-8"
+    />
 
     <!-- Category Header -->
     <div class="text-center space-y-4 mb-12">
@@ -120,6 +119,5 @@ if (!categoryData) {
         ← Back to All Products
       </Button>
     </div>
-  </div>
   </div>
 </Layout>
