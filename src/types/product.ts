@@ -3,7 +3,7 @@ export interface ProductMedia {
   sequence: number;
   thumbnail: boolean;
   hidden: boolean;
-  media_source: 'file' | 'url' | 'vimeo' | 'wistia';
+  media_source: 'file' | 'url' | 'vimeo' | 'wistia' | 'youtube';
   media_destination: string;
 }
 
@@ -15,7 +15,7 @@ export interface ProductSpecification {
 
 export interface MultiLanguage {
   language: string;
-  media_source: 'file' | 'url' | 'vimeo' | 'wistia';
+  media_source: 'file' | 'url' | 'vimeo' | 'wistia' | 'youtube';
   media_destination: string;
 }
 

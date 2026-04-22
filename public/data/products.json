@@ -1,24 +1,23 @@
 [
   {
-    "item_code": "00-03267",
-    "item_name": "Windmill Generator",
-    "item_description": "Build this amazing wind generator and learn about renewable energy. Watch the LED glow as it is powered by free energy from the wind. No batteries required!",
-    "folder_name": "windmill-generator",
+    "item_code": "SAMPLE-701",
+    "item_name": "Lumo Cloud Nightlight Studio",
+    "item_description": "A whimsical bedside build that mixes soft gradients and simple circuits. Piece together the cloud housing, snap in the LED strip, and dial a cozy glow for bedtime stories. Perfect for first-time makers who like a little atmosphere with their STEAM.",
+    "folder_name": "lumo-cloud-nightlight",
     "category_main": "science-education",
-    "category_sub": "green-science",
+    "category_sub": "glowing-imaginations",
     "tag_visible": [
-      "renewable energy",
-      "wind power",
-      "electricity",
-      "STEM",
-      "environment",
+      "nightlight",
       "LED",
-      "generator"
+      "bedroom decor",
+      "beginner electronics",
+      "soft light",
+      "craft kit"
     ],
     "tag_hidden": [
-      "green-science",
-      "energy",
-      "eco"
+      "glowing-imaginations",
+      "sample-data",
+      "demo"
     ],
     "media": [
       {
@@ -26,117 +25,269 @@
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
-      },
-      {
-        "type": "image",
-        "sequence": 2,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-car.png"
-      },
-      {
-        "type": "image",
-        "sequence": 3,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
-      },
-      {
-        "type": "image",
-        "sequence": 4,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
+        "media_source": "file",
+        "media_destination": "cloud-light.png"
       }
     ],
     "specifications": [
       {
         "field": "item_size",
-        "display_name": "Size",
-        "value": "16.7cm x 21.5cm x 5.8cm"
-      },
-      {
-        "field": "barcode",
-        "display_name": "Barcode",
-        "value": "4893156032676"
-      },
-      {
-        "field": "packaging",
-        "display_name": "Packaging",
-        "value": "6/Inner 48/Master 9.2Kg 4.57Cuft"
+        "display_name": "Box size",
+        "value": "24cm x 18cm x 6cm (sample)"
       },
       {
         "field": "age_range",
-        "display_name": "Age Range",
-        "value": "8+ years"
+        "display_name": "Age",
+        "value": "8+ (with adult help for small parts)"
       },
       {
         "field": "power_source",
-        "display_name": "Power Source",
-        "value": "Wind energy"
+        "display_name": "Power",
+        "value": "2× AAA cells (not included — sample listing)"
       },
       {
         "field": "includes",
         "display_name": "Includes",
-        "value": "Windmill parts, LED light, Assembly instructions, Educational booklet"
+        "value": "Cloud panels, diffusers, LED harness, quick-start guide"
       }
     ],
     "award_text": [
-      "2016 A' Design Award in Toy, Games and Hobby Products Design",
-      "2015 Red Dot Award",
-      "2022 STEM.org Accredited™",
-      "2021 Best Elementary Homeschool Curriculum & Resource Award",
-      "2009 Dr. Toy Best Green Product"
+      "Sample Store Editors' Pick 2026 (fictional)",
+      "Imaginary Hands-On Lighting Merit"
     ],
-    "hot_item": true,
-    "multi_language": [
-      {
-        "language": "English",
-        "media_source": "file",
-        "media_destination": "english.pdf"
-      },
-      {
-        "language": "French",
-        "media_source": "file",
-        "media_destination": "french.pdf"
-      },
-      {
-        "language": "German",
-        "media_source": "file",
-        "media_destination": "german.pdf"
-      },
-      {
-        "language": "Spanish",
-        "media_source": "file",
-        "media_destination": "spanish.pdf"
-      }
-    ],
-    "related_product": []
+    "hot_item": false,
+    "multi_language": [],
+    "related_product": ["SAMPLE-702"]
   },
   {
-    "item_code": "00-03275",
+    "item_code": "SAMPLE-702",
+    "item_name": "Crystal Garden Starter Lab",
+    "item_description": "Grow shimmering starter crystals on a tiny landscape base and learn about saturation, seeding, and patience. The kit keeps mess manageable with a sealed growth tray and clear observation windows.",
+    "folder_name": "crystal-garden-starter-lab",
+    "category_main": "science-education",
+    "category_sub": "crystal-growing",
+    "tag_visible": [
+      "crystals",
+      "chemistry",
+      "growth experiment",
+      "STEM",
+      "display piece"
+    ],
+    "tag_hidden": [
+      "crystal-growing",
+      "sample-data"
+    ],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "crystal-growing.png"
+      }
+    ],
+    "specifications": [
+      {
+        "field": "item_size",
+        "display_name": "Box size",
+        "value": "22cm x 16cm x 7cm (sample)"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age",
+        "value": "10+"
+      },
+      {
+        "field": "grow_time",
+        "display_name": "Typical grow time",
+        "value": "5–10 days (room temperature dependent)"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Crystal formula (sample), base mold, magnifier, log sheet"
+      }
+    ],
+    "award_text": [
+      "Sample Science Fair Companion Seal (fictional)"
+    ],
+    "hot_item": true,
+    "multi_language": [],
+    "related_product": ["SAMPLE-706", "SAMPLE-701"]
+  },
+  {
+    "item_code": "SAMPLE-703",
+    "item_name": "Mini Weave Tote Workshop",
+    "item_description": "Bright panels and chunky yarn make a satisfying mini tote without a loom. Follow the color-block pattern, learn two basic seams, and end with a bag that actually fits sketchbooks or markers.",
+    "folder_name": "mini-weave-tote-kit",
+    "category_main": "creative-crafts",
+    "category_sub": "kidzmaker",
+    "tag_visible": [
+      "weaving",
+      "fiber arts",
+      "tote bag",
+      "color blocking",
+      "no loom needed"
+    ],
+    "tag_hidden": [
+      "kidzmaker",
+      "sample-data"
+    ],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "mini-bag.png"
+      }
+    ],
+    "specifications": [
+      {
+        "field": "item_size",
+        "display_name": "Finished tote (approx.)",
+        "value": "20cm wide × 22cm tall (sample)"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age",
+        "value": "9+"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Pre-cut panels, yarn bundles, blunt needle, pattern cards"
+      }
+    ],
+    "award_text": [],
+    "hot_item": false,
+    "multi_language": [],
+    "related_product": ["SAMPLE-704"]
+  },
+  {
+    "item_code": "SAMPLE-704",
+    "item_name": "Loop & Yarn Crochet Basics",
+    "item_description": "Chunky hooks and staged stitches help newcomers crochet a flat coaster and then roll it into a simple cup cozy. The guide uses photo-heavy steps so nobody gets lost in abbreviations.",
+    "folder_name": "loop-yarn-crochet-basics",
+    "category_main": "creative-crafts",
+    "category_sub": "creative-crafts",
+    "tag_visible": [
+      "crochet",
+      "yarn craft",
+      "coaster",
+      "cozy",
+      "fine motor"
+    ],
+    "tag_hidden": [
+      "creative-crafts",
+      "sample-data"
+    ],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "easy-to-do-crochet.png"
+      }
+    ],
+    "specifications": [
+      {
+        "field": "item_size",
+        "display_name": "Box size",
+        "value": "19cm x 14cm x 5cm (sample)"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age",
+        "value": "10+"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Ergonomic hook, starter yarn, stitch ruler, fold-out guide"
+      }
+    ],
+    "award_text": [
+      "Sample Craft Lab Honorable Mention (fictional)"
+    ],
+    "hot_item": false,
+    "multi_language": [],
+    "related_product": ["SAMPLE-703"]
+  },
+  {
+    "item_code": "SAMPLE-705",
+    "item_name": "Fossil Hunter Dino Dig",
+    "item_description": "Chip, brush, and reveal a composite skeleton embedded in soft matrix. A field notebook prompts kids to label bones, compare proportions, and invent a species backstory.",
+    "folder_name": "fossil-hunter-dino-dig",
+    "category_main": "science-education",
+    "category_sub": "science-in-action",
+    "tag_visible": [
+      "paleontology",
+      "excavation",
+      "dinosaur",
+      "hands-on",
+      "outdoor optional"
+    ],
+    "tag_hidden": [
+      "science-in-action",
+      "sample-data"
+    ],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "dig-a-dinosaur.png"
+      }
+    ],
+    "specifications": [
+      {
+        "field": "item_size",
+        "display_name": "Dig block",
+        "value": "12cm x 8cm x 4cm (sample)"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age",
+        "value": "7+"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Dig brick, tools, dust brush, identification poster"
+      }
+    ],
+    "award_text": [
+      "Sample Museum Gift-Shop Favorite (fictional)"
+    ],
+    "hot_item": true,
+    "multi_language": [],
+    "related_product": ["SAMPLE-709"]
+  },
+  {
+    "item_code": "SAMPLE-706",
     "item_name": "Potato Clock",
-    "item_description": "What! No Batteries? Be a scientist as you discover how to power this digital clock using potatoes. Experiment to find out what other substances will power the clock - you'll be amazed!",
+    "item_description": "Classic veggie-battery curiosity: bridge electrodes, watch the LCD tick, then swap in potatoes, lemons, or cola cups to compare voltage. Chemistry meets kitchen science.",
     "folder_name": "potato-clock",
     "category_main": "science-education",
     "category_sub": "green-science",
     "tag_visible": [
       "electrochemistry",
-      "organic energy",
-      "digital clock",
-      "science experiment",
-      "potatoes",
-      "battery-free"
+      "battery demo",
+      "LCD clock",
+      "kitchen science",
+      "STEM fair",
+      "potato clock"
     ],
     "tag_hidden": [
       "green-science",
-      "energy",
-      "chemistry"
+      "sample-data"
     ],
     "media": [
       {
@@ -144,225 +295,75 @@
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-car.png"
+        "media_source": "file",
+        "media_destination": "potato-clock.png"
       },
       {
         "type": "image",
         "sequence": 2,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
+        "media_source": "file",
+        "media_destination": "potato-clock2.jpg"
       },
       {
         "type": "image",
         "sequence": 3,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
-      }
-    ],
-    "specifications": [
-      {
-        "field": "item_size",
-        "display_name": "Size",
-        "value": "16.7cm x 21.5cm x 5.8cm"
-      },
-      {
-        "field": "barcode",
-        "display_name": "Barcode",
-        "value": "4893156032751"
-      },
-      {
-        "field": "packaging",
-        "display_name": "Packaging",
-        "value": "6/Inner 48/Master 9.3Kg 4.57Cuft"
-      },
-      {
-        "field": "age_range",
-        "display_name": "Age Range",
-        "value": "8+ years"
-      },
-      {
-        "field": "power_source",
-        "display_name": "Power Source",
-        "value": "Potato electrodes"
-      },
-      {
-        "field": "includes",
-        "display_name": "Includes",
-        "value": "Digital clock module, Copper and zinc electrodes, Wires, Instructions"
-      }
-    ],
-    "award_text": [
-      "2016 A' Design Award in Toy, Games and Hobby Products Design",
-      "2015 Red Dot Award",
-      "2022 STEM.org Accredited™",
-      "2021 STEM.org Authenticated™"
-    ],
-    "hot_item": false,
-    "multi_language": [
-      {
-        "language": "English",
         "media_source": "file",
-        "media_destination": "english.pdf"
+        "media_destination": "potato-clock3.jpg"
       },
       {
-        "language": "French",
-        "media_source": "file",
-        "media_destination": "french.pdf"
-      },
-      {
-        "language": "German",
-        "media_source": "file",
-        "media_destination": "german.pdf"
-      },
-      {
-        "language": "Spanish",
-        "media_source": "file",
-        "media_destination": "spanish.pdf"
-      }
-    ],
-    "related_product": []
-  },
-  {
-    "item_code": "00-03279",
-    "item_name": "Weather Station",
-    "item_description": "Observe and record the weather with your own multi-functional weather station. Also experiment with the greenhouse effect and create a terrarium in a bottle.",
-    "folder_name": "weather-station",
-    "category_main": "science-education",
-    "category_sub": "green-science",
-    "tag_visible": [
-      "meteorology",
-      "weather tracking",
-      "greenhouse effect",
-      "terrarium",
-      "data collection",
-      "outdoor science"
-    ],
-    "tag_hidden": [
-      "green-science",
-      "weather",
-      "nature"
-    ],
-    "media": [
-      {
-        "type": "image",
-        "sequence": 1,
-        "thumbnail": true,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
-      },
-      {
-        "type": "image",
-        "sequence": 2,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
-      },
-      {
-        "type": "image",
-        "sequence": 3,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-dinosaur.png"
-      },
-      {
-        "type": "image",
+        "type": "video",
         "sequence": 4,
         "thumbnail": false,
         "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
+        "media_source": "youtube",
+        "media_destination": "djF7bb4vrRk"
       }
     ],
     "specifications": [
       {
         "field": "item_size",
-        "display_name": "Size",
-        "value": "16.7cm x 21.5cm x 5.8cm"
-      },
-      {
-        "field": "barcode",
-        "display_name": "Barcode",
-        "value": "4893156032799"
-      },
-      {
-        "field": "packaging",
-        "display_name": "Packaging",
-        "value": "6/Inner 48/Master 9.3Kg 4.57Cuft"
+        "display_name": "Box size",
+        "value": "21cm x 15cm x 5cm (sample)"
       },
       {
         "field": "age_range",
-        "display_name": "Age Range",
-        "value": "8+ years"
-      },
-      {
-        "field": "measurements",
-        "display_name": "Measurements",
-        "value": "Temperature, Humidity, Wind direction, Rainfall"
+        "display_name": "Age",
+        "value": "8+"
       },
       {
         "field": "includes",
         "display_name": "Includes",
-        "value": "Weather instruments, Terrarium bottle, Data recording sheets, Assembly guide"
+        "value": "Clock module, zinc/copper strips, wire harness, experiment grid"
       }
     ],
     "award_text": [
-      "2016 A' Design Award in Toy, Games and Hobby Products Design",
-      "2015 Red Dot Award",
-      "2022 STEM.org Accredited™",
-      "2021 Best Elementary Homeschool Curriculum & Resource Award"
+      "Sample Green Lab Ribbon (fictional)"
     ],
     "hot_item": true,
-    "multi_language": [
-      {
-        "language": "English",
-        "media_source": "file",
-        "media_destination": "english.pdf"
-      },
-      {
-        "language": "French",
-        "media_source": "file",
-        "media_destination": "french.pdf"
-      },
-      {
-        "language": "German",
-        "media_source": "file",
-        "media_destination": "german.pdf"
-      },
-      {
-        "language": "Spanish",
-        "media_source": "file",
-        "media_destination": "spanish.pdf"
-      }
-    ],
-    "related_product": []
+    "multi_language": [],
+    "related_product": ["SAMPLE-702", "SAMPLE-710"]
   },
   {
-    "item_code": "00-03353",
-    "item_name": "Salt-Powered Robot",
-    "item_description": "Put this robot mini vehicle together, then add salty water to the specially designed battery cartridges and off it goes! It's amazing!",
-    "folder_name": "salt-robot",
+    "item_code": "SAMPLE-707",
+    "item_name": "Steady-Hand Buzz Track",
+    "item_description": "Thread the wand through bends without tripping the buzzer. Adjustable difficulty rings let siblings share one kit, and the back panel opens to peek at the simple series circuit.",
+    "folder_name": "steady-hand-buzz-track",
     "category_main": "science-education",
-    "category_sub": "green-science",
+    "category_sub": "kidzlabs",
     "tag_visible": [
-      "robotics",
-      "salt water power",
+      "circuit",
+      "dexterity",
+      "game",
       "conductivity",
-      "engineering",
-      "battery cartridges",
-      "mini vehicle"
+      "family challenge"
     ],
     "tag_hidden": [
-      "green-science",
-      "robotics",
-      "energy"
+      "kidzlabs",
+      "sample-data"
     ],
     "media": [
       {
@@ -370,108 +371,106 @@
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
-      },
-      {
-        "type": "image",
-        "sequence": 2,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-dinosaur.png"
-      },
-      {
-        "type": "image",
-        "sequence": 3,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
+        "media_source": "file",
+        "media_destination": "buzz-wire-making-kit.png"
       }
     ],
     "specifications": [
       {
         "field": "item_size",
-        "display_name": "Size",
-        "value": "16.7cm x 21.5cm x 5.8cm"
-      },
-      {
-        "field": "barcode",
-        "display_name": "Barcode",
-        "value": "4893156033536"
-      },
-      {
-        "field": "packaging",
-        "display_name": "Packaging",
-        "value": "6/Inner 48/Master 8Kg 4.57Cuft"
+        "display_name": "Assembled board",
+        "value": "28cm x 18cm (sample)"
       },
       {
         "field": "age_range",
-        "display_name": "Age Range",
-        "value": "8+ years"
+        "display_name": "Age",
+        "value": "8+"
       },
       {
         "field": "power_source",
-        "display_name": "Power Source",
-        "value": "Salt water solution"
+        "display_name": "Power",
+        "value": "1× 9V battery (not included — sample listing)"
       },
       {
         "field": "includes",
         "display_name": "Includes",
-        "value": "Robot chassis, Motor, Battery cartridges, Assembly instructions"
+        "value": "Bent wire course, wand, buzzer module, screwdriver"
+      }
+    ],
+    "award_text": [],
+    "hot_item": false,
+    "multi_language": [],
+    "related_product": ["SAMPLE-708", "SAMPLE-710"]
+  },
+  {
+    "item_code": "SAMPLE-708",
+    "item_name": "Scuttle-Bot Spider Kit",
+    "item_description": "A friendly eight-legged walker with a crank gearbox to study reciprocating motion. Decorate the shell plates, time how fast it crosses the table, and log gear ratios in the workbook.",
+    "folder_name": "scuttle-bot-spider-kit",
+    "category_main": "science-education",
+    "category_sub": "kidzlabs",
+    "tag_visible": [
+      "robotics",
+      "mechanics",
+      "gearbox",
+      "arachnid theme",
+      "engineering"
+    ],
+    "tag_hidden": [
+      "kidzlabs",
+      "sample-data"
+    ],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "kidz-spider.png"
+      }
+    ],
+    "specifications": [
+      {
+        "field": "item_size",
+        "display_name": "Spider span",
+        "value": "Approx. 16cm leg tip to tip (sample)"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age",
+        "value": "9+"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Chassis, legs, crank assembly, stickers, mini journal"
       }
     ],
     "award_text": [
-      "2016 A' Design Award in Toy, Games and Hobby Products Design",
-      "2022 STEM.org Accredited™",
-      "2020 Upstart Magazine Kids Choice Toy Awards",
-      "2013 Dr. Toy Best Green Product"
+      "Sample Tinker Fair Runner-Up (fictional)"
     ],
     "hot_item": false,
-    "multi_language": [
-      {
-        "language": "English",
-        "media_source": "file",
-        "media_destination": "english.pdf"
-      },
-      {
-        "language": "French",
-        "media_source": "file",
-        "media_destination": "french.pdf"
-      },
-      {
-        "language": "German",
-        "media_source": "file",
-        "media_destination": "german.pdf"
-      },
-      {
-        "language": "Spanish",
-        "media_source": "file",
-        "media_destination": "spanish.pdf"
-      }
-    ],
-    "related_product": []
+    "multi_language": [],
+    "related_product": ["SAMPLE-707", "SAMPLE-709"]
   },
   {
-    "item_code": "00-03281",
-    "item_name": "Clean Water Science",
-    "item_description": "Build your own water filtration and desalination plant at your table top; disinfect water with solar power and more. It's cool water science experimental kit.",
-    "folder_name": "clean-water",
+    "item_code": "SAMPLE-709",
+    "item_name": "Orbit Scope Discovery Box",
+    "item_description": "Layered cards and a collapsible viewer introduce scale models of the inner solar system. Plot moon phases with a spinner disc and match mission patches to their destinations.",
+    "folder_name": "orbit-scope-discovery-box",
     "category_main": "science-education",
-    "category_sub": "green-science",
+    "category_sub": "kidzlabs",
     "tag_visible": [
-      "water filtration",
-      "desalination",
-      "solar power",
-      "water science",
-      "environmental",
-      "purification"
+      "astronomy",
+      "solar system",
+      "phases",
+      "cards",
+      "viewer"
     ],
     "tag_hidden": [
-      "green-science",
-      "water",
-      "environment"
+      "kidzlabs",
+      "sample-data"
     ],
     "media": [
       {
@@ -479,437 +478,82 @@
         "sequence": 1,
         "thumbnail": true,
         "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-dinosaur.png"
-      },
-      {
-        "type": "image",
-        "sequence": 2,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
-      },
-      {
-        "type": "image",
-        "sequence": 3,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-car.png"
-      },
-      {
-        "type": "image",
-        "sequence": 4,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
+        "media_source": "file",
+        "media_destination": "space-exploration.png"
       }
     ],
     "specifications": [
       {
         "field": "item_size",
-        "display_name": "Size",
-        "value": "16.7cm x 21.5cm x 5.8cm"
-      },
-      {
-        "field": "barcode",
-        "display_name": "Barcode",
-        "value": "4893156032812"
-      },
-      {
-        "field": "packaging",
-        "display_name": "Packaging",
-        "value": "6/Inner 24/Master 9.9Kg 2.34Cuft"
+        "display_name": "Box size",
+        "value": "23cm x 17cm x 8cm (sample)"
       },
       {
         "field": "age_range",
-        "display_name": "Age Range",
-        "value": "8+ years"
-      },
-      {
-        "field": "power_source",
-        "display_name": "Power Source",
-        "value": "Solar energy"
+        "display_name": "Age",
+        "value": "8+"
       },
       {
         "field": "includes",
         "display_name": "Includes",
-        "value": "Filtration components, Desalination kit, Solar disinfection materials, Test tubes, Instruction manual"
+        "value": "Viewer sleeve, planet deck, phase wheel, mission timeline"
+      }
+    ],
+    "award_text": [],
+    "hot_item": false,
+    "multi_language": [],
+    "related_product": ["SAMPLE-705", "SAMPLE-710"]
+  },
+  {
+    "item_code": "SAMPLE-710",
+    "item_name": "Whirl-Pool Weather Lab",
+    "item_description": "Two bottles and a vortex connector demonstrate angular momentum in seconds. Extend the lesson with provided dye tablets to visualize laminar flow and talk about real-world cyclones.",
+    "folder_name": "whirl-pool-weather-lab",
+    "category_main": "science-education",
+    "category_sub": "kidzlabs",
+    "tag_visible": [
+      "weather",
+      "vortex",
+      "fluid motion",
+      "demo",
+      "classroom friendly"
+    ],
+    "tag_hidden": [
+      "kidzlabs",
+      "sample-data"
+    ],
+    "media": [
+      {
+        "type": "image",
+        "sequence": 1,
+        "thumbnail": true,
+        "hidden": false,
+        "media_source": "file",
+        "media_destination": "tornado-in-a-bottle.png"
+      }
+    ],
+    "specifications": [
+      {
+        "field": "item_size",
+        "display_name": "Bottle height",
+        "value": "20cm each (sample)"
+      },
+      {
+        "field": "age_range",
+        "display_name": "Age",
+        "value": "6+ with supervision"
+      },
+      {
+        "field": "includes",
+        "display_name": "Includes",
+        "value": "Connector, bottles, tablets, teacher prompts"
       }
     ],
     "award_text": [
-      "2016 A' Design Award in Toy, Games and Hobby Products Design",
-      "2015 Red Dot Award",
-      "2022 STEM.org Accredited™",
-      "2009 Parents' Choice Award"
+      "Sample Weather Week Demo Kit (fictional)"
     ],
     "hot_item": false,
-    "multi_language": [
-      {
-        "language": "English",
-        "media_source": "file",
-        "media_destination": "english.pdf"
-      },
-      {
-        "language": "French",
-        "media_source": "file",
-        "media_destination": "french.pdf"
-      },
-      {
-        "language": "German",
-        "media_source": "file",
-        "media_destination": "german.pdf"
-      },
-      {
-        "language": "Spanish",
-        "media_source": "file",
-        "media_destination": "spanish.pdf"
-      }
-    ],
-    "related_product": []
-  },
-  {
-    "item_code": "00-03415",
-    "item_name": "Aqua Robot",
-    "item_description": "Watch this Aqua Robot swim along when sunlight shines on its solar cells. Aqua Robot can be powered by battery when there is no sunlight.",
-    "folder_name": "aqua-robot",
-    "category_main": "science-education",
-    "category_sub": "green-science",
-    "tag_visible": [
-      "solar power",
-      "robotics",
-      "swimming robot",
-      "renewable energy",
-      "water play",
-      "dual power"
-    ],
-    "tag_hidden": [
-      "green-science",
-      "robotics",
-      "solar"
-    ],
-    "media": [
-      {
-        "type": "image",
-        "sequence": 1,
-        "thumbnail": true,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
-      },
-      {
-        "type": "image",
-        "sequence": 2,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-car.png"
-      },
-      {
-        "type": "image",
-        "sequence": 3,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
-      },
-      {
-        "type": "image",
-        "sequence": 4,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
-      }
-    ],
-    "specifications": [
-      {
-        "field": "item_size",
-        "display_name": "Size",
-        "value": "20.6cm x 27.6cm x 6.1cm"
-      },
-      {
-        "field": "barcode",
-        "display_name": "Barcode",
-        "value": "4893156034151"
-      },
-      {
-        "field": "packaging",
-        "display_name": "Packaging",
-        "value": "6/Inner 24/Master 8.7Kg 3.67Cuft"
-      },
-      {
-        "field": "age_range",
-        "display_name": "Age Range",
-        "value": "8+ years"
-      },
-      {
-        "field": "power_source",
-        "display_name": "Power Source",
-        "value": "Solar cells with battery backup"
-      },
-      {
-        "field": "includes",
-        "display_name": "Includes",
-        "value": "Robot body, Solar panel, Motor, Battery compartment, Assembly instructions"
-      }
-    ],
-    "award_text": [
-      "2022 STEM.org Accredited™",
-      "2021 Best Elementary Homeschool Curriculum & Resource Award",
-      "2021 STEM.org Authenticated™"
-    ],
-    "hot_item": true,
-    "multi_language": [
-      {
-        "language": "English",
-        "media_source": "file",
-        "media_destination": "english.pdf"
-      },
-      {
-        "language": "French",
-        "media_source": "file",
-        "media_destination": "french.pdf"
-      },
-      {
-        "language": "German",
-        "media_source": "file",
-        "media_destination": "german.pdf"
-      },
-      {
-        "language": "Spanish",
-        "media_source": "file",
-        "media_destination": "spanish.pdf"
-      }
-    ],
-    "related_product": []
-  },
-  {
-    "item_code": "00-03298",
-    "item_name": "Green Rocket",
-    "item_description": "Build and launch your own eco-friendly rocket powered by baking soda and vinegar. Learn about chemical reactions and aerodynamics while having fun!",
-    "folder_name": "green-rocket",
-    "category_main": "science-education",
-    "category_sub": "green-science",
-    "tag_visible": [
-      "rocket",
-      "chemical reactions",
-      "aerodynamics",
-      "eco-friendly",
-      "launch",
-      "baking soda",
-      "vinegar"
-    ],
-    "tag_hidden": [
-      "green-science",
-      "chemistry",
-      "physics"
-    ],
-    "media": [
-      {
-        "type": "image",
-        "sequence": 1,
-        "thumbnail": true,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-car.png"
-      },
-      {
-        "type": "image",
-        "sequence": 2,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
-      },
-      {
-        "type": "image",
-        "sequence": 3,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
-      }
-    ],
-    "specifications": [
-      {
-        "field": "item_size",
-        "display_name": "Size",
-        "value": "16.7cm x 21.5cm x 5.8cm"
-      },
-      {
-        "field": "barcode",
-        "display_name": "Barcode",
-        "value": "4893156032980"
-      },
-      {
-        "field": "packaging",
-        "display_name": "Packaging",
-        "value": "6/Inner 48/Master 8.5Kg 4.57Cuft"
-      },
-      {
-        "field": "age_range",
-        "display_name": "Age Range",
-        "value": "8+ years"
-      },
-      {
-        "field": "power_source",
-        "display_name": "Power Source",
-        "value": "Chemical reaction (baking soda + vinegar)"
-      },
-      {
-        "field": "includes",
-        "display_name": "Includes",
-        "value": "Rocket body, Launch pad, Measuring tools, Safety instructions, Science guide"
-      }
-    ],
-    "award_text": [
-      "2016 A' Design Award in Toy, Games and Hobby Products Design",
-      "2022 STEM.org Accredited™",
-      "2021 STEM.org Authenticated™"
-    ],
-    "hot_item": false,
-    "multi_language": [
-      {
-        "language": "English",
-        "media_source": "file",
-        "media_destination": "english.pdf"
-      },
-      {
-        "language": "French",
-        "media_source": "file",
-        "media_destination": "french.pdf"
-      },
-      {
-        "language": "German",
-        "media_source": "file",
-        "media_destination": "german.pdf"
-      },
-      {
-        "language": "Spanish",
-        "media_source": "file",
-        "media_destination": "spanish.pdf"
-      }
-    ],
-    "related_product": []
-  },
-  {
-    "item_code": "00-03352",
-    "item_name": "Grow-A-Maze",
-    "item_description": "Create your own living maze with fast-growing plants! Watch as your green maze grows and learn about plant biology, photosynthesis, and growth patterns.",
-    "folder_name": "grow-maze",
-    "category_main": "science-education",
-    "category_sub": "green-science",
-    "tag_visible": [
-      "plants",
-      "biology",
-      "photosynthesis",
-      "maze",
-      "growing",
-      "gardening",
-      "nature"
-    ],
-    "tag_hidden": [
-      "green-science",
-      "biology",
-      "nature"
-    ],
-    "media": [
-      {
-        "type": "image",
-        "sequence": 1,
-        "thumbnail": true,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-blocks.png"
-      },
-      {
-        "type": "image",
-        "sequence": 2,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-bear.png"
-      },
-      {
-        "type": "image",
-        "sequence": 3,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-dinosaur.png"
-      },
-      {
-        "type": "image",
-        "sequence": 4,
-        "thumbnail": false,
-        "hidden": false,
-        "media_source": "url",
-        "media_destination": "/4m-website/images/hero/orbit/product-robot.png"
-      }
-    ],
-    "specifications": [
-      {
-        "field": "item_size",
-        "display_name": "Size",
-        "value": "16.7cm x 21.5cm x 5.8cm"
-      },
-      {
-        "field": "barcode",
-        "display_name": "Barcode",
-        "value": "4893156033529"
-      },
-      {
-        "field": "packaging",
-        "display_name": "Packaging",
-        "value": "6/Inner 48/Master 7.8Kg 4.57Cuft"
-      },
-      {
-        "field": "age_range",
-        "display_name": "Age Range",
-        "value": "6+ years"
-      },
-      {
-        "field": "growing_time",
-        "display_name": "Growing Time",
-        "value": "7-14 days"
-      },
-      {
-        "field": "includes",
-        "display_name": "Includes",
-        "value": "Maze template, Fast-growing seeds, Growing medium, Watering tools, Plant care guide"
-      }
-    ],
-    "award_text": [
-      "2022 STEM.org Accredited™",
-      "2021 Best Elementary Homeschool Curriculum & Resource Award",
-      "2021 STEM.org Authenticated™"
-    ],
-    "hot_item": true,
-    "multi_language": [
-      {
-        "language": "English",
-        "media_source": "file",
-        "media_destination": "english.pdf"
-      },
-      {
-        "language": "French",
-        "media_source": "file",
-        "media_destination": "french.pdf"
-      },
-      {
-        "language": "German",
-        "media_source": "file",
-        "media_destination": "german.pdf"
-      },
-      {
-        "language": "Spanish",
-        "media_source": "file",
-        "media_destination": "spanish.pdf"
-      }
-    ],
-    "related_product": []
+    "multi_language": [],
+    "related_product": ["SAMPLE-706", "SAMPLE-707"]
   }
 ]

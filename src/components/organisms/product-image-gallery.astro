@@ -11,6 +11,17 @@ interface Props {
 const { media, folderName, productName } = Astro.props;
 const base = getBase();
 
+/** Accepts a bare 11-char id, youtu.be/ID, or watch?v=ID */
+function youtubeVideoId(raw: string): string {
+  const s = raw.trim();
+  const fromQuery = s.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+  if (fromQuery) return fromQuery[1];
+  const fromShort = s.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+  if (fromShort) return fromShort[1];
+  if (/^[a-zA-Z0-9_-]{11}$/.test(s)) return s;
+  return s;
+}
+
 function resolveUrl(m: ProductMedia): string {
   if (m.media_source === 'file') {
     return `${base}/images/products/${folderName}/${m.media_destination}`;
@@ -25,6 +36,10 @@ function resolveEmbed(m: ProductMedia): string {
   if (m.media_source === 'wistia') {
     return `https://fast.wistia.net/embed/iframe/${m.media_destination}`;
   }
+  if (m.media_source === 'youtube') {
+    const id = youtubeVideoId(m.media_destination);
+    return `https://www.youtube.com/embed/${id}?rel=0`;
+  }
   return m.media_destination;
 }
 
@@ -33,21 +48,33 @@ interface GalleryItem {
   mediaSource: string;
   src: string;
   embedSrc: string;
+  thumbUrl?: string;
 }
 
 const visibleMedia = media
   .filter(m => !m.hidden)
   .sort((a, b) => a.sequence - b.sequence);
 
-const galleryItems: GalleryItem[] = visibleMedia.map(m => ({
-  type: m.type,
-  mediaSource: m.media_source,
-  src: resolveUrl(m),
-  embedSrc: (m.media_source === 'vimeo' || m.media_source === 'wistia') ? resolveEmbed(m) : resolveUrl(m),
-}));
+const galleryItems: GalleryItem[] = visibleMedia.map((m) => {
+  const isEmbed =
+    m.media_source === 'vimeo' || m.media_source === 'wistia' || m.media_source === 'youtube';
+  const ytId =
+    m.type === 'video' && m.media_source === 'youtube' ? youtubeVideoId(m.media_destination) : null;
+  return {
+    type: m.type,
+    mediaSource: m.media_source,
+    src: resolveUrl(m),
+    embedSrc: isEmbed ? resolveEmbed(m) : resolveUrl(m),
+    thumbUrl: ytId ? `https://i.ytimg.com/vi/${ytId}/mqdefault.jpg` : undefined,
+  };
+});
 
 const firstItem = galleryItems[0];
 const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type === 'award');
+const THUMB_PAGE_SIZE = 8;
+const thumbPageCount =
+  galleryItems.length > 0 ? Math.ceil(galleryItems.length / THUMB_PAGE_SIZE) : 0;
+const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
 ---
 
 <div class="product-image-gallery">
@@ -69,13 +96,14 @@ const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type 
     >
       <source id="main-video-source" src="" type="video/mp4" />
     </video>
-    <!-- Embed (vimeo / wistia) display -->
+    <!-- Embed (vimeo / wistia / youtube) display -->
     <iframe
       id="main-product-embed"
-      class="w-full h-full hidden"
+      class="w-full h-full hidden border-0"
       src=""
-      frameborder="0"
-      allow="autoplay; fullscreen; picture-in-picture"
+      title={`${productName} — video`}
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
       allowfullscreen
     ></iframe>
   </div>
@@ -83,13 +111,26 @@ const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type 
   <!-- Thumbnail Strip -->
   {galleryItems.length > 1 && (
     <div class="thumbnail-gallery">
-      <div class="flex space-x-2 overflow-x-auto pb-2">
+      <div
+        class={`flex items-stretch gap-2 ${showThumbPager ? '' : 'overflow-x-auto pb-2'}`}
+      >
+        {showThumbPager && (
+          <button
+            type="button"
+            id="thumb-page-prev"
+            class="thumb-page-btn flex-shrink-0 self-center rounded-md border border-input bg-background px-2 py-1 text-sm font-comic-neue text-foreground shadow-sm transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
+            aria-label="Previous thumbnails"
+          >
+            ‹
+          </button>
+        )}
+        <div class={`flex min-w-0 flex-1 space-x-2 ${showThumbPager ? 'overflow-hidden' : 'overflow-x-auto pb-2'}`}>
         {galleryItems.map((item, index) => (
           <button
             type="button"
             class={`thumbnail-btn relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-all duration-200 ${
               index === 0 ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'
-            }`}
+            } ${showThumbPager && index >= THUMB_PAGE_SIZE ? 'hidden' : ''}`}
             data-index={index}
           >
             {(item.type === 'image' || item.type === 'award') && (
@@ -99,14 +140,19 @@ const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type 
                 class="w-full h-full object-cover"
               />
             )}
-            {item.type === 'video' && (
-              <>
-                <div class="w-full h-full bg-gray-800 flex items-center justify-center">
-                  <svg class="w-8 h-8 text-white opacity-80" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
-                  </svg>
-                </div>
-              </>
+            {item.type === 'video' && item.thumbUrl && (
+              <img
+                src={item.thumbUrl}
+                alt={`${productName} video thumbnail`}
+                class="w-full h-full object-cover"
+              />
+            )}
+            {item.type === 'video' && !item.thumbUrl && (
+              <div class="w-full h-full bg-gray-800 flex items-center justify-center">
+                <svg class="w-8 h-8 text-white opacity-80" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
             )}
             {item.type === 'award' && (
               <div class="absolute top-0.5 right-0.5">
@@ -117,7 +163,26 @@ const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type 
             )}
           </button>
         ))}
+        </div>
+        {showThumbPager && (
+          <button
+            type="button"
+            id="thumb-page-next"
+            class="thumb-page-btn flex-shrink-0 self-center rounded-md border border-input bg-background px-2 py-1 text-sm font-comic-neue text-foreground shadow-sm transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
+            aria-label="Next thumbnails"
+          >
+            ›
+          </button>
+        )}
       </div>
+      {showThumbPager && (
+        <p
+          id="thumb-page-label"
+          class="mt-1.5 text-center text-xs text-muted-foreground font-comic-neue"
+        >
+          Page 1 of {thumbPageCount}
+        </p>
+      )}
     </div>
   )}
 
@@ -166,14 +231,21 @@ const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type 
   </div>
 </div>
 
-<script define:vars={{ galleryItems }}>
+<script define:vars={{ galleryItems, THUMB_PAGE_SIZE }}>
   document.addEventListener('DOMContentLoaded', function() {
     const items = galleryItems;
+    const PAGE_SIZE = THUMB_PAGE_SIZE;
     const mainImage = document.getElementById('main-product-image');
     const mainVideo = document.getElementById('main-product-video');
     const mainVideoSource = document.getElementById('main-video-source');
     const mainEmbed = document.getElementById('main-product-embed');
-    const thumbnailBtns = document.querySelectorAll('.thumbnail-btn');
+    const galleryRoot = document.querySelector('.product-image-gallery');
+    const thumbnailBtns = galleryRoot
+      ? galleryRoot.querySelectorAll('.thumbnail-btn')
+      : document.querySelectorAll('.thumbnail-btn');
+    const thumbPagePrev = document.getElementById('thumb-page-prev');
+    const thumbPageNext = document.getElementById('thumb-page-next');
+    const thumbPageLabel = document.getElementById('thumb-page-label');
     const currentImageSpan = document.getElementById('current-image');
     const zoomModal = document.getElementById('zoom-modal');
     const zoomedImage = document.getElementById('zoomed-image');
@@ -182,6 +254,41 @@ const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type 
     const nextBtn = document.getElementById('next-image');
 
     let currentIndex = 0;
+    let thumbPage = 0;
+    const totalThumbPages = Math.ceil(items.length / PAGE_SIZE);
+
+    function applyThumbStrip() {
+      if (items.length <= PAGE_SIZE) return;
+      var start = thumbPage * PAGE_SIZE;
+      var end = start + PAGE_SIZE;
+      thumbnailBtns.forEach(function(btn, i) {
+        if (i >= start && i < end) {
+          btn.classList.remove('hidden');
+        } else {
+          btn.classList.add('hidden');
+        }
+      });
+      thumbnailBtns.forEach(function(btn, i) {
+        btn.classList.remove('border-blue-500', 'ring-2', 'ring-blue-200');
+        btn.classList.add('border-gray-200');
+        var onPage = i >= start && i < end;
+        if (i === currentIndex && onPage) {
+          btn.classList.remove('border-gray-200');
+          btn.classList.add('border-blue-500', 'ring-2', 'ring-blue-200');
+        }
+      });
+      if (thumbPagePrev) thumbPagePrev.disabled = thumbPage <= 0;
+      if (thumbPageNext) thumbPageNext.disabled = thumbPage >= totalThumbPages - 1;
+      if (thumbPageLabel) {
+        thumbPageLabel.textContent = 'Page ' + (thumbPage + 1) + ' of ' + totalThumbPages;
+      }
+    }
+
+    function goThumbPage(page) {
+      if (items.length <= PAGE_SIZE) return;
+      thumbPage = Math.max(0, Math.min(totalThumbPages - 1, page));
+      applyThumbStrip();
+    }
 
     function showItem(index) {
       const item = items[index];
@@ -191,12 +298,14 @@ const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type 
       mainVideo.classList.add('hidden');
       mainEmbed.classList.add('hidden');
       mainVideo.pause();
+      if (mainVideoSource) mainVideoSource.src = '';
+      if (mainEmbed) mainEmbed.src = '';
 
       if (item.type === 'image' || item.type === 'award') {
         mainImage.src = item.src;
         mainImage.classList.remove('hidden');
       } else if (item.type === 'video') {
-        if (item.mediaSource === 'vimeo' || item.mediaSource === 'wistia') {
+        if (item.mediaSource === 'vimeo' || item.mediaSource === 'wistia' || item.mediaSource === 'youtube') {
           mainEmbed.src = item.embedSrc;
           mainEmbed.classList.remove('hidden');
         } else {
@@ -206,14 +315,19 @@ const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type 
         }
       }
 
-      thumbnailBtns.forEach(function(btn, i) {
-        btn.classList.remove('border-blue-500', 'ring-2', 'ring-blue-200');
-        btn.classList.add('border-gray-200');
-        if (i === index) {
-          btn.classList.remove('border-gray-200');
-          btn.classList.add('border-blue-500', 'ring-2', 'ring-blue-200');
-        }
-      });
+      if (items.length > PAGE_SIZE) {
+        thumbPage = Math.floor(index / PAGE_SIZE);
+        applyThumbStrip();
+      } else {
+        thumbnailBtns.forEach(function(btn, i) {
+          btn.classList.remove('border-blue-500', 'ring-2', 'ring-blue-200');
+          btn.classList.add('border-gray-200');
+          if (i === index) {
+            btn.classList.remove('border-gray-200');
+            btn.classList.add('border-blue-500', 'ring-2', 'ring-blue-200');
+          }
+        });
+      }
 
       if (currentImageSpan) {
         currentImageSpan.textContent = (index + 1).toString();
@@ -227,6 +341,21 @@ const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type 
         showItem(index);
       });
     });
+
+    if (thumbPagePrev) {
+      thumbPagePrev.addEventListener('click', function() {
+        goThumbPage(thumbPage - 1);
+      });
+    }
+    if (thumbPageNext) {
+      thumbPageNext.addEventListener('click', function() {
+        goThumbPage(thumbPage + 1);
+      });
+    }
+
+    if (items.length > PAGE_SIZE) {
+      applyThumbStrip();
+    }
 
     // Click main image to zoom (only for image/award)
     if (mainImage) {
