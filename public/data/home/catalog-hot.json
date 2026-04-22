@@ -1,11 +1,11 @@
 {
-  "title": "Hot Products",
-  "description": "Discover our most popular educational toys and STEAM learning kits, loved by children and recommended by educators worldwide.",
-  "carousel": {
-    "itemsPerSlide": 4,
-    "initialSlideIndex": 0,
-    "showArrows": true,
-    "showDots": true,
-    "slideGridClassName": "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
-  }
+	"title": "Hot Products",
+	"description": "Discover our most popular educational toys and STEAM learning kits, loved by children and recommended by educators worldwide.",
+	"carousel": {
+		"itemsPerSlide": 4,
+		"initialSlideIndex": 0,
+		"showArrows": true,
+		"showDots": true,
+		"slideGridClassName": "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+	}
 }

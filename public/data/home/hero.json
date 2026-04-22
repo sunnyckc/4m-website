@@ -1,144 +1,144 @@
 {
-  "variant": "orbitBanner",
-  "orbitBanner": {
-    "titleLine1": "Educational toys for",
-    "titleLine2": "Creative young minds",
-    "logoHeightPx": 56,
-    "titleSize": "lg",
-    "subtitle": "Play, learn, and explore.",
-    "subtitleSize": "lg",
-    "ctaText": "Contact Us",
-    "ctaHref": "/4m-website/contact",
-    "secondaryCtaText": "Distributor Here",
-    "secondaryCtaHref": "/4m-website/distributors",
-    "minHeightClassName": "min-h-[100dvh]",
-    "background": {
-      "image": "/4m-website/images/hero/orbit/background.png",
-      "alt": "Colorful playroom scene behind the hero",
-      "fallbackColor": "#e0f2fe",
-      "overlayWhiteOpacity": 0.75
-    },
-    "kid": {
-      "image": "/4m-website/images/hero/orbit/kid.png",
-      "alt": "Child thinking and playing",
-      "large": {
-        "xPercent": 95,
-        "yPercent": 111,
-        "widthPx": 740
-      },
-      "medium": {
-        "xPercent": 82,
-        "yPercent": 95,
-        "widthPx": 520
-      },
-      "mobile": {
-        "xPercent": 70,
-        "yPercent": 78,
-        "widthPx": 280
-      }
-    },
-    "orbit": {
-      "radiusPx": 420,
-      "centerOffsetXPx": -280,
-      "centerOffsetYPx": -510,
-      "direction": "clockwise",
-      "speedSeconds": 40,
-      "startAngleDeg": -95,
-      "itemSizePx": 310,
-      "itemDisplayMode": "circleAccent",
-      "itemCircleSizePx": 249,
-      "medium": {
-        "radiusPx": 320,
-        "centerOffsetXPx": -220,
-        "centerOffsetYPx": -400,
-        "itemSizePx": 260,
-        "itemCircleSizePx": 160
-      },
-      "mobile": {
-        "radiusPx": 200,
-        "centerOffsetXPx": -120,
-        "centerOffsetYPx": -280,
-        "itemSizePx": 140,
-        "itemCircleSizePx": 92
-      },
-      "keepItemsUpright": true,
-      "speedStyle": "oscillating",
-      "oscillationHeight": 45,
-      "oscillationFrequency": 4,
-      "randomizeItemTilt": true,
-      "itemTiltMinDeg": 5,
-      "itemTiltMaxDeg": 15,
-      "itemTiltSeed": 1,
-      "showCenterPoint": true,
-      "large": {
-        "itemCircleSizePx": 249,
-        "itemSizePx": 310
-      }
-    },
-    "items": [
-      {
-        "image": "/4m-website/images/hero/orbit/orbit-purple.png",
-        "href": "/4m-website/products",
-        "circleColorHex": "#a855f7"
-      },
-      {
-        "image": "/4m-website/images/hero/orbit/orbit-blue.png",
-        "href": "/4m-website/products",
-        "circleColorHex": "#2563eb"
-      },
-      {
-        "image": "/4m-website/images/hero/orbit/orbit-light-blue.png",
-        "href": "/4m-website/products",
-        "circleColorHex": "#38bdf8"
-      },
-      {
-        "image": "/4m-website/images/hero/orbit/orbit-green.png",
-        "href": "/4m-website/products",
-        "circleColorHex": "#22c55e"
-      },
-      {
-        "image": "/4m-website/images/hero/orbit/orbit-yellow.png",
-        "href": "/4m-website/products",
-        "circleColorHex": "#eab308"
-      }
-    ],
-    "titleLine2RainbowGradient": true
-  },
-  "fullViewport": {
-    "title": "Educational Toys for Young Minds",
-    "subtitle": "Inspiring STEAM learning through play — explore hands-on kits that spark curiosity and creativity.",
-    "ctaText": "Explore Products",
-    "ctaHref": "/products",
-    "showMediaSlot": true,
-    "mediaSlotMinHeightClassName": "min-h-[min(35vh,260px)]"
-  },
-  "slides": [
-    {
-      "id": "slide-1",
-      "media": { "type": "image", "src": "/images/hero/4m-banner-1.png" },
-      "imageAlt": "Educational Toys for Young Minds",
-      "hoverText": "Discover our comprehensive range of STEAM educational toys designed to develop critical thinking, creativity, and problem-solving skills in children.",
-      "textPrimary": "Educational Toys for Young Minds",
-      "textSecondary": "Inspiring Learning Through Play",
-      "href": "/products",
-      "ctaLabel": "Explore Products"
-    },
-    {
-      "id": "slide-2",
-      "media": { "type": "image", "src": "/images/hero/4m-banner-2.png" },
-      "imageAlt": "STEAM Learning Made Fun",
-      "hoverText": "Our award-winning educational toys integrate essential STEAM concepts into engaging, hands-on learning experiences for children of all ages.",
-      "textPrimary": "STEAM Learning Made Fun",
-      "textSecondary": "Science • Technology • Engineering • Arts • Mathematics",
-      "href": "/about",
-      "ctaLabel": "Learn More"
-    }
-  ],
-  "options": {
-    "autoplay": true,
-    "autoplayDelayMs": 5000,
-    "showDots": true,
-    "showArrows": true,
-    "heightClassName": "min-h-[370px] h-[370px]"
-  }
+	"variant": "orbitBanner",
+	"orbitBanner": {
+		"titleLine1": "Educational toys for",
+		"titleLine2": "Creative young minds",
+		"logoHeightPx": 56,
+		"titleSize": "lg",
+		"subtitle": "Play, learn, and explore.",
+		"subtitleSize": "lg",
+		"ctaText": "Contact Us",
+		"ctaHref": "/4m-website/contact",
+		"secondaryCtaText": "Distributor Here",
+		"secondaryCtaHref": "/4m-website/distributors",
+		"minHeightClassName": "min-h-[100dvh]",
+		"background": {
+			"image": "/4m-website/images/hero/orbit/background.png",
+			"alt": "Colorful playroom scene behind the hero",
+			"fallbackColor": "#e0f2fe",
+			"overlayWhiteOpacity": 0.75
+		},
+		"kid": {
+			"image": "/4m-website/images/hero/orbit/kid.png",
+			"alt": "Child thinking and playing",
+			"large": {
+				"xPercent": 95,
+				"yPercent": 111,
+				"widthPx": 740
+			},
+			"medium": {
+				"xPercent": 82,
+				"yPercent": 95,
+				"widthPx": 520
+			},
+			"mobile": {
+				"xPercent": 70,
+				"yPercent": 78,
+				"widthPx": 280
+			}
+		},
+		"orbit": {
+			"radiusPx": 420,
+			"centerOffsetXPx": -280,
+			"centerOffsetYPx": -510,
+			"direction": "clockwise",
+			"speedSeconds": 40,
+			"startAngleDeg": -95,
+			"itemSizePx": 310,
+			"itemDisplayMode": "circleAccent",
+			"itemCircleSizePx": 249,
+			"medium": {
+				"radiusPx": 320,
+				"centerOffsetXPx": -220,
+				"centerOffsetYPx": -400,
+				"itemSizePx": 260,
+				"itemCircleSizePx": 160
+			},
+			"mobile": {
+				"radiusPx": 200,
+				"centerOffsetXPx": -120,
+				"centerOffsetYPx": -280,
+				"itemSizePx": 140,
+				"itemCircleSizePx": 92
+			},
+			"keepItemsUpright": true,
+			"speedStyle": "oscillating",
+			"oscillationHeight": 45,
+			"oscillationFrequency": 4,
+			"randomizeItemTilt": true,
+			"itemTiltMinDeg": 5,
+			"itemTiltMaxDeg": 15,
+			"itemTiltSeed": 1,
+			"showCenterPoint": true,
+			"large": {
+				"itemCircleSizePx": 249,
+				"itemSizePx": 310
+			}
+		},
+		"items": [
+			{
+				"image": "/4m-website/images/hero/orbit/orbit-purple.png",
+				"href": "/4m-website/products",
+				"circleColorHex": "#a855f7"
+			},
+			{
+				"image": "/4m-website/images/hero/orbit/orbit-blue.png",
+				"href": "/4m-website/products",
+				"circleColorHex": "#2563eb"
+			},
+			{
+				"image": "/4m-website/images/hero/orbit/orbit-light-blue.png",
+				"href": "/4m-website/products",
+				"circleColorHex": "#38bdf8"
+			},
+			{
+				"image": "/4m-website/images/hero/orbit/orbit-green.png",
+				"href": "/4m-website/products",
+				"circleColorHex": "#22c55e"
+			},
+			{
+				"image": "/4m-website/images/hero/orbit/orbit-yellow.png",
+				"href": "/4m-website/products",
+				"circleColorHex": "#eab308"
+			}
+		],
+		"titleLine2RainbowGradient": true
+	},
+	"fullViewport": {
+		"title": "Educational Toys for Young Minds",
+		"subtitle": "Inspiring STEAM learning through play — explore hands-on kits that spark curiosity and creativity.",
+		"ctaText": "Explore Products",
+		"ctaHref": "/products",
+		"showMediaSlot": true,
+		"mediaSlotMinHeightClassName": "min-h-[min(35vh,260px)]"
+	},
+	"slides": [
+		{
+			"id": "slide-1",
+			"media": { "type": "image", "src": "/images/hero/4m-banner-1.png" },
+			"imageAlt": "Educational Toys for Young Minds",
+			"hoverText": "Discover our comprehensive range of STEAM educational toys designed to develop critical thinking, creativity, and problem-solving skills in children.",
+			"textPrimary": "Educational Toys for Young Minds",
+			"textSecondary": "Inspiring Learning Through Play",
+			"href": "/products",
+			"ctaLabel": "Explore Products"
+		},
+		{
+			"id": "slide-2",
+			"media": { "type": "image", "src": "/images/hero/4m-banner-2.png" },
+			"imageAlt": "STEAM Learning Made Fun",
+			"hoverText": "Our award-winning educational toys integrate essential STEAM concepts into engaging, hands-on learning experiences for children of all ages.",
+			"textPrimary": "STEAM Learning Made Fun",
+			"textSecondary": "Science • Technology • Engineering • Arts • Mathematics",
+			"href": "/about",
+			"ctaLabel": "Learn More"
+		}
+	],
+	"options": {
+		"autoplay": true,
+		"autoplayDelayMs": 5000,
+		"showDots": true,
+		"showArrows": true,
+		"heightClassName": "min-h-[370px] h-[370px]"
+	}
 }
