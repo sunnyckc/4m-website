@@ -53,7 +53,7 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
   let currentCategory = '';
   let currentSubcategory = '';
   let currentPage = 1;
-  const itemsPerPage = 9;
+  const itemsPerPage = 8;
   let sortValue: ProductSort = '';
   let lastTotal = 0;
 

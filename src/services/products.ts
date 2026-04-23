@@ -176,7 +176,7 @@ export async function getAllProducts(): Promise<Product[]> {
 function normalizeListResponse(data: unknown, fallback: ProductsListParams): ProductsListResult {
   const unwrapped = unwrapData<unknown>(data) ?? data;
   if (Array.isArray(unwrapped)) {
-    const pageSize = fallback.pageSize ?? 9;
+    const pageSize = fallback.pageSize ?? 8;
     return {
       items: unwrapped.map((item) => normalizeProduct(item as Record<string, unknown>)),
       total: unwrapped.length,
@@ -192,7 +192,7 @@ function normalizeListResponse(data: unknown, fallback: ProductsListParams): Pro
     items,
     total: Number(pagination.total ?? obj.total ?? items.length ?? 0),
     page: Number(pagination.page ?? obj.page ?? fallback.page ?? 1),
-    pageSize: Number(pagination.limit ?? obj.pageSize ?? obj.perPage ?? fallback.pageSize ?? 9),
+    pageSize: Number(pagination.limit ?? obj.pageSize ?? obj.perPage ?? fallback.pageSize ?? 8),
   };
 }
 
@@ -214,7 +214,7 @@ async function fetchProductsFromApi(params: ProductsListParams): Promise<Product
   }
   if (params.sort) qs.set('sort', params.sort);
   qs.set('page', String(params.page ?? 1));
-  qs.set('limit', String(params.pageSize ?? 9));
+  qs.set('limit', String(params.pageSize ?? 8));
   const path = `/api/v1/products${qs.toString() ? `?${qs}` : ''}`;
   const raw = await apiGetJson<unknown>(path);
   return normalizeListResponse(raw, params);
