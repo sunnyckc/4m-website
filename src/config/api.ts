@@ -4,6 +4,10 @@
  */
 export function getPublicApiBaseUrl(): string | null {
   const url = import.meta.env.PUBLIC_API_URL;
-  if (!url || typeof url !== 'string' || !url.trim()) return null;
-  return url.replace(/\/$/, '');
+  if (url && typeof url === 'string' && url.trim()) {
+    return url.replace(/\/$/, '');
+  }
+  // Fallback avoids SSR detail redirects when an older dev session
+  // started without PUBLIC_API_URL loaded.
+  return 'https://4m-backend-production.up.railway.app';
 }

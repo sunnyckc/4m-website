@@ -22,6 +22,16 @@ function youtubeVideoId(raw: string): string {
   return s;
 }
 
+/** Accepts a bare numeric id or vimeo.com/{id} URL */
+function vimeoVideoId(raw: string): string {
+  const s = raw.trim();
+  const fromPath = s.match(/vimeo\.com\/(\d+)/);
+  if (fromPath) return fromPath[1];
+  const numeric = s.match(/^(\d+)$/);
+  if (numeric) return numeric[1];
+  return s;
+}
+
 function resolveUrl(m: ProductMedia): string {
   if (m.media_source === 'file') {
     return `${base}/images/products/${folderName}/${m.media_destination}`;
@@ -60,20 +70,24 @@ const galleryItems: GalleryItem[] = visibleMedia.map((m) => {
     m.media_source === 'vimeo' || m.media_source === 'wistia' || m.media_source === 'youtube';
   const ytId =
     m.type === 'video' && m.media_source === 'youtube' ? youtubeVideoId(m.media_destination) : null;
+  const vmId =
+    m.type === 'video' && m.media_source === 'vimeo' ? vimeoVideoId(m.media_destination) : null;
   return {
     type: m.type,
     mediaSource: m.media_source,
     src: resolveUrl(m),
     embedSrc: isEmbed ? resolveEmbed(m) : resolveUrl(m),
-    thumbUrl: ytId ? `https://i.ytimg.com/vi/${ytId}/mqdefault.jpg` : undefined,
+    thumbUrl: ytId
+      ? `https://i.ytimg.com/vi/${ytId}/mqdefault.jpg`
+      : vmId
+        ? `https://vumbnail.com/${vmId}.jpg`
+        : undefined,
   };
 });
 
 const firstItem = galleryItems[0];
 const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type === 'award');
 const THUMB_PAGE_SIZE = 8;
-const thumbPageCount =
-  galleryItems.length > 0 ? Math.ceil(galleryItems.length / THUMB_PAGE_SIZE) : 0;
 const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
 ---
 
@@ -85,7 +99,7 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
       id="main-product-image"
       src={isFirstImage ? firstItem.src : ''}
       alt={productName}
-      class={`w-full h-full object-cover transition-all duration-300 ${isFirstImage ? '' : 'hidden'}`}
+      class={`w-full h-full object-contain transition-all duration-300 ${isFirstImage ? '' : 'hidden'}`}
     />
     <!-- Video (file / url) display -->
     <video
@@ -118,7 +132,7 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
           <button
             type="button"
             id="thumb-page-prev"
-            class="thumb-page-btn flex-shrink-0 self-center rounded-md border border-input bg-background px-2 py-1 text-sm font-comic-neue text-foreground shadow-sm transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
+            class="thumb-page-btn flex-shrink-0 self-center rounded-md border border-input bg-background px-3 py-2 text-base font-comic-neue text-foreground shadow-sm transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
             aria-label="Previous thumbnails"
           >
             ‹
@@ -129,7 +143,7 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
           <button
             type="button"
             class={`thumbnail-btn relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-all duration-200 ${
-              index === 0 ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'
+              index === 0 ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-400 hover:bg-gray-100'
             } ${showThumbPager && index >= THUMB_PAGE_SIZE ? 'hidden' : ''}`}
             data-index={index}
           >
@@ -137,15 +151,22 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
               <img
                 src={item.src}
                 alt={`${productName} ${item.type} ${index + 1}`}
-                class="w-full h-full object-cover"
+                class="w-full h-full object-contain"
               />
             )}
             {item.type === 'video' && item.thumbUrl && (
-              <img
-                src={item.thumbUrl}
-                alt={`${productName} video thumbnail`}
-                class="w-full h-full object-cover"
-              />
+              <>
+                <img
+                  src={item.thumbUrl}
+                  alt={`${productName} video thumbnail`}
+                  class="w-full h-full object-contain"
+                />
+                <div class="absolute inset-0 flex items-center justify-center bg-black/25">
+                  <svg class="w-8 h-8 text-white opacity-90 drop-shadow" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </>
             )}
             {item.type === 'video' && !item.thumbUrl && (
               <div class="w-full h-full bg-gray-800 flex items-center justify-center">
@@ -168,21 +189,13 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
           <button
             type="button"
             id="thumb-page-next"
-            class="thumb-page-btn flex-shrink-0 self-center rounded-md border border-input bg-background px-2 py-1 text-sm font-comic-neue text-foreground shadow-sm transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
+            class="thumb-page-btn flex-shrink-0 self-center rounded-md border border-input bg-background px-3 py-2 text-base font-comic-neue text-foreground shadow-sm transition-colors hover:bg-muted disabled:pointer-events-none disabled:opacity-40"
             aria-label="Next thumbnails"
           >
             ›
           </button>
         )}
       </div>
-      {showThumbPager && (
-        <p
-          id="thumb-page-label"
-          class="mt-1.5 text-center text-xs text-muted-foreground font-comic-neue"
-        >
-          Page 1 of {thumbPageCount}
-        </p>
-      )}
     </div>
   )}
 
@@ -232,26 +245,27 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
 </div>
 
 <script define:vars={{ galleryItems, THUMB_PAGE_SIZE }}>
-  document.addEventListener('DOMContentLoaded', function() {
+  function initProductImageGallery() {
+    const galleryRoot = document.querySelector('.product-image-gallery');
+    if (!galleryRoot) return;
+    if (galleryRoot.getAttribute('data-gallery-initialized') === 'true') return;
+    galleryRoot.setAttribute('data-gallery-initialized', 'true');
+
     const items = galleryItems;
     const PAGE_SIZE = THUMB_PAGE_SIZE;
-    const mainImage = document.getElementById('main-product-image');
-    const mainVideo = document.getElementById('main-product-video');
-    const mainVideoSource = document.getElementById('main-video-source');
-    const mainEmbed = document.getElementById('main-product-embed');
-    const galleryRoot = document.querySelector('.product-image-gallery');
-    const thumbnailBtns = galleryRoot
-      ? galleryRoot.querySelectorAll('.thumbnail-btn')
-      : document.querySelectorAll('.thumbnail-btn');
-    const thumbPagePrev = document.getElementById('thumb-page-prev');
-    const thumbPageNext = document.getElementById('thumb-page-next');
-    const thumbPageLabel = document.getElementById('thumb-page-label');
-    const currentImageSpan = document.getElementById('current-image');
-    const zoomModal = document.getElementById('zoom-modal');
-    const zoomedImage = document.getElementById('zoomed-image');
-    const closeZoom = document.getElementById('close-zoom');
-    const prevBtn = document.getElementById('prev-image');
-    const nextBtn = document.getElementById('next-image');
+    const mainImage = galleryRoot.querySelector('#main-product-image');
+    const mainVideo = galleryRoot.querySelector('#main-product-video');
+    const mainVideoSource = galleryRoot.querySelector('#main-video-source');
+    const mainEmbed = galleryRoot.querySelector('#main-product-embed');
+    const thumbnailBtns = galleryRoot.querySelectorAll('.thumbnail-btn');
+    const thumbPagePrev = galleryRoot.querySelector('#thumb-page-prev');
+    const thumbPageNext = galleryRoot.querySelector('#thumb-page-next');
+    const currentImageSpan = galleryRoot.querySelector('#current-image');
+    const zoomModal = galleryRoot.querySelector('#zoom-modal');
+    const zoomedImage = galleryRoot.querySelector('#zoomed-image');
+    const closeZoom = galleryRoot.querySelector('#close-zoom');
+    const prevBtn = galleryRoot.querySelector('#prev-image');
+    const nextBtn = galleryRoot.querySelector('#next-image');
 
     let currentIndex = 0;
     let thumbPage = 0;
@@ -279,9 +293,6 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
       });
       if (thumbPagePrev) thumbPagePrev.disabled = thumbPage <= 0;
       if (thumbPageNext) thumbPageNext.disabled = thumbPage >= totalThumbPages - 1;
-      if (thumbPageLabel) {
-        thumbPageLabel.textContent = 'Page ' + (thumbPage + 1) + ' of ' + totalThumbPages;
-      }
     }
 
     function goThumbPage(page) {
@@ -293,6 +304,7 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
     function showItem(index) {
       const item = items[index];
       if (!item) return;
+      currentIndex = index;
 
       mainImage.classList.add('hidden');
       mainVideo.classList.add('hidden');
@@ -332,8 +344,6 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
       if (currentImageSpan) {
         currentImageSpan.textContent = (index + 1).toString();
       }
-
-      currentIndex = index;
     }
 
     thumbnailBtns.forEach(function(btn, index) {
@@ -411,7 +421,13 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
         else if (e.key === 'ArrowRight') navigateZoom(1);
       }
     });
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProductImageGallery, { once: true });
+  } else {
+    initProductImageGallery();
+  }
 </script>
 
 <style>
@@ -420,7 +436,7 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
   }
 
   .thumbnail-btn:hover {
-    transform: scale(1.05);
+    background-color: #f3f4f6;
   }
 
   #main-product-image {

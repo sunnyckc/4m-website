@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import react from '@astrojs/react';
+import node from '@astrojs/node';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -11,6 +12,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   site: 'https://sunnyckc.github.io',
   base: '/4m-website',
+  output: 'server',
+  adapter: node({
+    mode: 'standalone',
+  }),
   integrations: [tailwind(), react()],
   vite: {
     resolve: {

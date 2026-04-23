@@ -74,10 +74,11 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
       .map((product) => {
         const thumb = getProductThumbnail(product);
         const tags = [...product.tag_visible, ...product.tag_hidden].join(' ').toLowerCase();
-        const hotPill = product.hot_item
+        const hotPill = (product.top_item ?? product.hot_item)
           ? '<span class="pointer-events-none absolute right-1.5 top-1.5 z-10 inline-flex items-center rounded-full bg-orange-500 px-2 py-0.5 text-[10px] font-semibold leading-none text-white shadow-sm">Top seller</span>'
           : '';
-        return `<a href="${base}/products/${encodeURIComponent(product.folder_name)}" class="group block origin-center rounded-md transition-transform duration-200 ease-out hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        const routeKey = product.item_code || product.folder_name;
+        return `<a href="${base}/products/${encodeURIComponent(routeKey)}" class="group block origin-center rounded-md transition-transform duration-200 ease-out hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
   <div class="product-card"
        data-name="${escapeHtml(product.item_name.toLowerCase())}"
        data-code="${escapeHtml((product.item_code || '').toLowerCase())}"
@@ -85,7 +86,7 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
        data-subcategory="${escapeHtml(product.category_sub)}"
        data-tags="${escapeHtml(tags)}"
        data-description="${escapeHtml(product.item_description.toLowerCase())}"
-       data-hot-item="${product.hot_item ? 'true' : 'false'}">
+       data-hot-item="${(product.top_item ?? product.hot_item) ? 'true' : 'false'}">
     <div class="relative aspect-square w-full overflow-hidden rounded-md border border-border bg-muted">
       ${hotPill}
       <img src="${escapeHtml(thumb)}" alt="${escapeHtml(product.item_name)}" class="h-full w-full object-cover transition-opacity duration-200 group-hover:opacity-90" loading="lazy" />
@@ -150,9 +151,11 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
       });
 
       renderCards(result.items);
+      currentPage = result.page;
       const total = result.total;
       lastTotal = total;
       const totalPages = Math.max(1, Math.ceil(total / itemsPerPage));
+      syncUrlState();
 
       if (total === 0) {
         noResEl.classList.remove('hidden');
@@ -187,6 +190,20 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
     currentPage = 1;
     void refresh();
   }, 300);
+
+  function syncUrlState() {
+    const url = new URL(window.location.href);
+    const setOrDelete = (key: string, value: string) => {
+      if (value) url.searchParams.set(key, value);
+      else url.searchParams.delete(key);
+    };
+    setOrDelete('q', searchInput?.value?.trim() ?? '');
+    setOrDelete('category', currentCategory);
+    setOrDelete('subcategory', currentSubcategory);
+    setOrDelete('sort', sortValue);
+    setOrDelete('page', currentPage > 1 ? String(currentPage) : '');
+    window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+  }
 
   function selectCategory(categoryId: string, subcategoryId = '') {
     if (categoryId === '' || categoryId === 'hot-products') {
@@ -378,8 +395,15 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
   });
 
   const params = new URLSearchParams(window.location.search);
+  const urlQ = params.get('q')?.trim() ?? '';
+  const urlSort = (params.get('sort')?.trim() ?? '') as ProductSort;
+  const urlPage = Number(params.get('page') ?? '1');
   const urlCategory = params.get('category')?.trim() ?? '';
   const urlSubcategory = params.get('subcategory')?.trim() ?? '';
+  if (searchInput && urlQ) searchInput.value = urlQ;
+  if (sortFilter && urlSort) sortFilter.value = urlSort;
+  sortValue = urlSort;
+  currentPage = Number.isFinite(urlPage) && urlPage > 0 ? Math.floor(urlPage) : 1;
   if (urlCategory !== '' && urlSubcategory !== '') {
     selectCategory(urlCategory, urlSubcategory);
   } else if (urlCategory !== '') {

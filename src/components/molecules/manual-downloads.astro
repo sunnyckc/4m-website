@@ -1,5 +1,6 @@
 ---
 import type { MultiLanguage } from '@/types';
+import { getBase } from '@/config';
 
 interface Props {
   multiLanguage: MultiLanguage[];
@@ -7,6 +8,7 @@ interface Props {
 }
 
 const { multiLanguage, itemCode } = Astro.props;
+const base = getBase();
 
 function resolveUrl(item: MultiLanguage): string {
   if (item.media_source === 'file') {
@@ -22,7 +24,7 @@ const downloadOptions = multiLanguage.map(item => ({
 ---
 
 {downloadOptions.length > 0 && (
-  <div class="flex items-center space-x-2">
+  <div class="flex items-center space-x-2" data-manual-download-root data-base={base}>
     <span class="text-sm font-medium text-muted-foreground font-comic-neue whitespace-nowrap">Multi-language:</span>
     <select
       id="manual-language-select"
@@ -46,20 +48,53 @@ const downloadOptions = multiLanguage.map(item => ({
 )}
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  function initManualDownloads() {
     const select = document.getElementById('manual-language-select') as HTMLSelectElement | null;
     const btn = document.getElementById('manual-download-btn');
     if (!select || !btn) return;
+    const root = btn.closest('[data-manual-download-root]') as HTMLElement | null;
+    const base = root?.getAttribute('data-base') ?? '';
 
-    btn.addEventListener('click', function() {
+    function fileNameFromUrl(url: string, fallback = 'manual.pdf'): string {
+      try {
+        const parsed = new URL(url);
+        const path = parsed.pathname;
+        const last = path.split('/').filter(Boolean).pop();
+        return last || fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    btn.addEventListener('click', async function() {
       const url = select.value;
       if (!url) return;
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = '';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      const selectedLabel = select.options[select.selectedIndex]?.text || 'manual';
+      const baseName = fileNameFromUrl(url, `${selectedLabel}.pdf`);
+      const safeLang = selectedLabel.replace(/[^a-zA-Z0-9-_]+/g, '-');
+      const fileName = `${safeLang}-${baseName}`;
+      const proxyUrl = `${base}/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(fileName)}`;
+      try {
+        const res = await fetch(proxyUrl, { method: 'GET' });
+        if (!res.ok) throw new Error('Download failed');
+        const blob = await res.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = objectUrl;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(objectUrl);
+      } catch (e) {
+        console.error('[manual-download] Failed to download file', e);
+      }
     });
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initManualDownloads, { once: true });
+  } else {
+    initManualDownloads();
+  }
 </script>

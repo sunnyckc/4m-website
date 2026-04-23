@@ -1,0 +1,12 @@
+---
+import { getBase } from '@/config';
+
+const { category } = Astro.params;
+const base = getBase();
+
+if (!category) {
+  return Astro.redirect(`${base}/products`);
+}
+
+return Astro.redirect(`${base}/products?category=${encodeURIComponent(category)}`, 301);
+---

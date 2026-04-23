@@ -7,30 +7,30 @@ import {
   ManualDownloads,
   Badge,
 } from '@/components';
-import { getProducts, getProductThumbnail } from '@/repositories/catalog';
+import { getAllProducts, getProductDetail } from '@/services/products';
+import { getProductThumbnail } from '@/repositories/catalog';
 import { getBase } from '@/config';
 import type { Product } from '@/types';
 
-export async function getStaticPaths() {
-  const products = await getProducts();
-  
-  return products.map((product: Product) => ({
-    params: { id: product.folder_name },
-    props: { product }
-  }));
+export const prerender = false;
+
+const { id } = Astro.params;
+const product = id ? await getProductDetail(id) : null;
+if (!product) {
+  return Astro.redirect(`${getBase()}/products`);
+}
+const canonicalKey = product.item_code || product.folder_name;
+if (id && canonicalKey && id !== canonicalKey) {
+  return Astro.redirect(`${getBase()}/products/${encodeURIComponent(canonicalKey)}`, 301);
 }
 
-interface Props {
-  product: Product;
-}
-
-const { product }: Props = Astro.props;
-
-const allProducts = await getProducts();
+const allProducts = await getAllProducts();
 const isSelf = (p: Product) => p.item_code === product.item_code;
 
 // 1. Start with explicitly defined related products
-const explicit = (product.related_product || [])
+const explicitCodes =
+  product.related_products?.map((item) => item.item_code) ?? product.related_product ?? [];
+const explicit = explicitCodes
   .map(code => allProducts.find(p => p.item_code === code))
   .filter((p): p is Product => p !== undefined && !isSelf(p));
 
@@ -85,7 +85,7 @@ const base = getBase();
 
         <!-- Badges -->
         <div class="flex flex-wrap gap-2">
-          {product.hot_item && (
+          {(product.top_item ?? product.hot_item) && (
             <Badge variant="destructive" class="bg-orange-500 hover:bg-orange-600 font-comic-neue">Top seller</Badge>
           )}
         </div>

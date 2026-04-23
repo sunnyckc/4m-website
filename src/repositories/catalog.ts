@@ -10,6 +10,9 @@ function resolveMediaUrl(product: Product, m: ProductMedia): string {
 }
 
 export function getProductThumbnail(product: Product): string {
+  const directThumb = product.thumbnail?.signedUrl?.trim() || '';
+  if (directThumb) return directThumb;
+
   const thumbs = product.media.filter((m) => m.type === 'image' && !m.hidden && m.thumbnail);
 
   if (thumbs.length === 1) {
@@ -59,7 +62,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
 
 export async function getHotProducts(): Promise<Product[]> {
   const products = await getProducts();
-  return products.filter((product) => product.hot_item);
+  return products.filter((product) => product.top_item ?? product.hot_item);
 }
 
 export function getUniqueCategories(products: Product[]): string[] {
