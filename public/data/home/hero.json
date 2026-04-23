@@ -8,18 +8,18 @@
 		"subtitle": "Play, learn, and explore.",
 		"subtitleSize": "lg",
 		"ctaText": "Contact Us",
-		"ctaHref": "/4m-website/contact",
+		"ctaHref": "/contact",
 		"secondaryCtaText": "Distributor Here",
-		"secondaryCtaHref": "/4m-website/distributors",
+		"secondaryCtaHref": "/distributors",
 		"minHeightClassName": "min-h-[100dvh]",
 		"background": {
-			"image": "/4m-website/images/hero/orbit/background.png",
+			"image": "/images/hero/orbit/background.png",
 			"alt": "Colorful playroom scene behind the hero",
 			"fallbackColor": "#e0f2fe",
 			"overlayWhiteOpacity": 0.75
 		},
 		"kid": {
-			"image": "/4m-website/images/hero/orbit/kid.png",
+			"image": "/images/hero/orbit/kid.png",
 			"alt": "Child thinking and playing",
 			"large": {
 				"xPercent": 95,
@@ -77,28 +77,28 @@
 		},
 		"items": [
 			{
-				"image": "/4m-website/images/hero/orbit/orbit-purple.png",
-				"href": "/4m-website/products",
+				"image": "/images/hero/orbit/orbit-purple.png",
+				"href": "/products",
 				"circleColorHex": "#a855f7"
 			},
 			{
-				"image": "/4m-website/images/hero/orbit/orbit-blue.png",
-				"href": "/4m-website/products",
+				"image": "/images/hero/orbit/orbit-blue.png",
+				"href": "/products",
 				"circleColorHex": "#2563eb"
 			},
 			{
-				"image": "/4m-website/images/hero/orbit/orbit-light-blue.png",
-				"href": "/4m-website/products",
+				"image": "/images/hero/orbit/orbit-light-blue.png",
+				"href": "/products",
 				"circleColorHex": "#38bdf8"
 			},
 			{
-				"image": "/4m-website/images/hero/orbit/orbit-green.png",
-				"href": "/4m-website/products",
+				"image": "/images/hero/orbit/orbit-green.png",
+				"href": "/products",
 				"circleColorHex": "#22c55e"
 			},
 			{
-				"image": "/4m-website/images/hero/orbit/orbit-yellow.png",
-				"href": "/4m-website/products",
+				"image": "/images/hero/orbit/orbit-yellow.png",
+				"href": "/products",
 				"circleColorHex": "#eab308"
 			}
 		],
