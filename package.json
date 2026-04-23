@@ -9,7 +9,7 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "build:server": "astro check && astro build",
-    "start": "node ./dist/server/entry.mjs",
+    "start": "HOST=0.0.0.0 node ./dist/server/entry.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "download-logos": "node scripts/download-logos/index.mjs",
