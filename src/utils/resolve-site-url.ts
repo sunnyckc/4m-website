@@ -1,7 +1,7 @@
 import { getBase } from '@/config/site';
 
 /**
- * Prefixes internal paths with the site base (e.g. `/4m-website`).
+ * Prefixes internal paths with the site base.
  * Leaves `http(s)://` URLs unchanged.
  */
 export function resolveSiteUrl(path: string | null | undefined): string | null | undefined {

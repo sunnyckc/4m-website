@@ -1,4 +1,4 @@
-/** Site base path (e.g. `/4m-website`) for links and asset URLs. */
+/** Site base path for links and asset URLs. */
 export function getBase(): string {
   try {
     const base = import.meta.env.BASE_URL || '/';
