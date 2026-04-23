@@ -13,9 +13,11 @@ export type ProductSort = 'name-asc' | 'name-desc' | 'code-asc' | '';
 export interface ProductsListParams {
   /** Free-text search (name, code, tags, category, description) */
   q?: string;
-  /** Main category id, or `hot-products` for hot-only */
+  /** Main category id, or `top-items` for top-only */
   category?: string;
   subcategory?: string;
+  /** Explicit top-item filter (true = top items only). */
+  topOnly?: boolean;
   sort?: ProductSort;
   page?: number;
   pageSize?: number;
@@ -92,6 +94,7 @@ function normalizeProduct(input: Record<string, unknown>): Product {
     ? (input.related_products as ProductRelatedProduct[])
     : [];
   const topItem = Boolean(input.top_item ?? input.hot_item ?? false);
+  const legacyHotItem = typeof input.hot_item === 'boolean' ? input.hot_item : undefined;
   const media = mapGalleryToMedia(gallery);
   const multiLanguage = mapTranslationsToMultiLanguage(translations);
 
@@ -112,7 +115,7 @@ function normalizeProduct(input: Record<string, unknown>): Product {
     media,
     specifications: Array.isArray(input.specifications) ? (input.specifications as Product['specifications']) : [],
     award_text: Array.isArray(input.award_text) ? (input.award_text as string[]) : [],
-    hot_item: topItem,
+    hot_item: legacyHotItem,
     top_item: topItem,
     multi_language: multiLanguage,
     translations,
@@ -210,9 +213,19 @@ function normalizeListResponse(data: unknown, fallback: ProductsListParams): Pro
 async function fetchProductsFromApi(params: ProductsListParams): Promise<ProductsListResult> {
   const qs = new URLSearchParams();
   const q = params.q?.trim();
+  const isTopOnly = params.topOnly || params.category === 'top-items' || params.category === 'hot-products';
   if (q) qs.set('search', q);
-  if (params.category) qs.set('category', params.category);
-  if (params.subcategory) qs.set('subcategory', params.subcategory);
+  if (isTopOnly) {
+    qs.set('top_item', 'true');
+  } else if (params.category) {
+    // Keep legacy and newer query names for backend compatibility.
+    qs.set('category', params.category);
+    qs.set('category_main', params.category);
+  }
+  if (params.subcategory) {
+    qs.set('subcategory', params.subcategory);
+    qs.set('category_sub', params.subcategory);
+  }
   if (params.sort) qs.set('sort', params.sort);
   qs.set('page', String(params.page ?? 1));
   qs.set('limit', String(params.pageSize ?? 9));
@@ -239,15 +252,16 @@ function filterProductsLocal(all: Product[], params: ProductsListParams): Produc
   const q = params.q?.trim() ?? '';
   const cat = params.category ?? '';
   const sub = params.subcategory ?? '';
+  const topOnly = params.topOnly || cat === 'top-items' || cat === 'hot-products';
 
   let list = all.filter((product) => {
     if (!matchesSearch(product, q)) return false;
 
     let matchesCategory: boolean;
-    if (!cat) {
+    if (topOnly) {
+      matchesCategory = Boolean(product.top_item ?? product.hot_item);
+    } else if (!cat) {
       matchesCategory = true;
-    } else if (cat === 'hot-products') {
-      matchesCategory = product.top_item ?? product.hot_item;
     } else {
       matchesCategory = product.category_main === cat;
     }

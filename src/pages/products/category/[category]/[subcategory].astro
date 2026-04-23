@@ -1,0 +1,17 @@
+---
+import { getBase } from '@/config';
+
+const { category, subcategory } = Astro.params;
+const base = getBase();
+
+if (!category || !subcategory) {
+  return Astro.redirect(`${base}/products`);
+}
+
+const query = new URLSearchParams({
+  category,
+  subcategory,
+});
+
+return Astro.redirect(`${base}/products?${query.toString()}`, 301);
+---

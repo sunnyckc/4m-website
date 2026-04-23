@@ -6,6 +6,7 @@ import homeNewsGalleryFallback from '@public/data/home/news-gallery.json';
 import homeSocialProofFallback from '@public/data/home/social-proof.json';
 import { loadPublicJson } from '@/utils/load-public-json';
 import { resolveSiteUrl } from '@/utils/resolve-site-url';
+import { apiGetJson } from '@/services/http';
 import { CONTACT_INFO_FALLBACK } from '@/constants/contact-fallback';
 import { COMPANY_ADDRESS, getCompanyAddressFull } from '@/constants/company';
 import type {
@@ -128,6 +129,62 @@ const STEAM_COLLAGE_FALLBACK: SteamCollageData = {
   smallItems: [],
 };
 
+interface CategoriesFilterApiItem {
+  category_main?: unknown;
+  category_subs?: unknown;
+}
+
+interface CategoriesFilterApiData {
+  items?: unknown;
+}
+
+interface CategoriesFilterApiResponse {
+  success?: boolean;
+  data?: CategoriesFilterApiData | null;
+}
+
+function titleFromSlug(value: string): string {
+  return value
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+function normalizeCategorySubcategory(value: unknown): string {
+  return String(value ?? '').trim();
+}
+
+function mapCategoriesFilterItems(items: unknown): ProductCategory[] {
+  if (!Array.isArray(items)) return [];
+  return items
+    .map((raw): ProductCategory | null => {
+      const item = raw as CategoriesFilterApiItem;
+      const categoryMain = normalizeCategorySubcategory(item.category_main);
+      if (!categoryMain) return null;
+      const subValues = Array.isArray(item.category_subs) ? item.category_subs : [];
+      const seenSubIds = new Set<string>();
+      const subcategories: ProductSubcategory[] = [];
+      for (const sub of subValues) {
+        const subId = normalizeCategorySubcategory(sub);
+        if (!subId || seenSubIds.has(subId)) continue;
+        seenSubIds.add(subId);
+        subcategories.push({
+          id: subId,
+          name: titleFromSlug(subId),
+          description: '',
+        });
+      }
+      return {
+        id: categoryMain,
+        name: titleFromSlug(categoryMain),
+        description: '',
+        subcategories,
+      };
+    })
+    .filter((item): item is ProductCategory => item !== null);
+}
+
 export async function getHeroSlides(): Promise<HeroSlide[]> {
   return loadPublicJson('hero-slides.json', []);
 }
@@ -137,6 +194,17 @@ export async function getSteamCollageData(): Promise<SteamCollageData> {
 }
 
 export async function getProductCategories(): Promise<ProductCategoriesData> {
+  for (const path of ['/api/v1/cms/products/categories', '/cms/products/categories']) {
+    try {
+      const apiResponse = await apiGetJson<CategoriesFilterApiResponse>(path);
+      const mapped = mapCategoriesFilterItems(apiResponse?.data?.items);
+      if (mapped.length > 0) {
+        return { categories: mapped };
+      }
+    } catch (error) {
+      console.warn(`[site] getProductCategories: ${path} failed`, error);
+    }
+  }
   return loadPublicJson('product-categories.json', { categories: [] });
 }
 

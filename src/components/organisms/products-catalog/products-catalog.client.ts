@@ -6,6 +6,11 @@ export interface ProductsCatalogInitOptions {
   base: string;
 }
 
+function isTopItemsCategory(categoryId: string): boolean {
+  // Legacy support for older shared links.
+  return categoryId === 'top-items' || categoryId === 'hot-products';
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')
@@ -75,7 +80,7 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
         const thumb = getProductThumbnail(product);
         const tags = [...product.tag_visible, ...product.tag_hidden].join(' ').toLowerCase();
         const hotPill = (product.top_item ?? product.hot_item)
-          ? '<span class="pointer-events-none absolute right-1.5 top-1.5 z-10 inline-flex items-center rounded-full bg-orange-500 px-2 py-0.5 text-[10px] font-semibold leading-none text-white shadow-sm">Top seller</span>'
+          ? '<span class="pointer-events-none absolute right-1.5 top-1.5 z-10 inline-flex items-center rounded-full bg-orange-500 px-2 py-0.5 text-[10px] font-semibold leading-none text-white shadow-sm">Top items</span>'
           : '';
         const routeKey = product.item_code || product.folder_name;
         return `<a href="${base}/products/${encodeURIComponent(routeKey)}" class="group block origin-center rounded-md transition-transform duration-200 ease-out hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
@@ -145,6 +150,7 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
         q,
         category: currentCategory,
         subcategory: currentSubcategory,
+        topOnly: isTopItemsCategory(currentCategory),
         sort: sortValue,
         page: currentPage,
         pageSize: itemsPerPage,
@@ -206,14 +212,14 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
   }
 
   function selectCategory(categoryId: string, subcategoryId = '') {
-    if (categoryId === '' || categoryId === 'hot-products') {
+    if (categoryId === '' || isTopItemsCategory(categoryId)) {
       currentCategory = categoryId;
       currentSubcategory = '';
 
       document.querySelectorAll('.category-item').forEach((item) => {
         const el = item as HTMLElement;
         const itemCategory = el.getAttribute('data-category') ?? '';
-        if (itemCategory === categoryId && (categoryId === '' || categoryId === 'hot-products')) {
+        if (itemCategory === categoryId && (categoryId === '' || isTopItemsCategory(categoryId))) {
           el.classList.add('bg-primary/20', 'text-primary');
           el.classList.remove('hover:bg-gray-100');
         } else {
@@ -260,9 +266,6 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
             list.classList.add('hidden');
             if (arrow) arrow.classList.remove('rotate-90');
           }
-        } else {
-          list.classList.add('hidden');
-          if (arrow) arrow.classList.remove('rotate-90');
         }
       });
       return;
@@ -292,15 +295,10 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
 
     document.querySelectorAll('.subcategory-list').forEach((list) => {
       const parentCategory = list.getAttribute('data-parent');
+      if (parentCategory !== categoryId) return;
       const arrow = document.querySelector(`[data-category="${parentCategory}"] .category-arrow`);
-
-      if (parentCategory === categoryId) {
-        list.classList.remove('hidden');
-        if (arrow) arrow.classList.add('rotate-90');
-      } else {
-        list.classList.add('hidden');
-        if (arrow) arrow.classList.remove('rotate-90');
-      }
+      list.classList.remove('hidden');
+      if (arrow) arrow.classList.add('rotate-90');
     });
 
     currentPage = 1;
@@ -398,7 +396,8 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
   const urlQ = params.get('q')?.trim() ?? '';
   const urlSort = (params.get('sort')?.trim() ?? '') as ProductSort;
   const urlPage = Number(params.get('page') ?? '1');
-  const urlCategory = params.get('category')?.trim() ?? '';
+  const rawUrlCategory = params.get('category')?.trim() ?? '';
+  const urlCategory = rawUrlCategory === 'hot-products' ? 'top-items' : rawUrlCategory;
   const urlSubcategory = params.get('subcategory')?.trim() ?? '';
   if (searchInput && urlQ) searchInput.value = urlQ;
   if (sortFilter && urlSort) sortFilter.value = urlSort;

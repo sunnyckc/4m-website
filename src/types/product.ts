@@ -31,12 +31,14 @@ export interface Product {
   media: ProductMedia[];
   specifications: ProductSpecification[];
   award_text: string[];
-  hot_item: boolean;
+  /**
+   * @deprecated Use `top_item` from the API.
+   * Kept optional for backward compatibility with older JSON.
+   */
+  hot_item?: boolean;
   multi_language: MultiLanguage[];
   related_product: string[];
-  /**
-   * New API field names (kept alongside legacy keys while the UI migrates).
-   */
+  /** Current API field for top-item badge/filtering. */
   top_item?: boolean;
   gallery?: ProductGalleryItem[];
   translations?: ProductTranslation[];

@@ -60,10 +60,13 @@ export async function getProductsByCategory(category: string): Promise<Product[]
   return products.filter((product) => product.category_main.toLowerCase() === category.toLowerCase());
 }
 
-export async function getHotProducts(): Promise<Product[]> {
+export async function getTopItemsProducts(): Promise<Product[]> {
   const products = await getProducts();
   return products.filter((product) => product.top_item ?? product.hot_item);
 }
+
+/** @deprecated Use `getTopItemsProducts`. */
+export const getHotProducts = getTopItemsProducts;
 
 export function getUniqueCategories(products: Product[]): string[] {
   const categories = products.map((product) => product.category_main);
