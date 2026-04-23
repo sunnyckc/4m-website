@@ -202,6 +202,8 @@ function OrbitItemNode({
         <img
           src={item.image}
           alt=""
+          width={sizePx}
+          height={sizePx}
           className="relative z-[1] h-full w-full object-contain p-1"
           loading="lazy"
           decoding="async"
