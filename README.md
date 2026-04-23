@@ -1,10 +1,10 @@
-# My Store - Astro Static Website
+# My Store - Astro Website
 
 A modern, responsive e-commerce website built with Astro, Tailwind CSS, and shadcn/ui components.
 
 ## Features
 
-- 🚀 **Astro** - Fast, modern static site generator
+- 🚀 **Astro** - Fast modern web framework
 - 🎨 **Tailwind CSS** - Utility-first CSS framework
 - 🧩 **shadcn/ui** - Beautiful, accessible UI components
 - 📱 **Responsive Design** - Mobile-first approach
@@ -65,10 +65,8 @@ my-store/
 
 ## Requirements
 
-- **Node.js**: v22.12.0 or higher (recommended)
-- **npm**: v9.6.5 or higher
-
-> **Note**: This project was created with Astro v6 which requires Node.js v22+. If you're using an older Node.js version, you may encounter compatibility issues.
+- **Node.js**: v18.14.1 or higher
+- **npm**: recent version recommended
 
 ## Setup Instructions
 
@@ -92,6 +90,11 @@ my-store/
    npm run build
    ```
 
+   Optional alias:
+   ```bash
+   npm run build:server
+   ```
+
 5. **Preview the production build**
    ```bash
    npm run preview
@@ -101,6 +104,7 @@ my-store/
 
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
+- `npm run build:server` - Alias for production server build
 - `npm run preview` - Preview production build
 - `npm run astro` - Run Astro CLI commands
 
@@ -162,12 +166,16 @@ Edit `public/data/news.json` to add blog posts with:
 
 ## Deployment
 
-This is a static site that can be deployed to any static hosting service:
+This project is configured for **server deployment** (Node adapter):
 
-- **Netlify**: Connect your Git repository for automatic deployments
-- **Vercel**: Import project and deploy with zero configuration
-- **GitHub Pages**: Use GitHub Actions for automated deployment
-- **AWS S3**: Upload the `dist` folder contents
+- Uses API routes/proxy under `src/pages/api/**`
+- Uses dynamic routes that are not fully pre-rendered
+- Build with `npm run build` (or `npm run build:server`) and run with `npm run start`
+
+Environment knobs:
+
+- `BASE_PATH=/` (or `/your-subpath` for subpath hosting)
+- `SITE_URL=https://your-domain.example`
 
 ## Browser Support
 

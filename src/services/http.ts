@@ -12,12 +12,12 @@ export class ApiError extends Error {
 }
 
 /**
- * GET JSON from `{PUBLIC_API_URL}{path}` (path should start with `/`).
+ * GET JSON from `{apiBase}{path}` where `apiBase` is resolved by `getPublicApiBaseUrl()`.
  */
 export async function apiGetJson<T>(path: string, init?: RequestInit): Promise<T> {
   const base = getPublicApiBaseUrl();
   if (!base) {
-    throw new Error('PUBLIC_API_URL is not set');
+    throw new Error('API base URL is not set');
   }
   const url = `${base}${path.startsWith('/') ? path : `/${path}`}`;
   const res = await fetch(url, {

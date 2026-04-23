@@ -7,11 +7,13 @@ import react from '@astrojs/react';
 import node from '@astrojs/node';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const base = process.env.BASE_PATH || '/';
+const site = process.env.SITE_URL;
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://sunnyckc.github.io',
-  base: '/4m-website',
+  site,
+  base,
   output: 'server',
   adapter: node({
     mode: 'standalone',

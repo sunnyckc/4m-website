@@ -1,13 +1,18 @@
 /**
- * Base URL for your backend (no trailing slash), e.g. https://api.example.com/v1
- * Exposed to the browser as PUBLIC_* so the product list can search against it.
+ * Browser calls should go through the frontend proxy (`PUBLIC_API_URL`).
+ * SSR calls can go directly to a private backend origin (`API_INTERNAL_URL`).
  */
 export function getPublicApiBaseUrl(): string | null {
-  const url = import.meta.env.PUBLIC_API_URL;
-  if (url && typeof url === 'string' && url.trim()) {
-    return url.replace(/\/$/, '');
+  const internal = import.meta.env.API_INTERNAL_URL;
+  if (import.meta.env.SSR && internal && typeof internal === 'string' && internal.trim()) {
+    return internal.replace(/\/$/, '');
   }
-  // Fallback avoids SSR detail redirects when an older dev session
-  // started without PUBLIC_API_URL loaded.
+
+  const publicUrl = import.meta.env.PUBLIC_API_URL;
+  if (publicUrl && typeof publicUrl === 'string' && publicUrl.trim()) {
+    return publicUrl.replace(/\/$/, '');
+  }
+
+  // Safe fallback for older environments where variables are missing.
   return 'https://4m-backend-production.up.railway.app';
 }
