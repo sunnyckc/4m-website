@@ -134,15 +134,6 @@ interface CategoriesFilterApiItem {
   category_subs?: unknown;
 }
 
-interface CategoriesFilterApiData {
-  items?: unknown;
-}
-
-interface CategoriesFilterApiResponse {
-  success?: boolean;
-  data?: CategoriesFilterApiData | null;
-}
-
 function titleFromSlug(value: string): string {
   return value
     .split('-')
@@ -185,6 +176,17 @@ function mapCategoriesFilterItems(items: unknown): ProductCategory[] {
     .filter((item): item is ProductCategory => item !== null);
 }
 
+/** Accepts wrapped `{ data: ... }`, `{ data: { items } }`, top-level `items`, or a raw array. */
+function extractCategoryFilterItems(raw: unknown): unknown {
+  if (Array.isArray(raw)) return raw;
+  if (!raw || typeof raw !== 'object') return [];
+  const r = raw as Record<string, unknown>;
+  if ('data' in r) return extractCategoryFilterItems(r.data);
+  if (Array.isArray(r.items)) return r.items;
+  if (Array.isArray(r.categories)) return r.categories;
+  return [];
+}
+
 export async function getHeroSlides(): Promise<HeroSlide[]> {
   return loadPublicJson('hero-slides.json', []);
 }
@@ -194,10 +196,16 @@ export async function getSteamCollageData(): Promise<SteamCollageData> {
 }
 
 export async function getProductCategories(): Promise<ProductCategoriesData> {
-  for (const path of ['/api/v1/cms/products/categories', '/cms/products/categories']) {
+  const paths = [
+    '/api/v1/products/categories',
+    '/api/v1/cms/products/categories',
+    '/cms/products/categories',
+  ];
+  for (const path of paths) {
     try {
-      const apiResponse = await apiGetJson<CategoriesFilterApiResponse>(path);
-      const mapped = mapCategoriesFilterItems(apiResponse?.data?.items);
+      const apiResponse = await apiGetJson<unknown>(path);
+      const items = extractCategoryFilterItems(apiResponse);
+      const mapped = mapCategoriesFilterItems(items);
       if (mapped.length > 0) {
         return { categories: mapped };
       }
@@ -205,7 +213,8 @@ export async function getProductCategories(): Promise<ProductCategoriesData> {
       console.warn(`[site] getProductCategories: ${path} failed`, error);
     }
   }
-  return loadPublicJson('product-categories.json', { categories: [] });
+  console.warn('[site] getProductCategories: no category data from API; empty sidebar');
+  return { categories: [] };
 }
 
 export async function getCategoryById(categoryId: string): Promise<ProductCategory | null> {

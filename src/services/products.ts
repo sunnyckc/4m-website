@@ -135,56 +135,42 @@ function unwrapData<T>(data: unknown): T | null {
   return data as T;
 }
 
-/** In-memory cache for bundled JSON / repeated list calls (browser + SSR). */
-let cachedAllProducts: Product[] | null = null;
-
-async function loadProductsJson(): Promise<Product[]> {
-  if (cachedAllProducts) return cachedAllProducts;
-  const mod = await import('@public/data/products.json');
-  cachedAllProducts = (mod.default || []) as Product[];
-  return cachedAllProducts;
-}
-
 /**
- * Full catalog for build-time routes (`getStaticPaths`), related products, etc.
- * Tries `GET {API}/api/v1/products?page=1&limit=500` then falls back to local JSON.
+ * Full catalog for related products, etc.
+ * Fetches all pages from `GET {API}/api/v1/products?page=&limit=`.
  *
  * Backend may return a JSON array or `{ items: Product[] }`.
  */
 export async function getAllProducts(): Promise<Product[]> {
   const base = getPublicApiBaseUrl();
-  if (base) {
-    try {
-      const pageSize = 20;
-      const first = normalizeListResponse(
-        await apiGetJson<unknown>(`/api/v1/products?page=1&limit=${pageSize}`),
-        { page: 1, pageSize }
-      );
-      const totalPages = Math.max(1, Math.ceil(first.total / Math.max(1, first.pageSize)));
-      if (totalPages <= 1) return first.items;
-
-      const rest = await Promise.all(
-        Array.from({ length: totalPages - 1 }, (_, i) =>
-          apiGetJson<unknown>(`/api/v1/products?page=${i + 2}&limit=${pageSize}`)
-        )
-      );
-      const all = [...first.items];
-      for (const page of rest) {
-        const parsed = normalizeListResponse(page, { pageSize });
-        all.push(...parsed.items);
-      }
-      const seen = new Set<string>();
-      return all.filter((item) => {
-        const key = item.item_code || item.folder_name;
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-    } catch (e) {
-      console.warn('[services] getAllProducts: API failed, using local JSON', e);
-    }
+  if (!base) {
+    throw new Error('API base URL is not set');
   }
-  return loadProductsJson();
+  const pageSize = 20;
+  const first = normalizeListResponse(
+    await apiGetJson<unknown>(`/api/v1/products?page=1&limit=${pageSize}`),
+    { page: 1, pageSize }
+  );
+  const totalPages = Math.max(1, Math.ceil(first.total / Math.max(1, first.pageSize)));
+  if (totalPages <= 1) return first.items;
+
+  const rest = await Promise.all(
+    Array.from({ length: totalPages - 1 }, (_, i) =>
+      apiGetJson<unknown>(`/api/v1/products?page=${i + 2}&limit=${pageSize}`)
+    )
+  );
+  const all = [...first.items];
+  for (const page of rest) {
+    const parsed = normalizeListResponse(page, { pageSize });
+    all.push(...parsed.items);
+  }
+  const seen = new Set<string>();
+  return all.filter((item) => {
+    const key = item.item_code || item.folder_name;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function normalizeListResponse(data: unknown, fallback: ProductsListParams): ProductsListResult {
@@ -234,86 +220,12 @@ async function fetchProductsFromApi(params: ProductsListParams): Promise<Product
   return normalizeListResponse(raw, params);
 }
 
-function matchesSearch(product: Product, searchTerm: string): boolean {
-  if (!searchTerm) return true;
-  const term = searchTerm.toLowerCase();
-  const tags = [...product.tag_visible, ...product.tag_hidden].join(' ').toLowerCase();
-  return (
-    product.item_name.toLowerCase().includes(term) ||
-    (product.item_code?.toLowerCase().includes(term) ?? false) ||
-    tags.includes(term) ||
-    product.category_main.toLowerCase().includes(term) ||
-    product.category_sub.toLowerCase().includes(term) ||
-    product.item_description.toLowerCase().includes(term)
-  );
-}
-
-function filterProductsLocal(all: Product[], params: ProductsListParams): Product[] {
-  const q = params.q?.trim() ?? '';
-  const cat = params.category ?? '';
-  const sub = params.subcategory ?? '';
-  const topOnly = params.topOnly || cat === 'top-items' || cat === 'hot-products';
-
-  let list = all.filter((product) => {
-    if (!matchesSearch(product, q)) return false;
-
-    let matchesCategory: boolean;
-    if (topOnly) {
-      matchesCategory = Boolean(product.top_item ?? product.hot_item);
-    } else if (!cat) {
-      matchesCategory = true;
-    } else {
-      matchesCategory = product.category_main === cat;
-    }
-
-    const matchesSub = !sub || product.category_sub === sub;
-    return matchesCategory && matchesSub;
-  });
-
-  const sort = params.sort ?? '';
-  list = [...list].sort((a, b) => {
-    if ((a.top_item ?? a.hot_item) && !(b.top_item ?? b.hot_item)) return -1;
-    if (!(a.top_item ?? a.hot_item) && (b.top_item ?? b.hot_item)) return 1;
-    switch (sort) {
-      case 'name-asc':
-        return a.item_name.localeCompare(b.item_name);
-      case 'name-desc':
-        return b.item_name.localeCompare(a.item_name);
-      case 'code-asc':
-        return (a.item_code || '').localeCompare(b.item_code || '');
-      default:
-        return a.item_name.localeCompare(b.item_name);
-    }
-  });
-
-  return list;
-}
-
-async function listProductsFromLocalJson(params: ProductsListParams): Promise<ProductsListResult> {
-  const all = await loadProductsJson();
-  const filtered = filterProductsLocal(all, params);
-  const pageSize = params.pageSize ?? 9;
-  const page = Math.max(1, params.page ?? 1);
-  const total = filtered.length;
-  const start = (page - 1) * pageSize;
-  const items = filtered.slice(start, start + pageSize);
-  return { items, total, page, pageSize };
-}
-
 /**
  * Paginated product list for the catalog UI and for API-backed search.
- * Uses `GET {PUBLIC_API_URL}/products?...` when configured; otherwise filters local JSON.
+ * Uses `GET {API}/api/v1/products?...` only (no local JSON fallback).
  */
 export async function loadProductsList(params: ProductsListParams): Promise<ProductsListResult> {
-  const base = getPublicApiBaseUrl();
-  if (base) {
-    try {
-      return await fetchProductsFromApi(params);
-    } catch (e) {
-      console.warn('[services] loadProductsList: API failed, using local JSON', e);
-    }
-  }
-  return listProductsFromLocalJson(params);
+  return fetchProductsFromApi(params);
 }
 
 /**

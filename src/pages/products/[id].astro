@@ -24,7 +24,12 @@ if (id && canonicalKey && id !== canonicalKey) {
   return Astro.redirect(`${getBase()}/products/${encodeURIComponent(canonicalKey)}`, 301);
 }
 
-const allProducts = await getAllProducts();
+let allProducts: Product[] = [];
+try {
+  allProducts = await getAllProducts();
+} catch (e) {
+  console.warn('[products] Could not load catalog for related products', e);
+}
 const isSelf = (p: Product) => p.item_code === product.item_code;
 
 // 1. Start with explicitly defined related products
