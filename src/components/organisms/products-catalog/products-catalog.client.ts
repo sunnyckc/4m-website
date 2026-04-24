@@ -313,7 +313,6 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
     if (newPage >= 1 && newPage <= totalPages) {
       currentPage = newPage;
       void refresh();
-      grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
@@ -322,7 +321,6 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       currentPage = pageNumber;
       void refresh();
-      grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 

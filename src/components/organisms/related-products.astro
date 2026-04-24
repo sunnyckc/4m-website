@@ -20,23 +20,18 @@ const base = getBase();
         {products.map((product) => (
           <div class="product-card">
             <a href={getProductHref(product, base)} data-product-id={product.id ?? undefined} class="block">
-              <div class="relative overflow-hidden rounded-2xl bg-white shadow-md transition-shadow duration-300 hover:shadow-lg">
-                <!-- Product Image -->
-                <div class="aspect-square overflow-hidden">
-                  <img 
+              <div class="overflow-hidden rounded-2xl bg-white shadow-md transition-shadow duration-300 hover:shadow-lg">
+                <div class="aspect-square overflow-hidden rounded-t-2xl">
+                  <img
                     src={getProductThumbnail(product)}
                     alt={product.item_name}
                     class="h-full w-full object-cover"
                   />
                 </div>
-                
-                <!-- White Banner with Product Name -->
-                <div class="absolute bottom-0 left-0 right-0 bg-white bg-opacity-95 backdrop-blur-sm border-t border-gray-200">
-                  <div class="px-3 py-2">
-                    <h3 class="text-sm font-medium text-gray-900 text-center truncate font-fredoka">
-                      {product.item_name}
-                    </h3>
-                  </div>
+                <div class="border-t border-border px-3 py-2.5">
+                  <h3 class="text-sm font-medium text-foreground text-center line-clamp-2 font-fredoka">
+                    {product.item_name}
+                  </h3>
                 </div>
               </div>
             </a>
