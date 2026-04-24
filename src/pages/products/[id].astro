@@ -101,10 +101,10 @@ const base = getBase();
           {product.item_description}
         </div>
 
-        <!-- Specifications -->
+        <!-- Product information (spec key/value table) -->
         {product.specifications.length > 0 && (
           <div class="space-y-3">
-            <h3 class="font-semibold text-foreground font-fredoka">Specifications</h3>
+            <h3 class="font-semibold text-foreground font-fredoka">Product information</h3>
             <div class="grid grid-cols-1 gap-y-0 text-sm font-comic-neue">
               {product.specifications.map(spec => (
                 <div class="flex justify-between py-1 border-b border-border">

@@ -17,10 +17,25 @@ function resolveUrl(item: MultiLanguage): string {
   return item.media_destination;
 }
 
-const downloadOptions = multiLanguage.map(item => ({
-  language: item.language,
-  url: resolveUrl(item),
-}));
+/** English variants listed first; remaining languages A–Z. */
+function isEnglishLanguageLabel(label: string): boolean {
+  const t = label.trim().toLowerCase();
+  if (t === 'en' || t === 'english') return true;
+  // e.g. "English (US)", "English UK"
+  return /^english(\s|\(|$)/.test(label.trim());
+}
+
+const downloadOptions = multiLanguage
+  .map((item) => ({
+    language: item.language,
+    url: resolveUrl(item),
+  }))
+  .sort((a, b) => {
+    const aEn = isEnglishLanguageLabel(a.language);
+    const bEn = isEnglishLanguageLabel(b.language);
+    if (aEn !== bEn) return aEn ? -1 : 1;
+    return a.language.localeCompare(b.language, undefined, { sensitivity: 'base' });
+  });
 ---
 
 {downloadOptions.length > 0 && (
