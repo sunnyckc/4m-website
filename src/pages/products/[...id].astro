@@ -9,6 +9,7 @@ import {
   Badge,
 } from '@/components';
 import { getAllProducts, getProductDetail } from '@/services/products';
+import { getProductRouteKey } from '@/lib/product-routing';
 import { getProductThumbnail } from '@/repositories/catalog';
 import { getBase, isProductDetailSocialEnabled } from '@/config';
 import type { Product } from '@/types';
@@ -20,7 +21,7 @@ const product = id ? await getProductDetail(id) : null;
 if (!product) {
   return Astro.redirect(`${getBase()}/products`);
 }
-const canonicalKey = product.item_code || product.folder_name;
+const canonicalKey = getProductRouteKey(product);
 if (id && canonicalKey && id !== canonicalKey) {
   return Astro.redirect(`${getBase()}/products/${encodeURIComponent(canonicalKey)}`, 301);
 }
@@ -31,24 +32,25 @@ try {
 } catch (e) {
   console.warn('[products] Could not load catalog for related products', e);
 }
-const isSelf = (p: Product) => p.item_code === product.item_code;
+const getStableProductId = (p: Product) => p.id || getProductRouteKey(p);
+const isSelf = (p: Product) => getStableProductId(p) === getStableProductId(product);
 
 // 1. Start with explicitly defined related products
-const explicitCodes =
-  product.related_products?.map((item) => item.item_code) ?? product.related_product ?? [];
-const explicit = explicitCodes
-  .map(code => allProducts.find(p => p.item_code === code))
+const explicitRefs =
+  product.related_products?.map((item) => item.id || item.item_code) ?? product.related_product ?? [];
+const explicit = explicitRefs
+  .map(ref => allProducts.find(p => getStableProductId(p) === ref || p.item_code === ref))
   .filter((p): p is Product => p !== undefined && !isSelf(p));
 
-const usedCodes = new Set(explicit.map(p => p.item_code));
-usedCodes.add(product.item_code);
+const usedIds = new Set(explicit.map(getStableProductId));
+usedIds.add(getStableProductId(product));
 
 // 2. Fill from same sub-category
-const sameSub = allProducts.filter(p => !usedCodes.has(p.item_code) && p.category_sub === product.category_sub);
-sameSub.forEach(p => usedCodes.add(p.item_code));
+const sameSub = allProducts.filter(p => !usedIds.has(getStableProductId(p)) && p.category_sub === product.category_sub);
+sameSub.forEach(p => usedIds.add(getStableProductId(p)));
 
 // 3. Fill from same main category
-const sameMain = allProducts.filter(p => !usedCodes.has(p.item_code) && p.category_main === product.category_main);
+const sameMain = allProducts.filter(p => !usedIds.has(getStableProductId(p)) && p.category_main === product.category_main);
 
 const relatedProducts = [...explicit, ...sameSub, ...sameMain].slice(0, 4);
 

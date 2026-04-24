@@ -1,7 +1,7 @@
 /**
  * On hover, warms the product detail experience by:
  * 1. `link[rel=prefetch]` for the product HTML (SSR + browser cache)
- * 2. `fetch` to `GET /api/v1/products/:key` — then, from the JSON, preloads **gallery and thumbnail** image
+ * 2. `fetch` to `GET /api/v1/products/:id` — then, from the JSON, preloads **gallery and thumbnail** image
  *    URLs in the background so the next navigation can hit the HTTP cache for those assets
  *
  * Deduplicated; short hover delay; cancelled if pointer leaves before the delay.
@@ -34,7 +34,7 @@ function getBrowserApiBase(): string {
   return '';
 }
 
-function parseProductRouteKey(anchor: HTMLAnchorElement): { pageUrl: string; routeKey: string } | null {
+function parseProductLink(anchor: HTMLAnchorElement): { pageUrl: string; routeKey: string; productId: string | null } | null {
   let url: URL;
   try {
     url = new URL(anchor.href, window.location.origin);
@@ -47,7 +47,8 @@ function parseProductRouteKey(anchor: HTMLAnchorElement): { pageUrl: string; rou
   const [first, key, ...rest] = parts;
   if (first !== 'products' || !key || rest.length > 0) return null;
   if (key === 'index' || key === '') return null;
-  return { pageUrl: url.href.split('#')[0], routeKey: decodeURIComponent(key) };
+  const productId = anchor.dataset.productId?.trim() || null;
+  return { pageUrl: url.href.split('#')[0], routeKey: decodeURIComponent(key), productId };
 }
 
 function injectPrefetchLink(absolutePageUrl: string) {
@@ -149,13 +150,13 @@ function preloadImageUrlsInBackground(urls: string[]) {
   if (slice.length > 0) prefetchLog('image preload: new downloads this run', started, 'of', slice.length, 'candidates (others may be session-deduped)');
 }
 
-async function warmApi(routeKey: string) {
+async function warmApi(productId: string) {
   const base = getBrowserApiBase();
   if (!base) {
     prefetchLog('skip API: PUBLIC_API_URL is empty (image preload needs JSON from API)');
     return;
   }
-  const path = `/api/v1/products/${encodeURIComponent(routeKey)}`;
+  const path = `/api/v1/products/${encodeURIComponent(productId)}`;
   const url = `${base}${path.startsWith('/') ? path : `/${path}`}`;
   prefetchLog('fetch JSON', url);
   const init: RequestInit & { priority?: 'low' } = {
@@ -166,25 +167,25 @@ async function warmApi(routeKey: string) {
   try {
     const res = await fetch(url, init);
     if (!res.ok) {
-      prefetchLog('API response not ok', res.status, routeKey);
+      prefetchLog('API response not ok', res.status, productId);
       return;
     }
     const raw: unknown = await res.json();
     const data = unwrapApiPayload(raw);
     if (data) {
       const imageUrls = collectProductImageUrls(data);
-      prefetchLog('JSON ok; gallery/thumbnail image URLs to warm', imageUrls.length, routeKey);
+      prefetchLog('JSON ok; gallery/thumbnail image URLs to warm', imageUrls.length, productId);
       if (imageUrls.length > 0) preloadImageUrlsInBackground(imageUrls);
     } else {
-      prefetchLog('JSON parse: no product payload (unexpected shape)', routeKey);
+      prefetchLog('JSON parse: no product payload (unexpected shape)', productId);
     }
   } catch (e) {
-    prefetchLog('API fetch failed (CORS, offline, etc.)', routeKey, e);
+    prefetchLog('API fetch failed (CORS, offline, etc.)', productId, e);
   }
 }
 
 function startHover(anchor: HTMLAnchorElement) {
-  const parsed = parseProductRouteKey(anchor);
+  const parsed = parseProductLink(anchor);
   if (!parsed) return;
   if (donePages.has(parsed.pageUrl)) return;
 
@@ -197,7 +198,7 @@ function startHover(anchor: HTMLAnchorElement) {
     donePages.add(parsed.pageUrl);
     prefetchLog('hover → run (after ' + HOVER_MS + 'ms):', parsed.routeKey);
     injectPrefetchLink(parsed.pageUrl);
-    warmApi(parsed.routeKey);
+    if (parsed.productId) warmApi(parsed.productId);
   }, HOVER_MS);
   pendingTimer.set(anchor, t);
 }

@@ -1,5 +1,6 @@
 import { loadProductsList, type ProductSort } from '@/services/products';
 import type { Product } from '@/types';
+import { getProductHref } from '@/lib/product-routing';
 import { getProductThumbnail } from '@/repositories/catalog';
 
 export interface ProductsCatalogInitOptions {
@@ -82,8 +83,9 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
         const hotPill = (product.top_item ?? product.hot_item)
           ? '<span class="pointer-events-none absolute right-1.5 top-1.5 z-10 inline-flex items-center rounded-full bg-orange-500 px-2 py-0.5 text-[10px] font-semibold leading-none text-white shadow-sm">Top items</span>'
           : '';
-        const routeKey = product.item_code || product.folder_name;
-        return `<a href="${base}/products/${encodeURIComponent(routeKey)}" class="group block origin-center rounded-md transition-transform duration-200 ease-out hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        const href = getProductHref(product, base);
+        const productIdAttr = product.id ? ` data-product-id="${escapeHtml(product.id)}"` : '';
+        return `<a href="${escapeHtml(href)}"${productIdAttr} class="group block origin-center rounded-md transition-transform duration-200 ease-out hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
   <div class="product-card"
        data-name="${escapeHtml(product.item_name.toLowerCase())}"
        data-code="${escapeHtml((product.item_code || '').toLowerCase())}"

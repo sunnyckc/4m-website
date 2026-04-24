@@ -34,7 +34,7 @@ function vimeoVideoId(raw: string): string {
 
 function resolveUrl(m: ProductMedia): string {
   if (m.media_source === 'file') {
-    return `${base}/images/products/${folderName}/${m.media_destination}`;
+    return `${base}/images/products/${encodeURIComponent(folderName)}/${m.media_destination}`;
   }
   return m.media_destination;
 }
@@ -365,6 +365,10 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
 
     if (items.length > PAGE_SIZE) {
       applyThumbStrip();
+    }
+
+    if (items.length > 0) {
+      showItem(0);
     }
 
     // Click main image to zoom (only for image/award)

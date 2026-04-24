@@ -6,6 +6,7 @@ import type {
   ProductTranslation,
 } from '@/types/product';
 import { getPublicApiBaseUrl } from '@/config/api';
+import { getProductRouteKey } from '@/lib/product-routing';
 import { apiGetJson } from '@/services/http';
 
 export type ProductSort = 'name-asc' | 'name-desc' | 'code-asc' | '';
@@ -48,20 +49,59 @@ function vimeoId(raw: string): string {
   return value;
 }
 
+function youtubeId(raw: string): string {
+  const value = raw.trim();
+  const fromQuery = value.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+  if (fromQuery) return fromQuery[1];
+  const fromShort = value.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+  if (fromShort) return fromShort[1];
+  if (/^[a-zA-Z0-9_-]{11}$/.test(value)) return value;
+  return value;
+}
+
+function wistiaId(raw: string): string {
+  const value = raw.trim();
+  const fromIframe = value.match(/wistia\.(?:com|net)\/(?:medias|embed\/iframe)\/([a-zA-Z0-9]+)/);
+  if (fromIframe) return fromIframe[1];
+  return value;
+}
+
 function mapGalleryToMedia(gallery: ProductGalleryItem[]): Product['media'] {
   return gallery.map((item, index) => {
     const type =
       item.type.includes('video') ? 'video' : item.type.includes('award') ? 'award' : 'image';
     const url = item.signedUrl || item.url || '';
-    if (type === 'video' && url.includes('vimeo.com')) {
-      return {
-        type,
-        sequence: item.sequence ?? index,
-        thumbnail: Boolean(item.isThumbnail),
-        hidden: false,
-        media_source: 'vimeo',
-        media_destination: vimeoId(url),
-      };
+    if (type === 'video') {
+      if (url.includes('vimeo.com')) {
+        return {
+          type,
+          sequence: item.sequence ?? index,
+          thumbnail: Boolean(item.isThumbnail),
+          hidden: false,
+          media_source: 'vimeo',
+          media_destination: vimeoId(url),
+        };
+      }
+      if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        return {
+          type,
+          sequence: item.sequence ?? index,
+          thumbnail: Boolean(item.isThumbnail),
+          hidden: false,
+          media_source: 'youtube',
+          media_destination: youtubeId(url),
+        };
+      }
+      if (url.includes('wistia.com') || url.includes('wistia.net')) {
+        return {
+          type,
+          sequence: item.sequence ?? index,
+          thumbnail: Boolean(item.isThumbnail),
+          hidden: false,
+          media_source: 'wistia',
+          media_destination: wistiaId(url),
+        };
+      }
     }
     return {
       type,
@@ -104,6 +144,7 @@ function normalizeProduct(input: Record<string, unknown>): Product {
       : null;
 
   return {
+    id: input.id == null ? null : String(input.id),
     item_code: String(input.item_code ?? ''),
     item_name: String(input.item_name ?? ''),
     item_description: String(input.item_description ?? ''),
@@ -119,11 +160,33 @@ function normalizeProduct(input: Record<string, unknown>): Product {
     top_item: topItem,
     multi_language: multiLanguage,
     translations,
-    related_product: relatedProducts.map((item) => item.item_code),
+    related_product: relatedProducts.map((item) => item.id ?? item.item_code),
     related_products: relatedProducts,
     gallery,
     thumbnail,
   };
+}
+
+function isUuidLike(value: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
+}
+
+function matchesProductRouteKey(product: Product, routeKey: string): boolean {
+  const lowered = routeKey.toLowerCase();
+  return (
+    getProductRouteKey(product).toLowerCase() === lowered ||
+    product.folder_name.toLowerCase() === lowered ||
+    product.item_code.toLowerCase() === lowered
+  );
+}
+
+async function fetchProductDetailById(productId: string): Promise<Product | null> {
+  const raw = await apiGetJson<unknown>(`/api/v1/products/${encodeURIComponent(productId)}`);
+  const data = unwrapData<unknown>(raw);
+  if (data && typeof data === 'object') {
+    return normalizeProduct(data as Record<string, unknown>);
+  }
+  return null;
 }
 
 function unwrapData<T>(data: unknown): T | null {
@@ -166,7 +229,7 @@ export async function getAllProducts(): Promise<Product[]> {
   }
   const seen = new Set<string>();
   return all.filter((item) => {
-    const key = item.item_code || item.folder_name;
+    const key = item.id || getProductRouteKey(item);
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -230,33 +293,32 @@ export async function loadProductsList(params: ProductsListParams): Promise<Prod
 
 /**
  * Product detail request for SSR detail page.
- * Accepts folder_name or item_code as route key.
+ * Accepts the public route key, then fetches detail by product UUID.
  */
 export async function getProductDetail(routeKey: string): Promise<Product | null> {
   const base = getPublicApiBaseUrl();
   if (!base) return null;
   const key = routeKey.trim();
   if (!key) return null;
-  try {
-    const raw = await apiGetJson<unknown>(`/api/v1/products/${encodeURIComponent(key)}`);
-    const data = unwrapData<unknown>(raw);
-    if (data && typeof data === 'object') {
-      return normalizeProduct(data as Record<string, unknown>);
+
+  if (isUuidLike(key)) {
+    try {
+      return await fetchProductDetailById(key);
+    } catch (e) {
+      console.warn('[services] getProductDetail: UUID detail API failed', e);
     }
-  } catch (e) {
-    console.warn('[services] getProductDetail: detail API failed, trying catalog fallback', e);
   }
 
   try {
     const all = await getAllProducts();
-    return (
-      all.find(
-        (item) =>
-          item.item_code.toLowerCase() === key.toLowerCase() ||
-          item.folder_name.toLowerCase() === key.toLowerCase()
-      ) ?? null
-    );
-  } catch {
-    return null;
+    const match = all.find((item) => matchesProductRouteKey(item, key)) ?? null;
+    if (!match?.id) {
+      return match;
+    }
+    return await fetchProductDetailById(match.id);
+  } catch (e) {
+    console.warn('[services] getProductDetail: route lookup or UUID detail failed', e);
   }
+
+  return null;
 }

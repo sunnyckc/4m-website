@@ -1,5 +1,6 @@
 ---
 import type { Product } from '@/types';
+import { getProductHref } from '@/lib/product-routing';
 import { getProductThumbnail } from '@/repositories/catalog';
 import { getBase } from '@/config';
 
@@ -18,7 +19,7 @@ const base = getBase();
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {products.map((product) => (
           <div class="product-card">
-            <a href={`${base}/products/${product.folder_name}`} class="block">
+            <a href={getProductHref(product, base)} data-product-id={product.id ?? undefined} class="block">
               <div class="relative overflow-hidden rounded-2xl bg-white shadow-md transition-shadow duration-300 hover:shadow-lg">
                 <!-- Product Image -->
                 <div class="aspect-square overflow-hidden">

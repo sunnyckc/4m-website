@@ -20,6 +20,7 @@ export interface MultiLanguage {
 }
 
 export interface Product {
+  id: string | null;
   item_code: string;
   item_name: string;
   item_description: string;

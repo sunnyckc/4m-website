@@ -2,9 +2,23 @@ import { getAllProducts } from '@/services/products';
 import type { Product, ProductMedia } from '@/types/product';
 import { getBase } from '@/config/site';
 
+function encodePathSegment(value: string): string {
+  return encodeURIComponent(value);
+}
+
+function getVideoThumbnail(media: ProductMedia): string {
+  if (media.media_source === 'youtube') {
+    return `https://i.ytimg.com/vi/${media.media_destination}/mqdefault.jpg`;
+  }
+  if (media.media_source === 'vimeo') {
+    return `https://vumbnail.com/${media.media_destination}.jpg`;
+  }
+  return '';
+}
+
 function resolveMediaUrl(product: Product, m: ProductMedia): string {
   if (m.media_source === 'file') {
-    return `${getBase()}/images/products/${product.folder_name}/${m.media_destination}`;
+    return `${getBase()}/images/products/${encodePathSegment(product.folder_name)}/${m.media_destination}`;
   }
   return m.media_destination;
 }
@@ -27,7 +41,12 @@ export function getProductThumbnail(product: Product): string {
   const firstImage = product.media
     .filter((m) => m.type === 'image' && !m.hidden)
     .sort((a, b) => a.sequence - b.sequence)[0];
-  return firstImage ? resolveMediaUrl(product, firstImage) : '';
+  if (firstImage) return resolveMediaUrl(product, firstImage);
+
+  const firstVideo = product.media
+    .filter((m) => m.type === 'video' && !m.hidden)
+    .sort((a, b) => a.sequence - b.sequence)[0];
+  return firstVideo ? getVideoThumbnail(firstVideo) : '';
 }
 
 export function getProductVisibleMedia(product: Product): ProductMedia[] {
@@ -36,7 +55,7 @@ export function getProductVisibleMedia(product: Product): ProductMedia[] {
 
 export function resolveMediaPath(product: Product, media: ProductMedia): string {
   if (media.media_source === 'file') {
-    return `${getBase()}/images/products/${product.folder_name}/${media.media_destination}`;
+    return `${getBase()}/images/products/${encodePathSegment(product.folder_name)}/${media.media_destination}`;
   }
   return media.media_destination;
 }
@@ -52,7 +71,7 @@ export async function getProducts(): Promise<Product[]> {
 
 export async function getProductById(id: string): Promise<Product | null> {
   const products = await getProducts();
-  return products.find((product) => product.folder_name === id) || null;
+  return products.find((product) => product.id === id) || null;
 }
 
 export async function getProductsByCategory(category: string): Promise<Product[]> {

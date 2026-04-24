@@ -12,7 +12,7 @@ const base = getBase();
 
 function resolveUrl(item: MultiLanguage): string {
   if (item.media_source === 'file') {
-    return `/manuals/${itemCode}/${item.media_destination}`;
+    return `/manuals/${encodeURIComponent(itemCode)}/${item.media_destination}`;
   }
   return item.media_destination;
 }
