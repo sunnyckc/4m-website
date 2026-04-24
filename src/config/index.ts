@@ -1,4 +1,4 @@
-export { getBase } from './site';
+export { getBase, isProductDetailSocialEnabled } from './site';
 export { getPublicApiBaseUrl } from './api';
 export {
   steamPillarConfig,

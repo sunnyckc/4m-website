@@ -13,6 +13,11 @@ interface ImportMetaEnv {
   readonly PUBLIC_API_URL?: string;
   /** Server-only backend URL (internal/private origin, no trailing slash). */
   readonly API_INTERNAL_URL?: string;
+  /**
+   * When `false` / `0` / `no` / `off`, hides the share block on product detail pages.
+   * Omit or any other value: show the block.
+   */
+  readonly PUBLIC_PRODUCT_DETAIL_SOCIAL?: string;
 }
 
 interface ImportMeta {
