@@ -10,6 +10,7 @@ export { CatalogSlider } from './catalog-slider';
 export type { CatalogSliderProps } from './catalog-slider';
 export { SocialProofRibbon } from './social-proof-ribbon';
 export type { SocialProofRibbonProps } from './social-proof-ribbon';
+export { ProductFamilySection } from './product-family-section';
 export { default as HomeNewsGallery } from './home-news-gallery.astro';
 export type {
   HeroBannerSlide,

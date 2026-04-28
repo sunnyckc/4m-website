@@ -78,11 +78,17 @@ function resolveOrbitBanner(ob: HomeHeroOrbitBannerJson): HomeHeroOrbitBannerJso
               ob.background.image != null
                 ? resolveSiteUrl(ob.background.image) ?? ob.background.image
                 : ob.background.image,
+            variants: ob.background.variants?.map(
+              (v) => resolveSiteUrl(v) ?? v,
+            ),
           }
         : undefined,
     kid: {
       ...ob.kid,
       image: ob.kid.image != null ? resolveSiteUrl(ob.kid.image) ?? ob.kid.image : ob.kid.image,
+      variants: ob.kid.variants?.map(
+        (v) => resolveSiteUrl(v) ?? v,
+      ),
     },
     items: ob.items.map((item) => ({
       ...item,

@@ -311,8 +311,8 @@ export function HeroOrbitBannerView({ config }: { config: HomeHeroOrbitBannerJso
   } as React.CSSProperties;
 
   const fallbackBg = background?.fallbackColor ?? '#e5e7eb';
-  const bgImage = background?.image?.trim();
-  const kidSrc = kid.image?.trim();
+  const bgImage = background?.variants?.[background?.variantIndex ?? 0] ?? background?.image?.trim();
+  const kidSrc = kid.variants?.[kid.variantIndex ?? 0] ?? kid.image?.trim();
   const showKidPlaceholder = kidSrc == null || kidSrc === '';
   const logoHeight = Math.max(20, logoHeightPx ?? 56);
   const trimmedTitleLine1 = titleLine1?.trim() ?? '';

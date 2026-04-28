@@ -13,14 +13,33 @@
 		"secondaryCtaHref": "/distributors",
 		"minHeightClassName": "min-h-[100dvh]",
 		"background": {
-			"image": "/images/hero/orbit/background.png",
-			"alt": "Colorful playroom scene behind the hero",
+			"image": "/images/hero/orbit/background-1.png",
+			"alt": "Cozy corner of a children's playroom with a yellow teddy bear and colorful toys",
 			"fallbackColor": "#e0f2fe",
-			"overlayWhiteOpacity": 0.75
+			"overlayWhiteOpacity": 0,
+			"variants": [
+				"/images/hero/orbit/background-1.png",
+				"/images/hero/orbit/background-2.png",
+				"/images/hero/orbit/background-3.png",
+				"/images/hero/orbit/background-4.png",
+				"/images/hero/orbit/background-5.png",
+				"/images/hero/orbit/background-6.png",
+				"/images/hero/orbit/background-7.png"
+			],
+			"variantIndex": 4
 		},
 		"kid": {
 			"image": "/images/hero/orbit/kid.png",
 			"alt": "Child thinking and playing",
+			"variants": [
+				"/images/hero/orbit/kid.png",
+				"/images/hero/orbit/kid-2.png",
+				"/images/hero/orbit/kid-3.png",
+				"/images/hero/orbit/kid-4.png",
+				"/images/hero/orbit/kid-5.png",
+				"/images/hero/orbit/kid-6.png"
+			],
+			"variantIndex": 0,
 			"large": {
 				"xPercent": 95,
 				"yPercent": 111,
@@ -103,6 +122,10 @@
 			}
 		],
 		"titleLine2RainbowGradient": true
+	},
+	"productFamilyIcons": {
+		"enabled": true,
+		"displayMode": "fullBleed"
 	},
 	"fullViewport": {
 		"title": "Educational Toys for Young Minds",

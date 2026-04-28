@@ -22,6 +22,8 @@ export interface ProductsListParams {
   sort?: ProductSort;
   page?: number;
   pageSize?: number;
+  /** Optional cancellation signal for in-flight requests. */
+  signal?: AbortSignal;
 }
 
 export interface ProductsListResult {
@@ -279,7 +281,7 @@ async function fetchProductsFromApi(params: ProductsListParams): Promise<Product
   qs.set('page', String(params.page ?? 1));
   qs.set('limit', String(params.pageSize ?? 8));
   const path = `/api/v1/products${qs.toString() ? `?${qs}` : ''}`;
-  const raw = await apiGetJson<unknown>(path);
+  const raw = await apiGetJson<unknown>(path, { signal: params.signal });
   return normalizeListResponse(raw, params);
 }
 

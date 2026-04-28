@@ -91,6 +91,10 @@ export type HomeHeroOrbitBannerJson = {
     fallbackColor?: string;
     /** 0..1 white overlay on top of background image (higher = more dimmed). */
     overlayWhiteOpacity?: number;
+    /** Multiple background variants to switch between in the tuner panel. */
+    variants?: string[];
+    /** Index into `variants` for the active background (defaults to 0). */
+    variantIndex?: number;
   };
   kid: {
     image?: string;
@@ -105,6 +109,10 @@ export type HomeHeroOrbitBannerJson = {
      * @deprecated Use `large`. Still read when `large` is omitted (migration).
      */
     desktop?: OrbitBannerKidPlacement;
+    /** Multiple kid image variants to switch between in the tuner panel. */
+    variants?: string[];
+    /** Index into `variants` for the active kid image (defaults to 0). */
+    variantIndex?: number;
   };
   orbit: {
     /** @deprecated Prefer `orbit.large` / per-breakpoint layout; still seeds `large` when used. */
@@ -175,6 +183,11 @@ export type HomeHeroJson = {
   orbitBanner?: HomeHeroOrbitBannerJson;
   slides: HeroBannerSlide[];
   options?: HomeHeroSliderOptions;
+  /** Toggle product hover icons and display mode on the Explore by Product Family section. */
+  productFamilyIcons?: {
+    enabled?: boolean;
+    displayMode?: 'default' | 'fullBleed';
+  };
 };
 
 export type HomeGalleryLayoutJson = {

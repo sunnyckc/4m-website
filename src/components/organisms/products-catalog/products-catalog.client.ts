@@ -7,6 +7,8 @@ export interface ProductsCatalogInitOptions {
   base: string;
 }
 
+const SEARCH_DEBOUNCE_MS = 450;
+
 function isTopItemsCategory(categoryId: string): boolean {
   // Legacy support for older shared links.
   return categoryId === 'top-items' || categoryId === 'hot-products';
@@ -57,6 +59,11 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
   const itemsPerPage = 8;
   let sortValue: ProductSort = '';
   let lastTotal = 0;
+  let activeRequestController: AbortController | null = null;
+  let latestRequestId = 0;
+
+  const isAbortError = (error: unknown): boolean =>
+    error instanceof DOMException ? error.name === 'AbortError' : false;
 
   const setLoading = (loading: boolean) => {
     grid.setAttribute('aria-busy', loading ? 'true' : 'false');
@@ -144,6 +151,10 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
   }
 
   async function refresh() {
+    const requestId = ++latestRequestId;
+    activeRequestController?.abort();
+    activeRequestController = new AbortController();
+
     showError(null);
     setLoading(true);
     try {
@@ -156,7 +167,10 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
         sort: sortValue,
         page: currentPage,
         pageSize: itemsPerPage,
+        signal: activeRequestController.signal,
       });
+
+      if (requestId !== latestRequestId) return;
 
       renderCards(result.items);
       currentPage = result.page;
@@ -186,18 +200,22 @@ export function initProductsCatalog(options: ProductsCatalogInitOptions): void {
         pagEl.classList.add('hidden');
       }
     } catch (e) {
+      if (requestId !== latestRequestId || isAbortError(e)) return;
       console.error(e);
       showError('Could not load products. Please try again.');
       grid.innerHTML = '';
     } finally {
-      setLoading(false);
+      if (requestId === latestRequestId) {
+        setLoading(false);
+        activeRequestController = null;
+      }
     }
   }
 
   const debouncedRefresh = debounce(() => {
     currentPage = 1;
     void refresh();
-  }, 300);
+  }, SEARCH_DEBOUNCE_MS);
 
   function syncUrlState() {
     const url = new URL(window.location.href);

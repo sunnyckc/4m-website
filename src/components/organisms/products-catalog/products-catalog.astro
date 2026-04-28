@@ -164,12 +164,10 @@ const { categories, base } = Astro.props;
 
 <script>
   import { initProductsCatalog } from './products-catalog.client';
-  import { initProductLinkPrefetch } from '@/lib/product-link-prefetch';
 
   function boot() {
     const root = document.querySelector('.products-catalog');
     const base = root?.getAttribute('data-base') ?? '';
-    initProductLinkPrefetch();
     initProductsCatalog({ base });
   }
 

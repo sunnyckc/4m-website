@@ -572,6 +572,31 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                   onChange={(e) => patchBg({ image: e.target.value || undefined })}
                 />
               </FieldRow>
+              {draft.background?.variants != null && draft.background.variants.length > 0 ? (
+                <div>
+                  <label className="text-[11px] font-medium text-muted-foreground">Variant</label>
+                  <div className="mt-1 flex flex-wrap gap-1.5">
+                    {draft.background.variants.map((_, i) => {
+                      const active = (draft.background?.variantIndex ?? 0) === i;
+                      return (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => patchBg({ variantIndex: i })}
+                          className={cn(
+                            'flex h-9 w-9 items-center justify-center rounded-md border text-xs font-medium transition',
+                            active
+                              ? 'border-primary bg-primary text-primary-foreground'
+                              : 'border-border bg-background text-muted-foreground hover:border-primary/50',
+                          )}
+                        >
+                          {i + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
               <FieldRow label="Alt">
                 <input
                   className={inputClass}
@@ -614,6 +639,36 @@ export function HeroOrbitTunerPanel({ draft, setDraft, onReset }: HeroOrbitTuner
                   }
                 />
               </FieldRow>
+              {draft.kid.variants != null && draft.kid.variants.length > 0 ? (
+                <div>
+                  <label className="text-[11px] font-medium text-muted-foreground">Variant</label>
+                  <div className="mt-1 flex flex-wrap gap-1.5">
+                    {draft.kid.variants.map((_, i) => {
+                      const active = (draft.kid.variantIndex ?? 0) === i;
+                      return (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() =>
+                            setDraft((prev) => ({
+                              ...prev,
+                              kid: { ...prev.kid, variantIndex: i },
+                            }))
+                          }
+                          className={cn(
+                            'flex h-9 w-9 items-center justify-center rounded-md border text-xs font-medium transition',
+                            active
+                              ? 'border-primary bg-primary text-primary-foreground'
+                              : 'border-border bg-background text-muted-foreground hover:border-primary/50',
+                          )}
+                        >
+                          {i + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
               <FieldRow label="Alt">
                 <input
                   className={inputClass}

@@ -6,6 +6,7 @@ import {
   HeroFullViewport,
   HeroOrbitBanner,
   HomeNewsGallery,
+  ProductFamilySection,
   SocialProofRibbon,
 } from '@/components';
 import { getAwards } from '@/repositories/awards';
@@ -48,6 +49,42 @@ const audiencePaths = {
   parentsAndTeachers: `${base}/parents-and-teachers`,
   distributors: `${base}/distributors`,
 } as const;
+
+const productItems = [
+  {
+    pillar: 'kidzlabs',
+    image: '/images/home/kidzlabs.jpg',
+    imageAlt: 'KidzLabs STEAM kits, robotics, and science toys on display',
+    title: 'KidzLabs',
+    description: 'High-tech experiments, robotics, and engineering kits for hands-on discovery—built for curious kids who like to take things apart and put them back smarter than before.',
+    linkHref: pillarCatalog.kidzLabs,
+    linkLabel: 'Browse KidzLabs',
+    bgColor: 'bg-gradient-to-b from-blue-200/40 to-blue-100',
+    layout: 'left' as const,
+  },
+  {
+    pillar: 'green-science',
+    image: '/images/home/green-science.jpg',
+    imageAlt: 'Green Science eco-engineering and renewable energy kits on shelves',
+    title: 'Green Science',
+    description: 'Eco-minded engineering and renewable-energy projects children can build, test, and understand—science with a lighter footprint.',
+    linkHref: pillarCatalog.greenScience,
+    linkLabel: 'Browse Green Science',
+    bgColor: 'bg-green-100',
+    layout: 'right' as const,
+  },
+  {
+    pillar: 'arts-crafts',
+    image: '/images/home/arts-crafts.jpg',
+    imageAlt: 'Arts and Crafts creative kits and activity sets on display',
+    title: 'Arts & Crafts',
+    description: 'Creative development through making—fine motor skills, imagination, and open-ended design for kids who express themselves with color, texture, and glue-sticked fingers.',
+    linkHref: pillarCatalog.artsCrafts,
+    linkLabel: 'Browse Arts & Crafts',
+    bgColor: 'bg-rose-100',
+    layout: 'left' as const,
+  },
+];
 
 /** Matches distributors page: low-emphasis text link instead of a primary button. */
 const pillarTextLinkClass =
@@ -99,7 +136,7 @@ const pillarTextLinkClass =
   ) : null}
 
   <!-- Company philosophy -->
-  <section class="py-14 lg:py-20 bg-muted/20" aria-labelledby="home-philosophy-heading">
+  <section class="py-14 lg:py-20 bg-background" aria-labelledby="home-philosophy-heading">
     <div class="container-custom">
       <div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
         <div class="space-y-5 text-center lg:text-left">
@@ -130,10 +167,10 @@ const pillarTextLinkClass =
     </div>
   </section>
 
-  <!-- Product families: alternating editorial rows (image ↔ copy) -->
-  <section class="py-14 lg:py-24 overflow-hidden" aria-labelledby="home-pillars-heading">
+  <!-- Product families -->
+  <section class="overflow-hidden" aria-labelledby="home-pillars-heading">
     <div class="container-custom">
-      <div class="text-center space-y-4 mb-16 lg:mb-20 max-w-2xl mx-auto">
+      <div class="text-center space-y-4 mb-16 lg:mb-20 max-w-2xl mx-auto pt-14 lg:pt-24">
         <h2 id="home-pillars-heading" class="text-3xl md:text-4xl font-bold text-fun">
           Explore by product family
         </h2>
@@ -141,99 +178,13 @@ const pillarTextLinkClass =
           Three lines that anchor our catalogue—each shown here with photography from our retail displays.
         </p>
       </div>
-
-      <div class="flex flex-col gap-20 lg:gap-28">
-        <!-- KidzLabs: visual left, copy right -->
-        <article
-          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
-          data-pillar="kidzlabs"
-        >
-          <div class="home-pillar-visual aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/60 shadow-md">
-            <img
-              src={`${base}/images/home/kidzlabs.jpg`}
-              alt="KidzLabs STEAM kits, robotics, and science toys on display"
-              class="h-full w-full object-cover"
-              width="1600"
-              height="1068"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <div class="space-y-5 lg:max-w-xl lg:justify-self-end text-center lg:text-left">
-            <h3 class="text-2xl md:text-3xl font-bold text-fun">KidzLabs</h3>
-            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
-              High-tech experiments, robotics, and engineering kits for hands-on discovery—built for curious kids who like to take things apart and put them back smarter than before.
-            </p>
-            <p class="text-lg pt-2">
-              <a href={pillarCatalog.kidzLabs} class={pillarTextLinkClass}>
-                Browse KidzLabs
-                <span aria-hidden="true">→</span>
-              </a>
-            </p>
-          </div>
-        </article>
-
-        <!-- Green Science: copy left, visual right -->
-        <article
-          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
-          data-pillar="green-science"
-        >
-          <div class="space-y-5 lg:max-w-xl order-2 lg:order-1 text-center lg:text-left">
-            <h3 class="text-2xl md:text-3xl font-bold text-fun">Green Science</h3>
-            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
-              Eco-minded engineering and renewable-energy projects children can build, test, and understand—science with a lighter footprint.
-            </p>
-            <p class="text-lg pt-2">
-              <a href={pillarCatalog.greenScience} class={pillarTextLinkClass}>
-                Browse Green Science
-                <span aria-hidden="true">→</span>
-              </a>
-            </p>
-          </div>
-          <div class="home-pillar-visual aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/60 shadow-md order-1 lg:order-2">
-            <img
-              src={`${base}/images/home/green-science.jpg`}
-              alt="Green Science eco-engineering and renewable energy kits on shelves"
-              class="h-full w-full object-cover"
-              width="1600"
-              height="1064"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        </article>
-
-        <!-- Arts & Crafts: visual left, copy right -->
-        <article
-          class="home-pillar-row grid lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center"
-          data-pillar="arts-crafts"
-        >
-          <div class="home-pillar-visual aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/60 shadow-md">
-            <img
-              src={`${base}/images/home/arts-crafts.jpg`}
-              alt="Arts and Crafts creative kits and activity sets on display"
-              class="h-full w-full object-cover"
-              width="1600"
-              height="1162"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <div class="space-y-5 lg:max-w-xl lg:justify-self-end text-center lg:text-left">
-            <h3 class="text-2xl md:text-3xl font-bold text-fun">Arts &amp; Crafts</h3>
-            <p class="text-lg text-muted-foreground text-comic leading-relaxed">
-              Creative development through making—fine motor skills, imagination, and open-ended design for kids who express themselves with color, texture, and glue-sticked fingers.
-            </p>
-            <p class="text-lg pt-2">
-              <a href={pillarCatalog.artsCrafts} class={pillarTextLinkClass}>
-                Browse Arts &amp; Crafts
-                <span aria-hidden="true">→</span>
-              </a>
-            </p>
-          </div>
-        </article>
-      </div>
     </div>
+
+    <ProductFamilySection
+      client:load
+      products={productItems}
+      base={base}
+    />
   </section>
 
   <!-- Audience paths: text tiles -->
