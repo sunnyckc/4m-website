@@ -2,10 +2,6 @@
 import { Layout } from '@/layouts';
 import {
   Button,
-  HeroBannerSlider,
-  HeroFullViewport,
-  HeroKidzlabStyle,
-  HeroOrbitBanner,
   HomeNewsGallery,
   ProductFamilySection,
   SocialProofRibbon,
@@ -14,6 +10,7 @@ import { getAwards } from '@/repositories/awards';
 import { getHomeHero, getHomeNewsGallery, getHomeSocialProof } from '@/repositories/site';
 import { getBase } from '@/config';
 import type { Award } from '@/types/award';
+import { HeroSection } from '@/components/organisms/home/hero-section';
 
 function awardYearForSort(award: Award): number {
   const m = award.year.match(/\d{4}/);
@@ -66,7 +63,7 @@ const productItems = [
   },
   {
     pillar: 'green-science',
-    image: '/images/home/green-science.jpg',
+    image: '/images/home/green-science-gradient.png',
     imageAlt: 'Green Science eco-engineering and renewable energy kits on shelves',
     title: 'Green Science',
     description: 'Eco-minded engineering and renewable-energy projects children can build, test, and understand—science with a lighter footprint.',
@@ -98,65 +95,11 @@ const pillarTextLinkClass =
   description="4M Industrial Development Limited - Award-winning educational toys and STEAM learning products. Inspiring creativity, critical thinking, and innovation in children through hands-on educational play experiences."
   revealHeaderOnScroll={immersiveHero}
 >
-  <!-- Hero: each variant owns its root element and vertical spacing (no page-level wrapper). -->
-  {homeHero.variant === 'orbitBanner' && homeHero.orbitBanner ? (
-    <HeroOrbitBanner
-      client:load
-      config={homeHero.orbitBanner}
-    />
-  ) : homeHero.variant === 'kidzlabBanner' && homeHero.kidzlabBanner ? (
-    <HeroKidzlabStyle
-      client:load
-      titleLine1={homeHero.kidzlabBanner.titleLine1}
-      titleLine2={homeHero.kidzlabBanner.titleLine2}
-      titleLine2RainbowGradient={homeHero.kidzlabBanner.titleLine2RainbowGradient}
-      subtitle={homeHero.kidzlabBanner.subtitle}
-      ctaText={homeHero.kidzlabBanner.ctaText}
-      ctaHref={homeHero.kidzlabBanner.ctaHref}
-      secondaryCtaText={homeHero.kidzlabBanner.secondaryCtaText}
-      secondaryCtaHref={homeHero.kidzlabBanner.secondaryCtaHref}
-      image={homeHero.kidzlabBanner.image}
-      imageAlt={homeHero.kidzlabBanner.imageAlt}
-      bgColor={homeHero.kidzlabBanner.bgColor}
-      texture={homeHero.kidzlabBanner.texture}
-      showMagma={homeHero.kidzlabBanner.showMagma}
-      magmaX={homeHero.kidzlabBanner.magmaX}
-      magmaY={homeHero.kidzlabBanner.magmaY}
-      imageWidthPx={homeHero.kidzlabBanner.imageWidthPx}
-      imageHeightPx={homeHero.kidzlabBanner.imageHeightPx}
-      imageRightPct={homeHero.kidzlabBanner.imageRightPct}
-      imageBottomPct={homeHero.kidzlabBanner.imageBottomPct}
-      logo={homeHero.kidzlabBanner.logo}
-      logoHeightPx={homeHero.kidzlabBanner.logoHeightPx}
-      minHeightClassName={homeHero.kidzlabBanner.minHeightClassName}
-    />
-  ) : homeHero.variant === 'fullViewport' && homeHero.fullViewport ? (
-    <HeroFullViewport
-      client:load
-      title={homeHero.fullViewport.title}
-      subtitle={homeHero.fullViewport.subtitle}
-      ctaText={homeHero.fullViewport.ctaText}
-      ctaHref={homeHero.fullViewport.ctaHref}
-      background={homeHero.fullViewport.background}
-      className={homeHero.fullViewport.className}
-      innerClassName={homeHero.fullViewport.innerClassName}
-      minHeightClassName={homeHero.fullViewport.minHeightClassName}
-      mediaSlotMinHeightClassName={homeHero.fullViewport.mediaSlotMinHeightClassName}
-      showMediaSlot={homeHero.fullViewport.showMediaSlot ?? true}
-    />
-  ) : (
-    <HeroBannerSlider
-      client:load
-      slides={homeHero.slides}
-      autoplay={homeHero.options?.autoplay ?? true}
-      autoplayDelayMs={homeHero.options?.autoplayDelayMs ?? 5000}
-      showDots={homeHero.options?.showDots ?? true}
-      showArrows={homeHero.options?.showArrows ?? true}
-      className={homeHero.options?.className}
-      heightClassName={homeHero.options?.heightClassName}
-      loop={homeHero.options?.loop ?? true}
-    />
-  )}
+  <HeroSection
+    client:load
+    config={homeHero}
+    showTuner={import.meta.env.DEV}
+  />
 
   {homeSocialProof.items.length > 0 ? (
     <SocialProofRibbon config={homeSocialProof} />

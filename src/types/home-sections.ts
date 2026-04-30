@@ -176,6 +176,19 @@ export type HomeHeroFullViewportJson = {
   showMediaSlot?: boolean;
 };
 
+/** One floating product image positioned in the hero background. */
+export type FloatingProductConfig = {
+  image: string;
+  /** Distance from left edge in px. */
+  x: number;
+  /** Distance from bottom edge in px. */
+  y: number;
+  /** Image width in px. */
+  size: number;
+  /** Custom tilt angle in degrees. If omitted, a random tilt is applied. */
+  tilt?: number;
+};
+
 /** Hero variant duplicating the KidzLab visual: gradient → texture → active object image → text + CTAs. */
 export type HomeHeroKidzlabBannerJson = {
   titleLine1: string;
@@ -193,16 +206,28 @@ export type HomeHeroKidzlabBannerJson = {
   bgColor?: string;
   /** Texture overlay image path (defaults to kidzlabs-texture.png). */
   texture?: string;
+  /** Show a curved white wave overlay near the bottom. */
+  showBottomWave?: boolean;
+  /** Opacity of the bottom wave (0–1). */
+  bottomWaveOpacity?: number;
+  /** Height of the bottom wave SVG in px. */
+  bottomWaveHeightPx?: number;
+  /** Offset from the bottom edge in px (negative moves it down, positive moves it up). */
+  bottomWaveOffsetPx?: number;
   /** Show the MagmaParticles canvas overlay. */
   showMagma?: boolean;
-  /** Magma source X as percentage (0–100). */
-  magmaX?: number;
-  /** Magma source Y as percentage (0–100). */
-  magmaY?: number;
+  /** Magma source distance from right edge in px. */
+  magmaRightPx?: number;
+  /** Magma source distance from bottom edge in px. */
+  magmaBottomPx?: number;
   imageWidthPx?: number;
   imageHeightPx?: number;
-  imageRightPct?: number;
-  imageBottomPct?: number;
+  /** Distance from right edge in px. */
+  imageRightPx?: number;
+  /** Distance from bottom edge in px. */
+  imageBottomPx?: number;
+  /** Floating background product images with individual position and size. */
+  floatingProducts?: FloatingProductConfig[];
   /** Logo image path. */
   logo?: string;
   /** Logo height in px. */

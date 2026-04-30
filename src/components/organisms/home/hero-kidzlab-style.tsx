@@ -4,6 +4,8 @@ import { getBase } from '@/config';
 import { Button } from '@/components/ui/react/button';
 import { cn } from '@/utils';
 import { MagmaParticles } from './magma-particles';
+import { FloatingProducts } from './floating-products';
+import type { FloatingProductConfig } from '@/types/home-sections';
 
 const TITLE_LINE2_RAINBOW_STYLE: React.CSSProperties = {
   backgroundImage:
@@ -32,12 +34,17 @@ export interface HeroKidzlabStyleProps {
   bgColor?: string;
   texture?: string;
   showMagma?: boolean;
-  magmaX?: number;
-  magmaY?: number;
+  magmaRightPx?: number;
+  magmaBottomPx?: number;
+  showBottomWave?: boolean;
+  bottomWaveOpacity?: number;
+  bottomWaveHeightPx?: number;
+  bottomWaveOffsetPx?: number;
   imageWidthPx?: number;
+  floatingProducts?: FloatingProductConfig[];
   imageHeightPx?: number;
-  imageRightPct?: number;
-  imageBottomPct?: number;
+  imageRightPx?: number;
+  imageBottomPx?: number;
   logo?: string;
   logoHeightPx?: number;
   className?: string;
@@ -58,12 +65,17 @@ export function HeroKidzlabStyle({
   bgColor = 'bg-gradient-to-r from-[#64b5f6] to-[#90caf9]',
   texture,
   showMagma = true,
-  magmaX = 41,
-  magmaY = 60,
-  imageWidthPx = 500,
-  imageHeightPx,
-  imageRightPct = 0,
-  imageBottomPct,
+  magmaRightPx = 400,
+  magmaBottomPx = 330,
+  showBottomWave = true,
+  bottomWaveOpacity = 0.12,
+  bottomWaveHeightPx = 80,
+  bottomWaveOffsetPx = 0,
+  imageWidthPx = 810,
+  floatingProducts,
+  imageHeightPx = 790,
+  imageRightPx = 0,
+  imageBottomPx = -160,
   logo,
   logoHeightPx = 56,
   className,
@@ -88,21 +100,37 @@ export function HeroKidzlabStyle({
           className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0"
         />
       )}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-background/40 via-background/15 to-transparent md:from-background/30 md:via-background/10" />
+      {showBottomWave && (
+        <svg
+          className="absolute left-0 w-full pointer-events-none z-[2]"
+          style={{ 
+            height: `${bottomWaveHeightPx}px`,
+            bottom: `${bottomWaveOffsetPx}px`
+          }}
+          viewBox="0 0 1440 200"
+          preserveAspectRatio="none"
+        >
+          <path d="M0,120 C 360,0 1080,0 1440,120 L1440,200 L0,200 Z" fill="white" fillOpacity={bottomWaveOpacity} />
+        </svg>
+      )}
       {image && (
         <img
           src={`${base}${image}`}
           alt={imageAlt}
-          className="absolute z-[1] h-auto object-contain pointer-events-none"
+          className="absolute z-[3] h-auto object-contain pointer-events-none"
           style={{
-            right: `${imageRightPct}%`,
-            bottom: imageBottomPct != null ? `${imageBottomPct}%` : '0',
+            right: imageRightPx != null ? `${imageRightPx}px` : '0',
+            bottom: imageBottomPx != null ? `${imageBottomPx}px` : '0',
             width: `${imageWidthPx}px`,
             height: imageHeightPx != null ? `${imageHeightPx}px` : 'auto',
           }}
         />
       )}
-      <div className="absolute inset-0 z-[2] bg-gradient-to-r from-background/85 via-background/40 to-transparent md:from-background/80 md:via-background/25" />
-      <div className="relative z-[3] flex items-center h-full w-full px-6 lg:px-16 xl:px-24 py-14">
+      {floatingProducts && floatingProducts.length > 0 && (
+        <FloatingProducts products={floatingProducts} />
+      )}
+      <div className="relative z-[5] flex items-center h-full w-full px-6 lg:px-16 xl:px-24 py-14">
         <div className="max-w-xl">
           {logo && (
             <img
@@ -115,7 +143,7 @@ export function HeroKidzlabStyle({
             />
           )}
           {titleLine1 && (
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-sm">
               <span className="block">{titleLine1}</span>
               {titleLine2 && (
                 <span
@@ -128,7 +156,9 @@ export function HeroKidzlabStyle({
             </h1>
           )}
           {subtitle && (
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mt-4">{subtitle}</p>
+            <p className="text-lg md:text-xl text-white/90 leading-relaxed mt-4 drop-shadow-sm">
+              {subtitle}
+            </p>
           )}
           <div className="flex flex-wrap gap-3 pt-6">
             {ctaText && ctaHref && (
@@ -146,8 +176,8 @@ export function HeroKidzlabStyle({
       </div>
       {showMagma && (
         <MagmaParticles
-          sourceX={magmaX ?? 41}
-          sourceY={magmaY ?? 60}
+          sourceRightPx={magmaRightPx ?? 400}
+          sourceBottomPx={magmaBottomPx ?? 330}
           rate={35}
           active={true}
         />

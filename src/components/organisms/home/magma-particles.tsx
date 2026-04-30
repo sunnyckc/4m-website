@@ -14,10 +14,10 @@ interface Particle {
 }
 
 interface MagmaParticlesProps {
-  /** X position of magma source as percentage of container width (0-100) */
-  sourceX: number;
-  /** Y position of magma source as percentage of container height (0-100) */
-  sourceY: number;
+  /** Distance from right edge in px */
+  sourceRightPx: number;
+  /** Distance from bottom edge in px */
+  sourceBottomPx: number;
   /** Particles per second */
   rate?: number;
   /** When false, particle canvas is hidden */
@@ -29,7 +29,7 @@ const COLORS = [
   '#ffa500', '#ffd700', '#ff4500', '#ff2400',
 ];
 
-export function MagmaParticles({ sourceX, sourceY, rate = 40, active = true }: MagmaParticlesProps) {
+export function MagmaParticles({ sourceRightPx, sourceBottomPx, rate = 40, active = true }: MagmaParticlesProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const lastSpawnRef = useRef(0);
@@ -76,8 +76,8 @@ export function MagmaParticles({ sourceX, sourceY, rate = 40, active = true }: M
 
       const w = canvas.width;
       const h = canvas.height;
-      const sx = (sourceX / 100) * w;
-      const sy = (sourceY / 100) * h;
+      const sx = w - sourceRightPx;
+      const sy = h - sourceBottomPx;
 
       frameCount++;
 
@@ -147,7 +147,7 @@ export function MagmaParticles({ sourceX, sourceY, rate = 40, active = true }: M
     animRef.current = requestAnimationFrame(animate);
 
     return () => cancelAnimationFrame(animRef.current);
-  }, [sourceX, sourceY, rate, active, spawnInterval]);
+  }, [sourceRightPx, sourceBottomPx, rate, active, spawnInterval]);
 
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-10" />;
 }

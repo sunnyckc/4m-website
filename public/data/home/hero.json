@@ -1,191 +1,198 @@
 {
-	"variant": "kidzlabBanner",
-	"orbitBanner": {
-		"titleLine1": "Educational toys for",
-		"titleLine2": "Creative young minds",
-		"logoHeightPx": 56,
-		"titleSize": "lg",
-		"subtitle": "Play, learn, and explore.",
-		"subtitleSize": "lg",
-		"ctaText": "Contact Us",
-		"ctaHref": "/contact",
-		"secondaryCtaText": "Distributor Here",
-		"secondaryCtaHref": "/distributors",
-		"minHeightClassName": "min-h-[100dvh]",
-		"background": {
-			"image": "/images/hero/orbit/background-1.png",
-			"alt": "Cozy corner of a children's playroom with a yellow teddy bear and colorful toys",
-			"fallbackColor": "#e0f2fe",
-			"overlayWhiteOpacity": 0,
-			"variants": [
-				"/images/hero/orbit/background-1.png",
-				"/images/hero/orbit/background-2.png",
-				"/images/hero/orbit/background-3.png",
-				"/images/hero/orbit/background-4.png",
-				"/images/hero/orbit/background-5.png",
-				"/images/hero/orbit/background-6.png",
-				"/images/hero/orbit/background-7.png"
-			],
-			"variantIndex": 4
-		},
-		"kid": {
-			"image": "/images/hero/orbit/kid.png",
-			"alt": "Child thinking and playing",
-			"variants": [
-				"/images/hero/orbit/kid.png",
-				"/images/hero/orbit/kid-2.png",
-				"/images/hero/orbit/kid-3.png",
-				"/images/hero/orbit/kid-4.png",
-				"/images/hero/orbit/kid-5.png",
-				"/images/hero/orbit/kid-6.png"
-			],
-			"variantIndex": 0,
-			"large": {
-				"xPercent": 95,
-				"yPercent": 111,
-				"widthPx": 740
-			},
-			"medium": {
-				"xPercent": 82,
-				"yPercent": 95,
-				"widthPx": 520
-			},
-			"mobile": {
-				"xPercent": 70,
-				"yPercent": 78,
-				"widthPx": 280
-			}
-		},
-		"orbit": {
-			"radiusPx": 420,
-			"centerOffsetXPx": -280,
-			"centerOffsetYPx": -510,
-			"direction": "clockwise",
-			"speedSeconds": 40,
-			"startAngleDeg": -95,
-			"itemSizePx": 310,
-			"itemDisplayMode": "circleAccent",
-			"itemCircleSizePx": 249,
-			"medium": {
-				"radiusPx": 320,
-				"centerOffsetXPx": -220,
-				"centerOffsetYPx": -400,
-				"itemSizePx": 260,
-				"itemCircleSizePx": 160
-			},
-			"mobile": {
-				"radiusPx": 200,
-				"centerOffsetXPx": -120,
-				"centerOffsetYPx": -280,
-				"itemSizePx": 140,
-				"itemCircleSizePx": 92
-			},
-			"keepItemsUpright": true,
-			"speedStyle": "oscillating",
-			"oscillationHeight": 45,
-			"oscillationFrequency": 4,
-			"randomizeItemTilt": true,
-			"itemTiltMinDeg": 5,
-			"itemTiltMaxDeg": 15,
-			"itemTiltSeed": 1,
-			"showCenterPoint": true,
-			"large": {
-				"itemCircleSizePx": 249,
-				"itemSizePx": 310
-			}
-		},
-		"items": [
-			{
-				"image": "/images/hero/orbit/orbit-purple.png",
-				"href": "/products",
-				"circleColorHex": "#a855f7"
-			},
-			{
-				"image": "/images/hero/orbit/orbit-blue.png",
-				"href": "/products",
-				"circleColorHex": "#2563eb"
-			},
-			{
-				"image": "/images/hero/orbit/orbit-light-blue.png",
-				"href": "/products",
-				"circleColorHex": "#38bdf8"
-			},
-			{
-				"image": "/images/hero/orbit/orbit-green.png",
-				"href": "/products",
-				"circleColorHex": "#22c55e"
-			},
-			{
-				"image": "/images/hero/orbit/orbit-yellow.png",
-				"href": "/products",
-				"circleColorHex": "#eab308"
-			}
-		],
-		"titleLine2RainbowGradient": true
-	},
-	"kidzlabBanner": {
-		"titleLine1": "Educational toys for",
-		"titleLine2": "Creative young minds",
-		"titleLine2RainbowGradient": true,
-		"subtitle": "Play, learn, and explore.",
-		"ctaText": "Contact Us",
-		"ctaHref": "/contact",
-		"secondaryCtaText": "Distributor Here",
-		"secondaryCtaHref": "/distributors",
-		"image": "/images/hero/orbit/kid-volcano.png",
-		"imageAlt": "Child playing with toy volcano science experiment",
-		"bgColor": "bg-gradient-to-r from-[#64b5f6] to-[#90caf9]",
-		"texture": "/images/home/kidzlabs-texture.png",
-		"showMagma": true,
-		"magmaX": 41,
-		"magmaY": 60,
-		"imageWidthPx": 500,
-		"imageHeightPx": 700,
-		"imageRightPct": 0,
-		"imageBottomPct": 0,
-		"logo": "/images/assets/logo.png",
-		"logoHeightPx": 56,
-		"minHeightClassName": "lg:h-screen"
-	},
-	"productFamilyIcons": {
-		"enabled": true,
-		"displayMode": "fullBleed"
-	},
-	"fullViewport": {
-		"title": "Educational Toys for Young Minds",
-		"subtitle": "Inspiring STEAM learning through play — explore hands-on kits that spark curiosity and creativity.",
-		"ctaText": "Explore Products",
-		"ctaHref": "/products",
-		"showMediaSlot": true,
-		"mediaSlotMinHeightClassName": "min-h-[min(35vh,260px)]"
-	},
-	"slides": [
-		{
-			"id": "slide-1",
-			"media": { "type": "image", "src": "/images/hero/4m-banner-1.png" },
-			"imageAlt": "Educational Toys for Young Minds",
-			"hoverText": "Discover our comprehensive range of STEAM educational toys designed to develop critical thinking, creativity, and problem-solving skills in children.",
-			"textPrimary": "Educational Toys for Young Minds",
-			"textSecondary": "Inspiring Learning Through Play",
-			"href": "/products",
-			"ctaLabel": "Explore Products"
-		},
-		{
-			"id": "slide-2",
-			"media": { "type": "image", "src": "/images/hero/4m-banner-2.png" },
-			"imageAlt": "STEAM Learning Made Fun",
-			"hoverText": "Our award-winning educational toys integrate essential STEAM concepts into engaging, hands-on learning experiences for children of all ages.",
-			"textPrimary": "STEAM Learning Made Fun",
-			"textSecondary": "Science • Technology • Engineering • Arts • Mathematics",
-			"href": "/about",
-			"ctaLabel": "Learn More"
-		}
-	],
-	"options": {
-		"autoplay": true,
-		"autoplayDelayMs": 5000,
-		"showDots": true,
-		"showArrows": true,
-		"heightClassName": "min-h-[370px] h-[370px]"
-	}
+  "variant": "kidzlabBanner",
+  "kidzlabBanner": {
+    "titleLine1": "Educational toys for",
+    "titleLine2": "Creative young minds",
+    "titleLine2RainbowGradient": true,
+    "subtitle": "Play, learn, and explore.",
+    "ctaText": "Contact Us",
+    "ctaHref": "/contact",
+    "secondaryCtaText": "Distributor Here",
+    "secondaryCtaHref": "/distributors",
+    "image": "/images/hero/orbit/kid-volcano.png",
+    "imageAlt": "Child playing with toy volcano science experiment",
+    "bgColor": "bg-gradient-to-r from-[#64b5f6] to-[#90caf9]",
+    "texture": "/images/home/kidzlabs-texture.png",
+    "showMagma": true,
+    "magmaRightPx": 410,
+    "magmaBottomPx": 310,
+    "imageWidthPx": 810,
+    "imageHeightPx": 790,
+    "imageRightPx": 0,
+    "imageBottomPx": -60,
+    "floatingProducts": [],
+    "showBottomWave": true,
+    "bottomWaveOpacity": 1,
+    "bottomWaveHeightPx": 130,
+    "bottomWaveOffsetPx": -10,
+    "logo": "/images/assets/logo.png",
+    "logoHeightPx": 56,
+    "minHeightClassName": "lg:h-screen"
+  },
+  "orbitBanner": {
+    "titleLine1": "Educational toys for",
+    "titleLine2": "Creative young minds",
+    "logoHeightPx": 56,
+    "titleSize": "lg",
+    "subtitle": "Play, learn, and explore.",
+    "subtitleSize": "lg",
+    "ctaText": "Contact Us",
+    "ctaHref": "/contact",
+    "secondaryCtaText": "Distributor Here",
+    "secondaryCtaHref": "/distributors",
+    "minHeightClassName": "min-h-[100dvh]",
+    "background": {
+      "image": "/images/hero/orbit/background-1.png",
+      "alt": "Cozy corner of a children's playroom with a yellow teddy bear and colorful toys",
+      "fallbackColor": "#e0f2fe",
+      "overlayWhiteOpacity": 0,
+      "variants": [
+        "/images/hero/orbit/background-1.png",
+        "/images/hero/orbit/background-2.png",
+        "/images/hero/orbit/background-3.png",
+        "/images/hero/orbit/background-4.png",
+        "/images/hero/orbit/background-5.png",
+        "/images/hero/orbit/background-6.png",
+        "/images/hero/orbit/background-7.png"
+      ],
+      "variantIndex": 4
+    },
+    "kid": {
+      "image": "/images/hero/orbit/kid.png",
+      "alt": "Child thinking and playing",
+      "variants": [
+        "/images/hero/orbit/kid.png",
+        "/images/hero/orbit/kid-2.png",
+        "/images/hero/orbit/kid-3.png",
+        "/images/hero/orbit/kid-4.png",
+        "/images/hero/orbit/kid-5.png",
+        "/images/hero/orbit/kid-6.png"
+      ],
+      "variantIndex": 0,
+      "large": {
+        "xPercent": 95,
+        "yPercent": 111,
+        "widthPx": 740
+      },
+      "medium": {
+        "xPercent": 82,
+        "yPercent": 95,
+        "widthPx": 520
+      },
+      "mobile": {
+        "xPercent": 70,
+        "yPercent": 78,
+        "widthPx": 280
+      }
+    },
+    "orbit": {
+      "radiusPx": 420,
+      "centerOffsetXPx": -280,
+      "centerOffsetYPx": -510,
+      "direction": "clockwise",
+      "speedSeconds": 40,
+      "startAngleDeg": -95,
+      "itemSizePx": 310,
+      "itemDisplayMode": "circleAccent",
+      "itemCircleSizePx": 249,
+      "medium": {
+        "radiusPx": 320,
+        "centerOffsetXPx": -220,
+        "centerOffsetYPx": -400,
+        "itemSizePx": 260,
+        "itemCircleSizePx": 160
+      },
+      "mobile": {
+        "radiusPx": 200,
+        "centerOffsetXPx": -120,
+        "centerOffsetYPx": -280,
+        "itemSizePx": 140,
+        "itemCircleSizePx": 92
+      },
+      "keepItemsUpright": true,
+      "speedStyle": "oscillating",
+      "oscillationHeight": 45,
+      "oscillationFrequency": 4,
+      "randomizeItemTilt": true,
+      "itemTiltMinDeg": 5,
+      "itemTiltMaxDeg": 15,
+      "itemTiltSeed": 1,
+      "showCenterPoint": true,
+      "large": {
+        "itemCircleSizePx": 249,
+        "itemSizePx": 310
+      }
+    },
+    "items": [
+      {
+        "image": "/images/hero/orbit/orbit-purple.png",
+        "href": "/products",
+        "circleColorHex": "#a855f7"
+      },
+      {
+        "image": "/images/hero/orbit/orbit-blue.png",
+        "href": "/products",
+        "circleColorHex": "#2563eb"
+      },
+      {
+        "image": "/images/hero/orbit/orbit-light-blue.png",
+        "href": "/products",
+        "circleColorHex": "#38bdf8"
+      },
+      {
+        "image": "/images/hero/orbit/orbit-green.png",
+        "href": "/products",
+        "circleColorHex": "#22c55e"
+      },
+      {
+        "image": "/images/hero/orbit/orbit-yellow.png",
+        "href": "/products",
+        "circleColorHex": "#eab308"
+      }
+    ],
+    "titleLine2RainbowGradient": true
+  },
+  "fullViewport": {
+    "title": "Educational Toys for Young Minds",
+    "subtitle": "Inspiring STEAM learning through play — explore hands-on kits that spark curiosity and creativity.",
+    "ctaText": "Explore Products",
+    "ctaHref": "/products",
+    "showMediaSlot": true,
+    "mediaSlotMinHeightClassName": "min-h-[min(35vh,260px)]"
+  },
+  "slides": [
+    {
+      "id": "slide-1",
+      "media": {
+        "type": "image",
+        "src": "/images/hero/4m-banner-1.png"
+      },
+      "imageAlt": "Educational Toys for Young Minds",
+      "hoverText": "Discover our comprehensive range of STEAM educational toys designed to develop critical thinking, creativity, and problem-solving skills in children.",
+      "textPrimary": "Educational Toys for Young Minds",
+      "textSecondary": "Inspiring Learning Through Play",
+      "href": "/products",
+      "ctaLabel": "Explore Products"
+    },
+    {
+      "id": "slide-2",
+      "media": {
+        "type": "image",
+        "src": "/images/hero/4m-banner-2.png"
+      },
+      "imageAlt": "STEAM Learning Made Fun",
+      "hoverText": "Our award-winning educational toys integrate essential STEAM concepts into engaging, hands-on learning experiences for children of all ages.",
+      "textPrimary": "STEAM Learning Made Fun",
+      "textSecondary": "Science • Technology • Engineering • Arts • Mathematics",
+      "href": "/about",
+      "ctaLabel": "Learn More"
+    }
+  ],
+  "options": {
+    "autoplay": true,
+    "autoplayDelayMs": 5000,
+    "showDots": true,
+    "showArrows": true,
+    "heightClassName": "min-h-[370px] h-[370px]"
+  }
 }

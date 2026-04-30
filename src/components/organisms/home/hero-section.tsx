@@ -71,15 +71,20 @@ export function HeroSection({ config, showTuner = false }: HeroSectionProps) {
           bgColor={kid.bgColor}
           texture={kid.texture}
           showMagma={kid.showMagma}
-          magmaX={kid.magmaX}
-          magmaY={kid.magmaY}
+          magmaRightPx={kid.magmaRightPx}
+          magmaBottomPx={kid.magmaBottomPx}
           imageWidthPx={kid.imageWidthPx}
           imageHeightPx={kid.imageHeightPx}
-          imageRightPct={kid.imageRightPct}
-          imageBottomPct={kid.imageBottomPct}
+          imageRightPx={kid.imageRightPx}
+          imageBottomPx={kid.imageBottomPx}
           logo={kid.logo}
           logoHeightPx={kid.logoHeightPx}
+          floatingProducts={kid.floatingProducts}
           minHeightClassName={kid.minHeightClassName}
+          showBottomWave={kid.showBottomWave}
+          bottomWaveOpacity={kid.bottomWaveOpacity}
+          bottomWaveHeightPx={kid.bottomWaveHeightPx}
+          bottomWaveOffsetPx={kid.bottomWaveOffsetPx}
         />
       ) : variant === 'fullViewport' && fv ? (
         <HeroFullViewport

@@ -3,17 +3,36 @@ import * as React from 'react';
 import { Button } from '@/components/ui/react/button';
 import { cn } from '@/utils';
 import type {
-  HomeHeroJson,
   HomeHeroKidzlabBannerJson,
   HomeHeroOrbitBannerJson,
   HomeHeroFullViewportJson,
-  HeroBannerSlide,
+  FloatingProductConfig,
 } from '@/types/home-sections';
+import type { HeroBannerSlide } from './types';
 
 type HeroVariant = 'orbitBanner' | 'kidzlabBanner' | 'fullViewport' | 'slider';
 
+export type HeroTunerConfig = {
+  variant: HeroVariant;
+  kidzlabBanner?: HomeHeroKidzlabBannerJson;
+  orbitBanner?: HomeHeroOrbitBannerJson;
+  fullViewport?: HomeHeroFullViewportJson;
+  slides?: HeroBannerSlide[];
+  options?: {
+    autoplay?: boolean;
+    autoplayDelayMs?: number;
+    showDots?: boolean;
+    showArrows?: boolean;
+    className?: string;
+    heightClassName?: string;
+    loop?: boolean;
+  };
+};
+
 export type HeroTunerPanelProps = {
-  config: HomeHeroJson;
+  config: HeroTunerConfig;
+  setConfig: React.Dispatch<React.SetStateAction<HeroTunerConfig>>;
+  onReset: () => void;
 };
 
 const inputClass =
@@ -60,30 +79,17 @@ const variantLabels: Record<HeroVariant, string> = {
   slider: 'Slider',
 };
 
-export function HeroTunerPanel({ config }: HeroTunerPanelProps) {
+export function HeroTunerPanel({ config, setConfig, onReset }: HeroTunerPanelProps) {
   const [open, setOpen] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
-  const variant = (config.variant ?? 'slider') as HeroVariant;
+  const variant = config.variant;
 
-  const [orbitDraft, setOrbitDraft] = React.useState(() =>
-    config.orbitBanner ? JSON.parse(JSON.stringify(config.orbitBanner)) as HomeHeroOrbitBannerJson : null,
-  );
-  const [kidzlabDraft, setKidzlabDraft] = React.useState(() =>
-    config.kidzlabBanner ? JSON.parse(JSON.stringify(config.kidzlabBanner)) as HomeHeroKidzlabBannerJson : null,
-  );
-  const [fullViewportDraft, setFullViewportDraft] = React.useState(() =>
-    config.fullViewport ? JSON.parse(JSON.stringify(config.fullViewport)) as HomeHeroFullViewportJson : null,
-  );
-
-  const currentDraft = React.useMemo((): HomeHeroJson => ({
-    ...config,
-    orbitBanner: orbitDraft ?? config.orbitBanner,
-    kidzlabBanner: kidzlabDraft ?? config.kidzlabBanner,
-    fullViewport: fullViewportDraft ?? config.fullViewport,
-  }), [config, orbitDraft, kidzlabDraft, fullViewportDraft]);
+  const kid = config.kidzlabBanner;
+  const orb = config.orbitBanner;
+  const fv = config.fullViewport;
 
   const copyJson = React.useCallback(async () => {
-    const text = JSON.stringify(currentDraft, null, 2);
+    const text = JSON.stringify(config, null, 2);
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -91,13 +97,31 @@ export function HeroTunerPanel({ config }: HeroTunerPanelProps) {
     } catch {
       window.prompt('Copy this JSON:', text);
     }
-  }, [currentDraft]);
-
-  const resetAll = React.useCallback(() => {
-    setOrbitDraft(config.orbitBanner ? JSON.parse(JSON.stringify(config.orbitBanner)) : null);
-    setKidzlabDraft(config.kidzlabBanner ? JSON.parse(JSON.stringify(config.kidzlabBanner)) : null);
-    setFullViewportDraft(config.fullViewport ? JSON.parse(JSON.stringify(config.fullViewport)) : null);
   }, [config]);
+
+  const patchKid = (partial: Partial<HomeHeroKidzlabBannerJson>) =>
+    setConfig((prev) => {
+      if (!prev.kidzlabBanner) return prev;
+      return { ...prev, kidzlabBanner: { ...prev.kidzlabBanner, ...partial } };
+    });
+
+  const patchOrb = (partial: Partial<HomeHeroOrbitBannerJson>) =>
+    setConfig((prev) => {
+      if (!prev.orbitBanner) return prev;
+      return { ...prev, orbitBanner: { ...prev.orbitBanner, ...partial } };
+    });
+
+  const patchOrbKid = (partial: Partial<HomeHeroOrbitBannerJson['kid']>) =>
+    setConfig((prev) => {
+      if (!prev.orbitBanner) return prev;
+      return { ...prev, orbitBanner: { ...prev.orbitBanner, kid: { ...prev.orbitBanner.kid, ...partial } } };
+    });
+
+  const patchFv = (partial: Partial<HomeHeroFullViewportJson>) =>
+    setConfig((prev) => {
+      if (!prev.fullViewport) return prev;
+      return { ...prev, fullViewport: { ...prev.fullViewport, ...partial } };
+    });
 
   return (
     <>
@@ -141,21 +165,21 @@ export function HeroTunerPanel({ config }: HeroTunerPanelProps) {
 
         <div className="min-h-0 flex-1 overflow-y-auto px-3 py-2">
           <p className="mb-3 text-[11px] text-muted-foreground">
-            Adjust values below, then copy the JSON and replace the relevant section in{' '}
-            <code className="rounded bg-muted px-1">public/data/home/hero.json</code>.
+            Adjust values for live preview. Copy JSON and replace the relevant section in{' '}
+            <code className="rounded bg-muted px-1">public/data/home/hero.json</code> to save.
           </p>
 
           <div className="flex flex-col gap-3 text-xs">
-            {variant === 'kidzlabBanner' && kidzlabDraft ? (
-              <KidzlabControls draft={kidzlabDraft} setDraft={setKidzlabDraft} />
+            {variant === 'kidzlabBanner' && kid ? (
+              <KidzlabControls draft={kid} patch={patchKid} />
             ) : null}
 
-            {variant === 'orbitBanner' && orbitDraft ? (
-              <OrbitControls draft={orbitDraft} setDraft={setOrbitDraft} />
+            {variant === 'orbitBanner' && orb ? (
+              <OrbitControls draft={orb} patch={patchOrb} patchKid={patchOrbKid} />
             ) : null}
 
-            {variant === 'fullViewport' && fullViewportDraft ? (
-              <FullViewportControls draft={fullViewportDraft} setDraft={setFullViewportDraft} />
+            {variant === 'fullViewport' && fv ? (
+              <FullViewportControls draft={fv} patch={patchFv} />
             ) : null}
 
             <fieldset className="space-y-2 rounded-md border border-border p-2">
@@ -164,7 +188,7 @@ export function HeroTunerPanel({ config }: HeroTunerPanelProps) {
                 <Button type="button" size="sm" onClick={copyJson}>
                   {copied ? 'Copied' : 'Copy JSON'}
                 </Button>
-                <Button type="button" size="sm" variant="outline" onClick={resetAll}>
+                <Button type="button" size="sm" variant="outline" onClick={onReset}>
                   Reset
                 </Button>
               </div>
@@ -182,12 +206,26 @@ export function HeroTunerPanel({ config }: HeroTunerPanelProps) {
   );
 }
 
-function KidzlabControls({ draft, setDraft }: {
+function KidzlabControls({ draft, patch }: {
   draft: HomeHeroKidzlabBannerJson;
-  setDraft: React.Dispatch<React.SetStateAction<HomeHeroKidzlabBannerJson | null>>;
+  patch: (partial: Partial<HomeHeroKidzlabBannerJson>) => void;
 }) {
-  const patch = (partial: Partial<HomeHeroKidzlabBannerJson>) =>
-    setDraft((prev) => prev ? { ...prev, ...partial } : prev);
+  const fp = draft.floatingProducts ?? [];
+
+  const setFloatingProducts = (next: FloatingProductConfig[]) =>
+    patch({ floatingProducts: next });
+
+  const updateFpItem = (idx: number, partial: Partial<FloatingProductConfig>) => {
+    const next = [...fp];
+    next[idx] = { ...next[idx], ...partial };
+    setFloatingProducts(next);
+  };
+
+  const addFpItem = () =>
+    setFloatingProducts([...fp, { image: '/images/hero/orbit/product-dinosaur.png', x: 50, y: 50, size: 80 }]);
+
+  const removeFpItem = (idx: number) =>
+    setFloatingProducts(fp.filter((_, i) => i !== idx));
 
   return (
     <>
@@ -199,13 +237,13 @@ function KidzlabControls({ draft, setDraft }: {
         <FieldRow label="Alt text">
           <input className={inputClass} value={draft.imageAlt ?? ''} onChange={(e) => patch({ imageAlt: e.target.value })} />
         </FieldRow>
-        <p className="text-[10px] text-muted-foreground">Position (%) and size (px).</p>
+        <p className="text-[10px] text-muted-foreground">Position (px) and size (px).</p>
         <div className="grid grid-cols-2 gap-1.5">
-          <FieldRow label="Right %">
-            <NumberInput value={draft.imageRightPct} step={1} onChange={(next) => patch({ imageRightPct: next })} />
+          <FieldRow label="Right px">
+            <NumberInput value={draft.imageRightPx} step={10} onChange={(next) => patch({ imageRightPx: next })} />
           </FieldRow>
-          <FieldRow label="Bottom %">
-            <NumberInput value={draft.imageBottomPct} step={1} onChange={(next) => patch({ imageBottomPct: next })} />
+          <FieldRow label="Bottom px">
+            <NumberInput value={draft.imageBottomPx} step={10} onChange={(next) => patch({ imageBottomPx: next })} />
           </FieldRow>
           <FieldRow label="Width (px)">
             <NumberInput value={draft.imageWidthPx} min={50} step={10} onChange={(next) => patch({ imageWidthPx: next })} />
@@ -223,13 +261,77 @@ function KidzlabControls({ draft, setDraft }: {
           Show magma particles
         </label>
         <div className="grid grid-cols-2 gap-1.5">
-          <FieldRow label="Source X %">
-            <NumberInput value={draft.magmaX} min={0} max={100} step={1} onChange={(next) => patch({ magmaX: next })} />
+          <FieldRow label="Right px">
+            <NumberInput value={draft.magmaRightPx} step={10} onChange={(next) => patch({ magmaRightPx: next })} />
           </FieldRow>
-          <FieldRow label="Source Y %">
-            <NumberInput value={draft.magmaY} min={0} max={100} step={1} onChange={(next) => patch({ magmaY: next })} />
+          <FieldRow label="Bottom px">
+            <NumberInput value={draft.magmaBottomPx} step={10} onChange={(next) => patch({ magmaBottomPx: next })} />
           </FieldRow>
         </div>
+      </fieldset>
+
+      <fieldset className="space-y-2 rounded-md border border-border p-2">
+        <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">Bottom Wave</legend>
+        <label className="flex cursor-pointer items-center gap-2 text-[11px]">
+          <input type="checkbox" checked={draft.showBottomWave === true} onChange={(e) => patch({ showBottomWave: e.target.checked })} />
+          Show bottom wave
+        </label>
+        <div className="grid grid-cols-3 gap-1.5">
+          <FieldRow label="Opacity">
+            <NumberInput value={draft.bottomWaveOpacity} min={0} max={1} step={0.01} onChange={(next) => patch({ bottomWaveOpacity: next })} />
+          </FieldRow>
+          <FieldRow label="Height px">
+            <NumberInput value={draft.bottomWaveHeightPx} min={20} step={10} onChange={(next) => patch({ bottomWaveHeightPx: next })} />
+          </FieldRow>
+          <FieldRow label="Offset Y px">
+            <NumberInput value={draft.bottomWaveOffsetPx} step={10} onChange={(next) => patch({ bottomWaveOffsetPx: next })} />
+          </FieldRow>
+        </div>
+      </fieldset>
+
+      <fieldset className="space-y-2 rounded-md border border-border p-2">
+        <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">
+          Floating Products ({fp.length})
+        </legend>
+        <p className="text-[10px] text-muted-foreground">Background product images with tilt descending (first = most tilt).</p>
+        {fp.map((item, i) => (
+          <div key={i} className="rounded border border-border p-1.5 space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-medium">Item {i + 1}</span>
+              <button
+                type="button"
+                onClick={() => removeFpItem(i)}
+                className="text-[10px] text-destructive hover:underline"
+              >
+                Remove
+              </button>
+            </div>
+            <FieldRow label="Image URL">
+              <input className={inputClass} value={item.image} onChange={(e) => updateFpItem(i, { image: e.target.value })} />
+            </FieldRow>
+            <div className="grid grid-cols-4 gap-1">
+              <FieldRow label="X px (from left)">
+                <NumberInput value={item.x} step={10} onChange={(next) => updateFpItem(i, { x: next ?? 50 })} />
+              </FieldRow>
+              <FieldRow label="Y px (from bottom)">
+                <NumberInput value={item.y} step={10} onChange={(next) => updateFpItem(i, { y: next ?? 50 })} />
+              </FieldRow>
+              <FieldRow label="Size px">
+                <NumberInput value={item.size} min={20} step={5} onChange={(next) => updateFpItem(i, { size: next ?? 80 })} />
+              </FieldRow>
+              <FieldRow label="Tilt deg">
+                <NumberInput value={item.tilt} step={1} onChange={(next) => updateFpItem(i, { tilt: next })} />
+              </FieldRow>
+            </div>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={addFpItem}
+          className="w-full rounded border border-dashed border-border py-1 text-[10px] text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+        >
+          + Add floating product
+        </button>
       </fieldset>
 
       <fieldset className="space-y-2 rounded-md border border-border p-2">
@@ -277,16 +379,11 @@ function KidzlabControls({ draft, setDraft }: {
   );
 }
 
-function OrbitControls({ draft, setDraft }: {
+function OrbitControls({ draft, patch, patchKid }: {
   draft: HomeHeroOrbitBannerJson;
-  setDraft: React.Dispatch<React.SetStateAction<HomeHeroOrbitBannerJson | null>>;
+  patch: (partial: Partial<HomeHeroOrbitBannerJson>) => void;
+  patchKid: (partial: Partial<HomeHeroOrbitBannerJson['kid']>) => void;
 }) {
-  const patch = (partial: Partial<HomeHeroOrbitBannerJson>) =>
-    setDraft((prev) => prev ? { ...prev, ...partial } : prev);
-
-  const patchKid = (partial: Partial<HomeHeroOrbitBannerJson['kid']>) =>
-    setDraft((prev) => prev ? { ...prev, kid: { ...prev.kid, ...partial } } : prev);
-
   return (
     <>
       <fieldset className="space-y-2 rounded-md border border-border p-2">
@@ -333,13 +430,10 @@ function OrbitControls({ draft, setDraft }: {
   );
 }
 
-function FullViewportControls({ draft, setDraft }: {
+function FullViewportControls({ draft, patch }: {
   draft: HomeHeroFullViewportJson;
-  setDraft: React.Dispatch<React.SetStateAction<HomeHeroFullViewportJson | null>>;
+  patch: (partial: Partial<HomeHeroFullViewportJson>) => void;
 }) {
-  const patch = (partial: Partial<HomeHeroFullViewportJson>) =>
-    setDraft((prev) => prev ? { ...prev, ...partial } : prev);
-
   return (
     <fieldset className="space-y-2 rounded-md border border-border p-2">
       <legend className="px-1 text-[10px] font-semibold uppercase tracking-wide">Content</legend>
