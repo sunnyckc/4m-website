@@ -23,6 +23,7 @@ async function proxyRequest(request: Request, url: URL, pathParam?: string): Pro
       'Content-Type': request.headers.get('content-type') || 'application/json',
     },
     body: method === 'GET' || method === 'HEAD' ? undefined : request.body,
+    signal: request.signal,
     redirect: 'manual',
   });
 

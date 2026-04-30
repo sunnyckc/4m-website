@@ -2,10 +2,18 @@
 import { Layout } from '@/layouts';
 import { Breadcrumb } from '@/components';
 import { ProductsCatalog } from '@/components/organisms';
-import { getProductCategories } from '@/repositories/site';
+import { getProductCategories, orderProductCategoriesByProductSequences } from '@/repositories/site';
+import { getAllProducts } from '@/services/products';
 import { getBase } from '@/config';
 
 const categoriesData = await getProductCategories();
+let categories = categoriesData.categories;
+try {
+  const products = await getAllProducts();
+  categories = orderProductCategoriesByProductSequences(categories, products);
+} catch (e) {
+  console.warn('[products] Could not reorder categories from product sequences', e);
+}
 const base = getBase();
 ---
 
@@ -24,6 +32,6 @@ const base = getBase();
       </p>
     </div>
 
-    <ProductsCatalog categories={categoriesData.categories} base={base} />
+    <ProductsCatalog categories={categories} base={base} />
   </div>
 </Layout>

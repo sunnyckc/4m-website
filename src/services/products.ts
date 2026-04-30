@@ -127,6 +127,12 @@ function mapTranslationsToMultiLanguage(translations: ProductTranslation[]): Pro
     .filter((item) => item.media_destination !== '');
 }
 
+function parseOptionalSequence(value: unknown): number | undefined {
+  if (value == null || value === '') return undefined;
+  const n = typeof value === 'number' ? value : Number(String(value).trim());
+  return Number.isFinite(n) ? n : undefined;
+}
+
 function normalizeProduct(input: Record<string, unknown>): Product {
   const gallery = Array.isArray(input.gallery) ? (input.gallery as ProductGalleryItem[]) : [];
   const translations = Array.isArray(input.translations)
@@ -153,6 +159,8 @@ function normalizeProduct(input: Record<string, unknown>): Product {
     folder_name: String(input.folder_name ?? input.item_code ?? ''),
     category_main: String(input.category_main ?? ''),
     category_sub: String(input.category_sub ?? ''),
+    sequence_category_main: parseOptionalSequence(input.sequence_category_main),
+    sequence_category_sub: parseOptionalSequence(input.sequence_category_sub),
     tag_visible: Array.isArray(input.tag_visible) ? (input.tag_visible as string[]) : [],
     tag_hidden: Array.isArray(input.tag_hidden) ? (input.tag_hidden as string[]) : [],
     media,

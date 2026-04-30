@@ -14,6 +14,7 @@ import type {
   HomeGallerySteamJson,
   HomeHeroFullViewportJson,
   HomeHeroJson,
+  HomeHeroKidzlabBannerJson,
   HomeHeroOrbitBannerJson,
   HomeNewsGalleryItemJson,
   HomeNewsGalleryJson,
@@ -29,6 +30,7 @@ import type {
   SteamCollageData,
   ContactInfo,
 } from '@/types/content';
+import type { Product } from '@/types/product';
 
 function resolveHeroSlide(slide: HeroBannerSlide): HeroBannerSlide {
   const href = slide.href != null ? resolveSiteUrl(slide.href) ?? slide.href : null;
@@ -59,6 +61,18 @@ function resolveFullViewport(
   return {
     ...fv,
     ctaHref: resolveSiteUrl(fv.ctaHref) ?? fv.ctaHref,
+  };
+}
+
+function resolveKidzlabBanner(kb: HomeHeroKidzlabBannerJson): HomeHeroKidzlabBannerJson {
+  return {
+    ...kb,
+    ctaHref: kb.ctaHref != null ? resolveSiteUrl(kb.ctaHref) ?? kb.ctaHref : kb.ctaHref,
+    secondaryCtaHref:
+      kb.secondaryCtaHref != null
+        ? resolveSiteUrl(kb.secondaryCtaHref) ?? kb.secondaryCtaHref
+        : kb.secondaryCtaHref,
+    image: resolveSiteUrl(kb.image) ?? kb.image,
   };
 }
 
@@ -182,6 +196,70 @@ function mapCategoriesFilterItems(items: unknown): ProductCategory[] {
     .filter((item): item is ProductCategory => item !== null);
 }
 
+function parseCategorySequence(value: unknown): number | undefined {
+  if (value == null || value === '') return undefined;
+  const n = typeof value === 'number' ? value : Number(String(value).trim());
+  return Number.isFinite(n) ? n : undefined;
+}
+
+/**
+ * Reorders CMS category rows using min sequence_* across products per main / (main, sub).
+ * Rows with no matching sequence data keep a stable alphabetical order relative to peers.
+ */
+export function orderProductCategoriesByProductSequences(
+  categories: ProductCategory[],
+  products: Product[],
+): ProductCategory[] {
+  if (categories.length === 0 || products.length === 0) return categories;
+
+  const mainRank = new Map<string, number>();
+  const subRank = new Map<string, number>();
+
+  for (const p of products) {
+    const main = normalizeCategorySubcategory(p.category_main);
+    if (!main) continue;
+    const sm = parseCategorySequence(p.sequence_category_main);
+    if (sm !== undefined) {
+      const prev = mainRank.get(main);
+      mainRank.set(main, prev === undefined ? sm : Math.min(prev, sm));
+    }
+    const sub = normalizeCategorySubcategory(p.category_sub);
+    if (!sub) continue;
+    const ss = parseCategorySequence(p.sequence_category_sub);
+    if (ss !== undefined) {
+      const key = `${main}\t${sub}`;
+      const prev = subRank.get(key);
+      subRank.set(key, prev === undefined ? ss : Math.min(prev, ss));
+    }
+  }
+
+  if (mainRank.size === 0 && subRank.size === 0) return categories;
+
+  const rankMain = (id: string): number | undefined => mainRank.get(id);
+  const rankSub = (mainId: string, subId: string): number | undefined => subRank.get(`${mainId}\t${subId}`);
+
+  const sorted = [...categories].sort((a, b) => {
+    const ra = rankMain(a.id);
+    const rb = rankMain(b.id);
+    if (ra !== undefined && rb !== undefined && ra !== rb) return ra - rb;
+    if (ra !== undefined && rb === undefined) return -1;
+    if (ra === undefined && rb !== undefined) return 1;
+    return a.id.localeCompare(b.id);
+  });
+
+  return sorted.map((cat) => ({
+    ...cat,
+    subcategories: [...cat.subcategories].sort((a, b) => {
+      const ra = rankSub(cat.id, a.id);
+      const rb = rankSub(cat.id, b.id);
+      if (ra !== undefined && rb !== undefined && ra !== rb) return ra - rb;
+      if (ra !== undefined && rb === undefined) return -1;
+      if (ra === undefined && rb !== undefined) return 1;
+      return a.id.localeCompare(b.id);
+    }),
+  }));
+}
+
 /** Accepts wrapped `{ data: ... }`, `{ data: { items } }`, top-level `items`, or a raw array. */
 function extractCategoryFilterItems(raw: unknown): unknown {
   if (Array.isArray(raw)) return raw;
@@ -264,6 +342,8 @@ export async function getHomeHero(): Promise<HomeHeroJson> {
       data.fullViewport != null ? resolveFullViewport(data.fullViewport) : undefined,
     orbitBanner:
       data.orbitBanner != null ? resolveOrbitBanner(data.orbitBanner) : undefined,
+    kidzlabBanner:
+      data.kidzlabBanner != null ? resolveKidzlabBanner(data.kidzlabBanner) : undefined,
   };
 }
 

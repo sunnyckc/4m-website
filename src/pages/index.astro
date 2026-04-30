@@ -4,6 +4,7 @@ import {
   Button,
   HeroBannerSlider,
   HeroFullViewport,
+  HeroKidzlabStyle,
   HeroOrbitBanner,
   HomeNewsGallery,
   ProductFamilySection,
@@ -36,7 +37,8 @@ const homeNewsGallery = await getHomeNewsGallery();
 /** Full-viewport / orbit heroes sit flush; slider keeps spacing before the next section. */
 const immersiveHero =
   (homeHero.variant === 'fullViewport' && homeHero.fullViewport != null) ||
-  (homeHero.variant === 'orbitBanner' && homeHero.orbitBanner != null);
+  (homeHero.variant === 'orbitBanner' && homeHero.orbitBanner != null) ||
+  (homeHero.variant === 'kidzlabBanner' && homeHero.kidzlabBanner != null);
 
 const pillarCatalog = {
   kidzLabs: `${base}/products?category=science-education&subcategory=kidzlabs`,
@@ -59,7 +61,7 @@ const productItems = [
     description: 'High-tech experiments, robotics, and engineering kits for hands-on discovery—built for curious kids who like to take things apart and put them back smarter than before.',
     linkHref: pillarCatalog.kidzLabs,
     linkLabel: 'Browse KidzLabs',
-    bgColor: 'bg-gradient-to-b from-blue-200/40 to-blue-100',
+    bgColor: 'bg-gradient-to-r from-[#bbdefb] to-[#64b5f6]',
     layout: 'left' as const,
   },
   {
@@ -70,7 +72,7 @@ const productItems = [
     description: 'Eco-minded engineering and renewable-energy projects children can build, test, and understand—science with a lighter footprint.',
     linkHref: pillarCatalog.greenScience,
     linkLabel: 'Browse Green Science',
-    bgColor: 'bg-green-100',
+    bgColor: 'bg-[#a5d6a7]',
     layout: 'right' as const,
   },
   {
@@ -81,7 +83,7 @@ const productItems = [
     description: 'Creative development through making—fine motor skills, imagination, and open-ended design for kids who express themselves with color, texture, and glue-sticked fingers.',
     linkHref: pillarCatalog.artsCrafts,
     linkLabel: 'Browse Arts & Crafts',
-    bgColor: 'bg-rose-100',
+    bgColor: 'bg-[#f8bbd0]',
     layout: 'left' as const,
   },
 ];
@@ -101,7 +103,32 @@ const pillarTextLinkClass =
     <HeroOrbitBanner
       client:load
       config={homeHero.orbitBanner}
-      showTuner={import.meta.env.DEV}
+    />
+  ) : homeHero.variant === 'kidzlabBanner' && homeHero.kidzlabBanner ? (
+    <HeroKidzlabStyle
+      client:load
+      titleLine1={homeHero.kidzlabBanner.titleLine1}
+      titleLine2={homeHero.kidzlabBanner.titleLine2}
+      titleLine2RainbowGradient={homeHero.kidzlabBanner.titleLine2RainbowGradient}
+      subtitle={homeHero.kidzlabBanner.subtitle}
+      ctaText={homeHero.kidzlabBanner.ctaText}
+      ctaHref={homeHero.kidzlabBanner.ctaHref}
+      secondaryCtaText={homeHero.kidzlabBanner.secondaryCtaText}
+      secondaryCtaHref={homeHero.kidzlabBanner.secondaryCtaHref}
+      image={homeHero.kidzlabBanner.image}
+      imageAlt={homeHero.kidzlabBanner.imageAlt}
+      bgColor={homeHero.kidzlabBanner.bgColor}
+      texture={homeHero.kidzlabBanner.texture}
+      showMagma={homeHero.kidzlabBanner.showMagma}
+      magmaX={homeHero.kidzlabBanner.magmaX}
+      magmaY={homeHero.kidzlabBanner.magmaY}
+      imageWidthPx={homeHero.kidzlabBanner.imageWidthPx}
+      imageHeightPx={homeHero.kidzlabBanner.imageHeightPx}
+      imageRightPct={homeHero.kidzlabBanner.imageRightPct}
+      imageBottomPct={homeHero.kidzlabBanner.imageBottomPct}
+      logo={homeHero.kidzlabBanner.logo}
+      logoHeightPx={homeHero.kidzlabBanner.logoHeightPx}
+      minHeightClassName={homeHero.kidzlabBanner.minHeightClassName}
     />
   ) : homeHero.variant === 'fullViewport' && homeHero.fullViewport ? (
     <HeroFullViewport

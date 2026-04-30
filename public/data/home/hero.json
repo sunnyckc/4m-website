@@ -1,5 +1,5 @@
 {
-	"variant": "orbitBanner",
+	"variant": "kidzlabBanner",
 	"orbitBanner": {
 		"titleLine1": "Educational toys for",
 		"titleLine2": "Creative young minds",
@@ -122,6 +122,30 @@
 			}
 		],
 		"titleLine2RainbowGradient": true
+	},
+	"kidzlabBanner": {
+		"titleLine1": "Educational toys for",
+		"titleLine2": "Creative young minds",
+		"titleLine2RainbowGradient": true,
+		"subtitle": "Play, learn, and explore.",
+		"ctaText": "Contact Us",
+		"ctaHref": "/contact",
+		"secondaryCtaText": "Distributor Here",
+		"secondaryCtaHref": "/distributors",
+		"image": "/images/hero/orbit/kid-volcano.png",
+		"imageAlt": "Child playing with toy volcano science experiment",
+		"bgColor": "bg-gradient-to-r from-[#64b5f6] to-[#90caf9]",
+		"texture": "/images/home/kidzlabs-texture.png",
+		"showMagma": true,
+		"magmaX": 41,
+		"magmaY": 60,
+		"imageWidthPx": 500,
+		"imageHeightPx": 700,
+		"imageRightPct": 0,
+		"imageBottomPct": 0,
+		"logo": "/images/assets/logo.png",
+		"logoHeightPx": 56,
+		"minHeightClassName": "lg:h-screen"
 	},
 	"productFamilyIcons": {
 		"enabled": true,

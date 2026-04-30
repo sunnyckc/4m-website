@@ -27,6 +27,10 @@ export interface Product {
   folder_name: string;
   category_main: string;
   category_sub: string;
+  /** Lower sorts earlier in catalog sidebar; omitted when absent from API. */
+  sequence_category_main?: number;
+  /** Lower sorts earlier under the main category; omitted when absent from API. */
+  sequence_category_sub?: number;
   tag_visible: string[];
   tag_hidden: string[];
   media: ProductMedia[];

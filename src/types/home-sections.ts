@@ -176,11 +176,47 @@ export type HomeHeroFullViewportJson = {
   showMediaSlot?: boolean;
 };
 
+/** Hero variant duplicating the KidzLab visual: gradient → texture → active object image → text + CTAs. */
+export type HomeHeroKidzlabBannerJson = {
+  titleLine1: string;
+  titleLine2?: string;
+  titleLine2RainbowGradient?: boolean;
+  subtitle?: string;
+  ctaText: string;
+  ctaHref: string;
+  secondaryCtaText?: string;
+  secondaryCtaHref?: string;
+  /** Active object image path (absolute under `/public` or resolved URL). */
+  image: string;
+  imageAlt?: string;
+  /** Background gradient class (defaults to KidzLab blue). */
+  bgColor?: string;
+  /** Texture overlay image path (defaults to kidzlabs-texture.png). */
+  texture?: string;
+  /** Show the MagmaParticles canvas overlay. */
+  showMagma?: boolean;
+  /** Magma source X as percentage (0–100). */
+  magmaX?: number;
+  /** Magma source Y as percentage (0–100). */
+  magmaY?: number;
+  imageWidthPx?: number;
+  imageHeightPx?: number;
+  imageRightPct?: number;
+  imageBottomPct?: number;
+  /** Logo image path. */
+  logo?: string;
+  /** Logo height in px. */
+  logoHeightPx?: number;
+  className?: string;
+  minHeightClassName?: string;
+};
+
 export type HomeHeroJson = {
-  /** `slider` — carousel hero; `fullViewport` — centered full-height hero; `orbitBanner` — landscape orbit hero. */
-  variant?: 'slider' | 'fullViewport' | 'orbitBanner';
+  /** `slider` — carousel hero; `fullViewport` — centered full-height hero; `orbitBanner` — landscape orbit hero; `kidzlabBanner` — KidzLab-style hero. */
+  variant?: 'slider' | 'fullViewport' | 'orbitBanner' | 'kidzlabBanner';
   fullViewport?: HomeHeroFullViewportJson;
   orbitBanner?: HomeHeroOrbitBannerJson;
+  kidzlabBanner?: HomeHeroKidzlabBannerJson;
   slides: HeroBannerSlide[];
   options?: HomeHeroSliderOptions;
   /** Toggle product hover icons and display mode on the Explore by Product Family section. */

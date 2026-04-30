@@ -4,6 +4,8 @@ export { HeroFullViewport } from './hero-full-viewport';
 export type { HeroFullViewportProps } from './hero-full-viewport';
 export { HeroOrbitBanner, HeroOrbitBannerView } from './hero-orbit-banner';
 export type { HeroOrbitBannerProps } from './hero-orbit-banner';
+export { HeroKidzlabStyle } from './hero-kidzlab-style';
+export type { HeroKidzlabStyleProps } from './hero-kidzlab-style';
 export { GalleryGrid } from './gallery-grid';
 export type { GalleryGridProps } from './gallery-grid';
 export { CatalogSlider } from './catalog-slider';
