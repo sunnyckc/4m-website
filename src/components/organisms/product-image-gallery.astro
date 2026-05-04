@@ -112,18 +112,11 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
     >
       <source id="main-video-source" src="" type="video/mp4" />
     </video>
-    <!-- Embed (vimeo / wistia / youtube) display — no lazy load so first switch to video starts immediately -->
-    <iframe
-      id="main-product-embed"
-      class="w-full h-full hidden border-0"
-      src=""
-      title={`${productName} — video`}
-      loading="eager"
-      referrerpolicy="strict-origin-when-cross-origin"
-      sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox allow-fullscreen"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-      allowfullscreen
-    ></iframe>
+    <!-- Embed slot: a fresh iframe is created per URL so changing `src` on one node does not add a parent history entry (Safari/Chrome + Vimeo). -->
+    <div
+      id="main-product-embed-slot"
+      class="w-full h-full hidden [&>iframe]:h-full [&>iframe]:w-full [&>iframe]:border-0"
+    ></div>
   </div>
 
   <!-- Thumbnail Strip -->
@@ -248,7 +241,7 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
   </div>
 </div>
 
-<script define:vars={{ galleryItems, THUMB_PAGE_SIZE }}>
+<script define:vars={{ galleryItems, THUMB_PAGE_SIZE, productName }}>
   function initProductImageGallery() {
     const galleryRoot = document.querySelector('.product-image-gallery');
     if (!galleryRoot) return;
@@ -260,7 +253,7 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
     const mainImage = galleryRoot.querySelector('#main-product-image');
     const mainVideo = galleryRoot.querySelector('#main-product-video');
     const mainVideoSource = galleryRoot.querySelector('#main-video-source');
-    const mainEmbed = galleryRoot.querySelector('#main-product-embed');
+    const embedSlot = galleryRoot.querySelector('#main-product-embed-slot');
     const thumbnailBtns = galleryRoot.querySelectorAll('.thumbnail-btn');
     const thumbPagePrev = galleryRoot.querySelector('#thumb-page-prev');
     const thumbPageNext = galleryRoot.querySelector('#thumb-page-next');
@@ -305,16 +298,43 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
       applyThumbStrip();
     }
 
+    function clearEmbedSlot() {
+      if (!embedSlot) return;
+      embedSlot.innerHTML = '';
+      embedSlot.removeAttribute('data-embed-url');
+      embedSlot.classList.add('hidden');
+    }
+
+    /** New iframe per URL avoids browsers attributing iframe navigations to the parent history stack. */
+    function mountEmbed(embedUrl) {
+      if (!embedSlot) return;
+      embedSlot.innerHTML = '';
+      var iframe = document.createElement('iframe');
+      iframe.title = productName + ' — video';
+      iframe.setAttribute('loading', 'eager');
+      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      iframe.setAttribute(
+        'sandbox',
+        'allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox allow-fullscreen'
+      );
+      iframe.setAttribute(
+        'allow',
+        'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen'
+      );
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.src = embedUrl;
+      embedSlot.appendChild(iframe);
+      embedSlot.setAttribute('data-embed-url', embedUrl);
+      embedSlot.classList.remove('hidden');
+    }
+
     function showItem(index) {
       const item = items[index];
       if (!item) return;
       currentIndex = index;
 
       if (item.type === 'image' || item.type === 'award') {
-        if (mainEmbed) {
-          mainEmbed.classList.add('hidden');
-          mainEmbed.setAttribute('src', 'about:blank');
-        }
+        clearEmbedSlot();
         mainVideo.classList.add('hidden');
         mainVideo.pause();
         if (mainVideoSource) mainVideoSource.src = '';
@@ -327,16 +347,13 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
           mainVideo.pause();
           if (mainVideoSource) mainVideoSource.src = '';
           var nextEmbed = item.embedSrc;
-          if (mainEmbed) {
-            var cur = mainEmbed.getAttribute('src') || '';
-            if (cur !== nextEmbed) mainEmbed.setAttribute('src', nextEmbed);
-            mainEmbed.classList.remove('hidden');
+          if (embedSlot) {
+            var curUrl = embedSlot.getAttribute('data-embed-url') || '';
+            if (curUrl !== nextEmbed) mountEmbed(nextEmbed);
+            else embedSlot.classList.remove('hidden');
           }
         } else {
-          if (mainEmbed) {
-            mainEmbed.classList.add('hidden');
-            mainEmbed.setAttribute('src', 'about:blank');
-          }
+          clearEmbedSlot();
           mainVideoSource.src = item.src;
           mainVideo.load();
           mainVideo.classList.remove('hidden');
