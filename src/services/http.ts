@@ -16,9 +16,6 @@ export class ApiError extends Error {
  */
 export async function apiGetJson<T>(path: string, init?: RequestInit): Promise<T> {
   const base = getPublicApiBaseUrl();
-  if (!base) {
-    throw new Error('API base URL is not set');
-  }
   const url = `${base}${path.startsWith('/') ? path : `/${path}`}`;
   const res = await fetch(url, {
     ...init,

@@ -57,6 +57,8 @@ export interface ProductGalleryItem {
   sequence: number;
   isThumbnail?: boolean;
   url?: string;
+  /** Present on `product-video-url` when the backend inferred or accepted a Vimeo id. */
+  vimeo_video_id?: string;
   objectKey?: string;
   signedUrl?: string;
   signedExpiresIn?: number;

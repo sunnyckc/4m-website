@@ -5,9 +5,8 @@ import type {
   ProductThumbnail,
   ProductTranslation,
 } from '@/types/product';
-import { getPublicApiBaseUrl } from '@/config/api';
 import { getProductRouteKey } from '@/lib/product-routing';
-import { apiGetJson } from '@/services/http';
+import { ApiError, apiGetJson } from '@/services/http';
 
 export type ProductSort = 'name-asc' | 'name-desc' | 'code-asc' | '';
 
@@ -86,7 +85,18 @@ function mapGalleryToMedia(gallery: ProductGalleryItem[]): Product['media'] {
     const type =
       item.type.includes('video') ? 'video' : item.type.includes('award') ? 'award' : 'image';
     const url = item.signedUrl || item.url || '';
+    const vimeoFromApi = typeof item.vimeo_video_id === 'string' ? item.vimeo_video_id.trim() : '';
     if (type === 'video') {
+      if (vimeoFromApi && /^\d+$/.test(vimeoFromApi)) {
+        return {
+          type,
+          sequence: item.sequence ?? index,
+          thumbnail: Boolean(item.isThumbnail),
+          hidden: false,
+          media_source: 'vimeo',
+          media_destination: vimeoFromApi,
+        };
+      }
       if (isVimeoVideoDestination(url)) {
         return {
           type,
@@ -228,10 +238,6 @@ function unwrapData<T>(data: unknown): T | null {
  * Backend may return a JSON array or `{ items: Product[] }`.
  */
 export async function getAllProducts(): Promise<Product[]> {
-  const base = getPublicApiBaseUrl();
-  if (!base) {
-    throw new Error('API base URL is not set');
-  }
   const pageSize = 20;
   const first = normalizeListResponse(
     await apiGetJson<unknown>(`/api/v1/products?page=1&limit=${pageSize}`),
@@ -316,20 +322,25 @@ export async function loadProductsList(params: ProductsListParams): Promise<Prod
 
 /**
  * Product detail request for SSR detail page.
- * Accepts the public route key, then fetches detail by product UUID.
+ * The backend resolves `GET /api/v1/products/:id` by UUID, `item_code`, or `folder_name` — try that first,
+ * then fall back to scanning the catalog (legacy / mis-keyed slugs).
  */
 export async function getProductDetail(routeKey: string): Promise<Product | null> {
-  const base = getPublicApiBaseUrl();
-  if (!base) return null;
   const key = routeKey.trim();
   if (!key) return null;
 
-  if (isUuidLike(key)) {
-    try {
-      return await fetchProductDetailById(key);
-    } catch (e) {
-      console.warn('[services] getProductDetail: UUID detail API failed', e);
+  try {
+    const direct = await fetchProductDetailById(key);
+    if (direct) return direct;
+  } catch (e) {
+    const notFound = e instanceof ApiError && e.status === 404;
+    if (!notFound) {
+      console.warn('[services] getProductDetail: direct detail request failed', e);
     }
+  }
+
+  if (isUuidLike(key)) {
+    return null;
   }
 
   try {
@@ -340,7 +351,7 @@ export async function getProductDetail(routeKey: string): Promise<Product | null
     }
     return await fetchProductDetailById(match.id);
   } catch (e) {
-    console.warn('[services] getProductDetail: route lookup or UUID detail failed', e);
+    console.warn('[services] getProductDetail: catalog fallback failed', e);
   }
 
   return null;

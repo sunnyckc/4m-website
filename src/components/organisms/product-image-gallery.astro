@@ -22,10 +22,12 @@ function youtubeVideoId(raw: string): string {
   return s;
 }
 
-/** Accepts a bare numeric id or vimeo.com/{id} URL */
+/** Accepts a bare numeric id, vimeo.com/{id}, or player.vimeo.com/video/{id} */
 function vimeoVideoId(raw: string): string {
   const s = raw.trim();
-  const fromPath = s.match(/vimeo\.com\/(\d+)/);
+  const fromPlayer = s.match(/player\.vimeo\.com\/video\/(\d+)/i);
+  if (fromPlayer) return fromPlayer[1];
+  const fromPath = s.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
   if (fromPath) return fromPath[1];
   const numeric = s.match(/^(\d+)$/);
   if (numeric) return numeric[1];
@@ -110,14 +112,16 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
     >
       <source id="main-video-source" src="" type="video/mp4" />
     </video>
-    <!-- Embed (vimeo / wistia / youtube) display -->
+    <!-- Embed (vimeo / wistia / youtube) display — no lazy load so first switch to video starts immediately -->
     <iframe
       id="main-product-embed"
       class="w-full h-full hidden border-0"
       src=""
       title={`${productName} — video`}
-      loading="lazy"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      loading="eager"
+      referrerpolicy="strict-origin-when-cross-origin"
+      sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox allow-fullscreen"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
       allowfullscreen
     ></iframe>
   </div>
@@ -306,21 +310,33 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
       if (!item) return;
       currentIndex = index;
 
-      mainImage.classList.add('hidden');
-      mainVideo.classList.add('hidden');
-      mainEmbed.classList.add('hidden');
-      mainVideo.pause();
-      if (mainVideoSource) mainVideoSource.src = '';
-      if (mainEmbed) mainEmbed.src = '';
-
       if (item.type === 'image' || item.type === 'award') {
+        if (mainEmbed) {
+          mainEmbed.classList.add('hidden');
+          mainEmbed.setAttribute('src', 'about:blank');
+        }
+        mainVideo.classList.add('hidden');
+        mainVideo.pause();
+        if (mainVideoSource) mainVideoSource.src = '';
         mainImage.src = item.src;
         mainImage.classList.remove('hidden');
       } else if (item.type === 'video') {
+        mainImage.classList.add('hidden');
         if (item.mediaSource === 'vimeo' || item.mediaSource === 'wistia' || item.mediaSource === 'youtube') {
-          mainEmbed.src = item.embedSrc;
-          mainEmbed.classList.remove('hidden');
+          mainVideo.classList.add('hidden');
+          mainVideo.pause();
+          if (mainVideoSource) mainVideoSource.src = '';
+          var nextEmbed = item.embedSrc;
+          if (mainEmbed) {
+            var cur = mainEmbed.getAttribute('src') || '';
+            if (cur !== nextEmbed) mainEmbed.setAttribute('src', nextEmbed);
+            mainEmbed.classList.remove('hidden');
+          }
         } else {
+          if (mainEmbed) {
+            mainEmbed.classList.add('hidden');
+            mainEmbed.setAttribute('src', 'about:blank');
+          }
           mainVideoSource.src = item.src;
           mainVideo.load();
           mainVideo.classList.remove('hidden');
