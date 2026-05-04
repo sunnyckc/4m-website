@@ -46,9 +46,22 @@ interface ApiWrappedData<T> {
 
 function vimeoId(raw: string): string {
   const value = raw.trim();
-  const fromPath = value.match(/vimeo\.com\/(\d+)/);
+  const fromPlayer = value.match(/player\.vimeo\.com\/video\/(\d+)/i);
+  if (fromPlayer) return fromPlayer[1];
+  const fromPath = value.match(/vimeo\.com\/(\d+)/i);
   if (fromPath) return fromPath[1];
+  if (/^\d+$/.test(value)) return value;
   return value;
+}
+
+/** True when the string is a Vimeo player URL or a bare numeric Vimeo video id (e.g. from VMMule). */
+function isVimeoVideoDestination(url: string): boolean {
+  const s = url.trim();
+  if (!s) return false;
+  if (/vimeo\.com\/\d+/i.test(s)) return true;
+  if (/player\.vimeo\.com\/video\/\d+/i.test(s)) return true;
+  if (/^\d+$/.test(s)) return true;
+  return false;
 }
 
 function youtubeId(raw: string): string {
@@ -74,7 +87,7 @@ function mapGalleryToMedia(gallery: ProductGalleryItem[]): Product['media'] {
       item.type.includes('video') ? 'video' : item.type.includes('award') ? 'award' : 'image';
     const url = item.signedUrl || item.url || '';
     if (type === 'video') {
-      if (url.includes('vimeo.com')) {
+      if (isVimeoVideoDestination(url)) {
         return {
           type,
           sequence: item.sequence ?? index,
