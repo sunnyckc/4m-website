@@ -89,7 +89,7 @@ const galleryItems: GalleryItem[] = visibleMedia.map((m) => {
 
 const firstItem = galleryItems[0];
 const isFirstImage = firstItem && (firstItem.type === 'image' || firstItem.type === 'award');
-const THUMB_PAGE_SIZE = 8;
+const THUMB_PAGE_SIZE = 4;
 const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
 ---
 
@@ -122,9 +122,7 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
   <!-- Thumbnail Strip -->
   {galleryItems.length > 1 && (
     <div class="thumbnail-gallery">
-      <div
-        class={`flex items-stretch gap-2 ${showThumbPager ? '' : 'overflow-x-auto pb-2'}`}
-      >
+      <div class="flex items-stretch gap-2">
         {showThumbPager && (
           <button
             type="button"
@@ -135,11 +133,11 @@ const showThumbPager = galleryItems.length > THUMB_PAGE_SIZE;
             ‹
           </button>
         )}
-        <div class={`flex min-w-0 flex-1 space-x-2 ${showThumbPager ? 'overflow-hidden' : 'overflow-x-auto pb-2'}`}>
+        <div class={`thumbnail-strip grid min-w-0 flex-1 grid-cols-4 gap-2 ${showThumbPager ? 'overflow-hidden' : ''}`}>
         {galleryItems.map((item, index) => (
           <button
             type="button"
-            class={`thumbnail-btn relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-all duration-200 ${
+            class={`thumbnail-btn relative aspect-square min-h-0 min-w-0 w-full rounded-md overflow-hidden border-2 transition-all duration-200 ${
               index === 0 ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-400 hover:bg-gray-100'
             } ${showThumbPager && index >= THUMB_PAGE_SIZE ? 'hidden' : ''}`}
             data-index={index}
